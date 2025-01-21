@@ -29,7 +29,7 @@ Widget Common_text_field(
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(70),
-          borderSide: BorderSide(color: Colors.white, width: 1),
+          borderSide: BorderSide(color: Colors.red, width: 1),
         ),
         errorStyle: GoogleFonts.poppins(
           fontSize: 15.sp,

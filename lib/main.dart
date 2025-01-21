@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gadi_customer_repo/utils/theme_config.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
+import 'package:device_preview/device_preview.dart';
 
 import 'binding/app_binding.dart';
 import 'routes/app_pages.dart';
@@ -20,6 +22,10 @@ void main() async {
     ),
   );
   runApp(const App());
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => App(),
+  ));
 }
 
 class App extends StatelessWidget {

@@ -93,7 +93,7 @@ class Register extends StatelessWidget {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 10.3, right: 10),
+                      padding: EdgeInsets.only(bottom: 6, right: 10),
                       child: TextField(
                         controller: authController.phone.value,
                         decoration: InputDecoration(

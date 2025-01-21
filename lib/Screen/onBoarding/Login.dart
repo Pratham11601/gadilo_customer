@@ -57,7 +57,7 @@ class Login extends StatelessWidget {
                 ),
                 SizedBox(height: 9.h),
                 Text(
-                  'Sign ln',
+                  'Log  ln',
                   style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                       color: Color.fromRGBO(15, 15, 20, 1),
@@ -69,12 +69,12 @@ class Login extends StatelessWidget {
                 SizedBox(height: 2.3.h),
                 buildPhoneNumberField(
                   authController.phone.value,
-                  "Please Enter your Phone Number",
+                  " Enter your Phone Number",
                 ),
                 SizedBox(height: 2.3.h),
                 Common_text_field(
                   authController.password.value,
-                  " Please Enter you Password",
+                  " Enter Password",
                   "Password should includes combination letter capital,small,numbers and special symbols",
                   (value) {
                     if (value == null || value.isEmpty) {
@@ -113,7 +113,7 @@ class Login extends StatelessWidget {
             style: GoogleFonts.poppins(
               textStyle: TextStyle(
                 color: Colors.grey.shade800,
-                fontWeight: FontWeight.bold,
+                //fontWeight: FontWeight.bold,
                 fontSize: 15.sp,
               ),
             ),
@@ -127,6 +127,11 @@ class Login extends StatelessWidget {
     return CustomButton(
       width: 85.w,
       label: "Login",
+      labelStyle:GoogleFonts.poppins(
+      textStyle: TextStyle(
+        fontWeight: FontWeight.w400,
+         fontSize: 16.sp
+      )),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           authController.loginUser();

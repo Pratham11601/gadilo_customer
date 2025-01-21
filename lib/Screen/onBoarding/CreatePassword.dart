@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../routes/routes.dart';
+import '../../widgets/constant_widgets.dart';
 
 class CreatePassword extends StatefulWidget {
   CreatePassword({super.key});
@@ -146,7 +147,8 @@ class _CreatePasswordState extends State<CreatePassword> {
               ),
             ),
           ),
-          SizedBox(height: 190),
+          height(10.h),
+          // SizedBox(height: 190),
           CustomButton(
             width: 85.w,
             label: "Continue",
