@@ -23,7 +23,7 @@ class BikeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final images = (bikes.carImage as List<String>?) ?? [];
+    final images = (bikes.bikeImage as List<String>?) ?? [];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -86,7 +86,7 @@ class BikeDetails extends StatelessWidget {
                 style: GoogleFonts.poppins(fontSize: 24.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
               ),
               Text(
-                " ${formatPriceRange(bikes.carPrice!)} ",
+                " ${formatPriceRange(bikes.bikePrice!)} ",
                 style: GoogleFonts.poppins(fontSize: 18.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
               ),
             ],

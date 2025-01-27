@@ -28,9 +28,9 @@ class Bikemodel {
 }
 
 class BikeList {
-  String? carId;
-  List<String>? carImage;
-  String? carPrice;
+  String? bikeId;
+  List<String>? bikeImage;
+  String? bikePrice;
   String? city;
   String? brand;
   String? model;
@@ -49,9 +49,9 @@ class BikeList {
   String? ratings;
 
   BikeList(
-      {this.carId,
-      this.carImage,
-      this.carPrice,
+      {this.bikeId,
+      this.bikeImage,
+      this.bikePrice,
       this.city,
       this.brand,
       this.model,
@@ -70,9 +70,9 @@ class BikeList {
       this.ratings});
 
   BikeList.fromJson(Map<String, dynamic> json) {
-    carId = json['car_id'];
-    carImage = json['car_image'].cast<String>();
-    carPrice = json['car_price'];
+    bikeId = json['bike_id'];
+    bikeImage = json['bike_image'].cast<String>();
+    bikePrice = json['bike_price'];
     city = json['city'];
     brand = json['brand'];
     model = json['model'];
@@ -93,9 +93,9 @@ class BikeList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['car_id'] = this.carId;
-    data['car_image'] = this.carImage;
-    data['car_price'] = this.carPrice;
+    data['bike_id'] = this.bikeId;
+    data['bike_image'] = this.bikeImage;
+    data['bike_price'] = this.bikePrice;
     data['city'] = this.city;
     data['brand'] = this.brand;
     data['model'] = this.model;

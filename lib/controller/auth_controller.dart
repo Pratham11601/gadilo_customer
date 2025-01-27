@@ -233,8 +233,7 @@ class AuthController extends GetxController {
     try {
       LoginUserModel loginUser = await AuthRepository.loginApi(params: params);
       if (loginUser.status == true) {
-        LocalStorage.storeValue(StorageKey.token, loginUser.token);
-        LocalStorage.storeValue(StorageKey.userid, loginUser.user!.id ?? "");
+        LocalStorage.storeValue(StorageKey.userid, loginUser.user!.id.toString() ?? "");
         Get.toNamed(Routes.SELECT_CITY_SCREEN);
         return loginUser;
       } else {
@@ -262,7 +261,7 @@ class AuthController extends GetxController {
     try {
       RegisterUserModel userDetails = await AuthRepository.createPasswordandRegisterAPI(params: params);
       if (userDetails.status == true) {
-        LocalStorage.storeValue(StorageKey.userid, userDetails.userId ?? null);
+        LocalStorage.storeValue(StorageKey.userid, userDetails.userId.toString() ?? null);
         Get.toNamed(Routes.SELECT_CITY_SCREEN);
         return userDetails;
       } else {

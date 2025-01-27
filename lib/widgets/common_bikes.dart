@@ -13,12 +13,17 @@ Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
     },
     child: Column(
       children: [
-        Image(
-          image: NetworkImage(
-            "${bike.carImage![0] ?? ""}",
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 7),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
+            child: Image.network(
+              "${bike.bikeImage![0]}",
+              height: 40.w,
+              width: double.maxFinite,
+              fit: BoxFit.cover,
+            ),
           ),
-          width: double.infinity,
-          fit: BoxFit.fill,
         ),
         SizedBox(
           width: 49.w,
@@ -32,7 +37,7 @@ Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
               ),
               Center(
                 child: Text(
-                  "${formatPriceRange(bike.carPrice!)}",
+                  formatPriceRange(bike.bikePrice!),
                   style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                 ),
               ),

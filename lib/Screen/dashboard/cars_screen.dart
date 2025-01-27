@@ -170,7 +170,7 @@ class CarsScreen extends StatelessWidget {
                       children: [
                         height(12.h),
                         Text(
-                          'There are no Cars Available',
+                          '',
                           style: TextHelper.size16(context).copyWith(
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                             fontWeight: FontWeight.bold,
@@ -265,7 +265,7 @@ class CarsScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 Get.toNamed(Routes.CARS_DEAL_SCREEN);
-                // dashboardController.getCarsDealsListApi();
+                dashboardController.getCarsDealsListApi();
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

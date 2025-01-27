@@ -44,7 +44,7 @@ class DashboardRepository {
   }) async {
     try {
       var response = await apiManager.getAPICall(
-        url: '/PageController/get_car_details',
+        url: '/get_cars_by_filter',
         showLoading: showLoading,
       );
       CarsModel getCarsModel = CarsModel.fromJson(response);
@@ -73,7 +73,7 @@ class DashboardRepository {
   static Future<Bikemodel> getBikesAPi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/PageController/fetch_bike_details',
+        url: '/get_bikes_by_filter',
         params: params,
         showLoading: showLoading,
       );
@@ -88,7 +88,7 @@ class DashboardRepository {
   static Future<Bikemodel> getBikesSearchAPi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/PageController/fetch_bike_details',
+        url: '/get_bikes_by_filter',
         params: params,
         showLoading: showLoading,
       );

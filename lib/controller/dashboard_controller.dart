@@ -135,8 +135,7 @@ class DashBoardController extends GetxController {
     isLoading.value = true;
     try {
       CarsModel getCarsApiresponse = await DashboardRepository.getCarsApi(params: params);
-      if (getCarsApiresponse.status is String && getCarsApiresponse.status == "success" ||
-          getCarsApiresponse.status is bool && getCarsApiresponse.status == true) {
+      if (getCarsApiresponse.status == true) {
         getCarsList.clear();
         getCarsList.value = getCarsApiresponse.data!;
       } else {
@@ -160,14 +159,15 @@ class DashBoardController extends GetxController {
       'city': location.value,
       'brand': "",
       'color': "",
+      'color': "",
       'km_driven': "",
       'search_filter': "",
+      'number_of_owners': "",
     };
     isLoading.value = true;
     try {
       CarsModel getCarsApiresponse = await DashboardRepository.getCarsApi(params: params);
-      if (getCarsApiresponse.status is String && getCarsApiresponse.status == "success" ||
-          getCarsApiresponse.status is bool && getCarsApiresponse.status == true) {
+      if (getCarsApiresponse.status == true) {
         getCarsDealsList.clear();
         getCarsDealsList.value = getCarsApiresponse.data!;
       } else {
@@ -216,12 +216,10 @@ class DashBoardController extends GetxController {
   }
 
   Future<CarsModel?> getCarsListSuggestionApi() async {
-    getCarsSuggestionList.clear();
     isLoading.value = true;
     try {
       CarsModel getCarsApiresponse = await DashboardRepository.getCarsSuggestionApi();
-      if (getCarsApiresponse.status is String && getCarsApiresponse.status == "success" ||
-          getCarsApiresponse.status is bool && getCarsApiresponse.status == true) {
+      if (getCarsApiresponse.status == true) {
         getCarsSuggestionList.value = getCarsApiresponse.data!;
       } else {
         Get.snackbar(
@@ -240,7 +238,7 @@ class DashBoardController extends GetxController {
 
   Future<Bikemodel?> getbikesDealsListApi() async {
     Map<String, dynamic> params = {
-      'location': location.value,
+      'city': location.value,
       'brand': "",
       'color': "",
       'km_driven': "",
@@ -252,7 +250,7 @@ class DashBoardController extends GetxController {
     try {
       Bikemodel getBikeApiresponse = await DashboardRepository.getBikesAPi(params: params);
 
-      if (getBikeApiresponse.status == "success") {
+      if (getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
           getBikeDealList.value = getBikeApiresponse.data!;
         }
@@ -273,7 +271,7 @@ class DashBoardController extends GetxController {
 
   Future<Bikemodel?> getbikesListApi() async {
     Map<String, dynamic> params = {
-      'location': location.value,
+      'city': location.value,
       'brand': "",
       'color': "",
       'km_driven': "",
@@ -329,7 +327,7 @@ class DashBoardController extends GetxController {
   }
 
   Future<Sparemodel?> getSpaeresListApi() async {
-    Map<String, dynamic> params = {'location': location.value};
+    Map<String, dynamic> params = {'city': location.value};
     isLoading.value = true;
     try {
       Sparemodel getSpareApiresponse = await DashboardRepository.getSparesApi(params: params);

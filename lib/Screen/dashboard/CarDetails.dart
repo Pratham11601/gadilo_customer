@@ -5,7 +5,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
 import 'package:gadi_customer_repo/widgets/back_common_button.dart';
-import 'package:gadi_customer_repo/widgets/common_cards_cars.dart';
 import 'package:gadi_customer_repo/widgets/common_specifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +13,7 @@ import 'package:sizer/sizer.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/string_utils.dart';
 import '../../utils/text_style.dart';
+import '../../widgets/common_cards_cars.dart';
 import '../../widgets/constant_widgets.dart';
 
 class CarDetails extends StatelessWidget {

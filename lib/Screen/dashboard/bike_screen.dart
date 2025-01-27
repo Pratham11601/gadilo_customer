@@ -43,7 +43,6 @@ class BikeScreen extends StatelessWidget {
                               dashboardController.filterColor.value = "";
                               dashboardController.filterBudget.value = "";
                               dashboardController.filterColor.value = "";
-
                               dashboardController.isBikeFilterApplied.toggle();
                               dashboardController.getbikesListApi();
                             },

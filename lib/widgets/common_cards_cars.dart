@@ -8,8 +8,8 @@ import '../models/dasboard/cars_model.dart';
 
 Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
   return Container(
-    // padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.w),
     margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.w),
+    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.w),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10.0),
@@ -31,6 +31,21 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
             width: 96.w,
             height: 151,
             fit: BoxFit.cover,
+            // Error handling
+            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+              return Container(
+                width: 96.w,
+                height: 151,
+                color: Colors.grey[300], // Placeholder background color
+                child: Center(
+                  child: Icon(
+                    Icons.error,
+                    size: 55,
+                    color: Colors.red,
+                  ),
+                ),
+              );
+            },
           ),
         ),
         height(1.h),

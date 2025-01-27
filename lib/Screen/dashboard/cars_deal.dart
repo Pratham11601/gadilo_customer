@@ -65,7 +65,6 @@ class CarsDeal extends StatelessWidget {
           );
         } else {
           return ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             itemCount: dashboardController.getCarsDealsList.length,
