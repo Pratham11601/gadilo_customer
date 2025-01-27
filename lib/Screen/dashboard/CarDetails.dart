@@ -23,7 +23,7 @@ class CarDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final images = (cars.image as List<String>?) ?? [];
+    final images = (cars.carImage as List<String>?) ?? [];
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -50,7 +50,7 @@ class CarDetails extends StatelessWidget {
               enlargeCenterPage: true,
               enlargeFactor: 1,
             ),
-            items: cars.image!.map((imageUrl) {
+            items: cars.carImage!.map((imageUrl) {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -76,7 +76,7 @@ class CarDetails extends StatelessWidget {
                 style: GoogleFonts.poppins(fontSize: 24.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
               ),
               Text(
-                " ${formatPriceRange(cars.price!)} ",
+                " ${formatPriceRange(cars.carPrice!)} ",
                 style: GoogleFonts.poppins(fontSize: 18.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
               ),
             ],
@@ -146,7 +146,7 @@ class CarDetails extends StatelessWidget {
                   style: GoogleFonts.poppins(fontSize: 14, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w400),
                   children: <TextSpan>[
                     TextSpan(
-                      text: "${cars.location}",
+                      text: "${cars.city}",
                       style: GoogleFonts.poppins(fontSize: 13, color: Color.fromRGBO(15, 15, 20, 0.76), fontWeight: FontWeight.w400),
                     ),
                   ],
@@ -164,21 +164,21 @@ class CarDetails extends StatelessWidget {
               ),
               width(1.w),
               RatingBar.builder(
-                initialRating: double.parse(cars.reviewStars!),
+                initialRating: double.parse(cars.numberOfOwners!),
                 minRating: 1,
                 direction: Axis.horizontal,
                 itemSize: 4.5.w,
                 itemPadding: EdgeInsets.symmetric(horizontal: 1),
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
-                  color: index < double.parse(cars.reviewStars!) ? Color.fromRGBO(255, 238, 83, 1) : Color.fromRGBO(210, 210, 210, 1),
+                  color: index < double.parse(cars.numberOfOwners!) ? Color.fromRGBO(255, 238, 83, 1) : Color.fromRGBO(210, 210, 210, 1),
                 ),
                 onRatingUpdate: (rating) {},
               ),
               width(5.w),
               InkWell(
                 onTap: () {
-                  dashBoardController.makePhoneCall(cars.phoneNumber!);
+                  dashBoardController.makePhoneCall(cars.contactNumber!);
                 },
                 child: Container(
                   width: 47.w,
@@ -242,12 +242,12 @@ class CarDetails extends StatelessWidget {
               ),
               CommonSpecifications(
                 imagePath: 'assets/jhgf.png',
-                value: "${cars.kmDriven}",
+                value: "${cars.kilometersDriven}",
                 labelStyle: "Km driven",
               ),
               CommonSpecifications(
                 imagePath: 'assets/kiuj.png',
-                value: "${cars.transmission}",
+                value: "${cars.transmissionType}",
                 labelStyle: "Transmission",
               ),
             ],
@@ -263,12 +263,12 @@ class CarDetails extends StatelessWidget {
               ),
               CommonSpecifications(
                 imagePath: 'assets/eddc.png',
-                value: "${cars.noOfOwners}",
+                value: "${cars.numberOfOwners}",
                 labelStyle: "No. of owner",
               ),
               CommonSpecifications(
                 imagePath: 'assets/fcv.png',
-                value: "${cars.fuel}",
+                value: "${cars.fuelType}",
                 labelStyle: "Fuel",
               ),
             ],

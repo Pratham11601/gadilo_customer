@@ -15,7 +15,7 @@ Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
       children: [
         Image(
           image: NetworkImage(
-            "${bike.image![0]}",
+            "${bike.carImage![0] ?? ""}",
           ),
           width: double.infinity,
           fit: BoxFit.fill,
@@ -27,12 +27,12 @@ Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "${bike.brand} ${bike.model}  ",
+                "${bike.brand} ${bike.brand}  ",
                 style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
               ),
               Center(
                 child: Text(
-                  "${formatPriceRange(bike.price!)}",
+                  "${formatPriceRange(bike.carPrice!)}",
                   style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                 ),
               ),

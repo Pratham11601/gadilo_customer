@@ -28,7 +28,7 @@ Widget buildRideCardWidget(BuildContext context, {required CarsList cars}) {
       children: [
         Image(
           image: NetworkImage(
-            "${cars.image![0]}",
+            "${cars.carImage![0]}",
           ),
           width: double.infinity,
           height: 151,
@@ -42,7 +42,7 @@ Widget buildRideCardWidget(BuildContext context, {required CarsList cars}) {
               style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
             ),
             Text(
-              "Rs:-${cars.price}",
+              "Rs:-${cars.carPrice}",
               style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
             ),
           ],

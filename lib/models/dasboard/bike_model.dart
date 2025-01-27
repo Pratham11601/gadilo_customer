@@ -1,11 +1,13 @@
 class Bikemodel {
-  String? status;
+  bool? status;
+  int? errorCode;
   List<BikeList>? data;
 
-  Bikemodel({this.status, this.data});
+  Bikemodel({this.status, this.errorCode, this.data});
 
   Bikemodel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
+    errorCode = json['error_code'];
     if (json['data'] != null) {
       data = <BikeList>[];
       json['data'].forEach((v) {
@@ -17,6 +19,7 @@ class Bikemodel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
+    data['error_code'] = this.errorCode;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -25,70 +28,90 @@ class Bikemodel {
 }
 
 class BikeList {
-  String? id;
-  String? color;
-  String? mobileNumber;
-  String? review;
-  String? model;
-  List<String>? image;
-  String? kmDriven;
-  String? transmission;
-  String? year;
-  String? price;
-  String? fuelType;
-  String? owners;
-  String? location;
+  String? carId;
+  List<String>? carImage;
+  String? carPrice;
+  String? city;
   String? brand;
+  String? model;
+  String? status;
+  String? isAdvertised;
+  String? contactNumber;
+  String? kilometersDriven;
+  String? fuelType;
+  String? year;
+  String? transmissionType;
+  String? numberOfOwners;
+  String? color;
+  String? createdAt;
+  String? id;
+  String? view;
+  String? ratings;
 
   BikeList(
-      {this.id,
-      this.color,
-      this.mobileNumber,
-      this.review,
-      this.price,
+      {this.carId,
+      this.carImage,
+      this.carPrice,
+      this.city,
+      this.brand,
       this.model,
-      this.image,
-      this.kmDriven,
-      this.transmission,
-      this.year,
+      this.status,
+      this.isAdvertised,
+      this.contactNumber,
+      this.kilometersDriven,
       this.fuelType,
-      this.owners,
-      this.location,
-      this.brand});
+      this.year,
+      this.transmissionType,
+      this.numberOfOwners,
+      this.color,
+      this.createdAt,
+      this.id,
+      this.view,
+      this.ratings});
 
   BikeList.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    color = json['color'];
-    mobileNumber = json['mobile_number'];
-    review = json['review'];
-    model = json['model'];
-    image = json['image'].cast<String>();
-    kmDriven = json['km_driven'];
-    transmission = json['transmission'];
-    year = json['year'];
-    fuelType = json['fuel_type'];
-    price = json['price'];
-    owners = json['owners'];
-    location = json['location'];
+    carId = json['car_id'];
+    carImage = json['car_image'].cast<String>();
+    carPrice = json['car_price'];
+    city = json['city'];
     brand = json['brand'];
+    model = json['model'];
+    status = json['status'];
+    isAdvertised = json['is_advertised'];
+    contactNumber = json['contact_number'];
+    kilometersDriven = json['kilometers_driven'];
+    fuelType = json['fuel_type'];
+    year = json['year'];
+    transmissionType = json['transmission_type'];
+    numberOfOwners = json['number_of_owners'];
+    color = json['color'];
+    createdAt = json['created_at'];
+    id = json['id'];
+    view = json['view'];
+    ratings = json['ratings'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['color'] = this.color;
-    data['mobile_number'] = this.mobileNumber;
-    data['review'] = this.review;
-    data['model'] = this.model;
-    data['price'] = this.price;
-    data['image'] = this.image;
-    data['km_driven'] = this.kmDriven;
-    data['transmission'] = this.transmission;
-    data['year'] = this.year;
-    data['fuel_type'] = this.fuelType;
-    data['owners'] = this.owners;
-    data['location'] = this.location;
+    data['car_id'] = this.carId;
+    data['car_image'] = this.carImage;
+    data['car_price'] = this.carPrice;
+    data['city'] = this.city;
     data['brand'] = this.brand;
+    data['model'] = this.model;
+    data['status'] = this.status;
+    data['is_advertised'] = this.isAdvertised;
+    data['contact_number'] = this.contactNumber;
+    data['kilometers_driven'] = this.kilometersDriven;
+    data['fuel_type'] = this.fuelType;
+    data['year'] = this.year;
+    data['transmission_type'] = this.transmissionType;
+    data['number_of_owners'] = this.numberOfOwners;
+    data['color'] = this.color;
+    data['created_at'] = this.createdAt;
+    data['id'] = this.id;
+    data['view'] = this.view;
+    data['ratings'] = this.ratings;
     return data;
   }
 }

@@ -23,7 +23,7 @@ class BikeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final images = (bikes.image as List<String>?) ?? [];
+    final images = (bikes.carImage as List<String>?) ?? [];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -86,7 +86,7 @@ class BikeDetails extends StatelessWidget {
                 style: GoogleFonts.poppins(fontSize: 24.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
               ),
               Text(
-                " ${formatPriceRange(bikes.price!)} ",
+                " ${formatPriceRange(bikes.carPrice!)} ",
                 style: GoogleFonts.poppins(fontSize: 18.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
               ),
             ],
@@ -156,7 +156,7 @@ class BikeDetails extends StatelessWidget {
                   style: GoogleFonts.poppins(fontSize: 14, color: const Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w400),
                   children: <TextSpan>[
                     TextSpan(
-                      text: '${bikes.location}',
+                      text: '${bikes.city}',
                       style: GoogleFonts.poppins(fontSize: 13, color: const Color.fromRGBO(15, 15, 20, 0.76), fontWeight: FontWeight.w400),
                     ),
                   ],
@@ -174,22 +174,23 @@ class BikeDetails extends StatelessWidget {
               ),
               width(1.w),
               RatingBar.builder(
-                initialRating: double.parse(bikes.review!),
+                initialRating: double.parse("5"),
                 minRating: 1,
                 direction: Axis.horizontal,
                 itemSize: 4.5.w,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 1),
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
-                  color:
-                      index < double.parse(bikes.review!) ? const Color.fromRGBO(255, 238, 83, 1) : const Color.fromRGBO(210, 210, 210, 1),
+                  color: index < double.parse(bikes.numberOfOwners!)
+                      ? const Color.fromRGBO(255, 238, 83, 1)
+                      : const Color.fromRGBO(210, 210, 210, 1),
                 ),
                 onRatingUpdate: (rating) {},
               ),
               width(5.w),
               InkWell(
                 onTap: () {
-                  dashBoardController.makePhoneCall(bikes.mobileNumber!);
+                  dashBoardController.makePhoneCall(bikes.contactNumber!);
                 },
                 child: Container(
                   width: 47.w,
@@ -253,7 +254,7 @@ class BikeDetails extends StatelessWidget {
               ),
               CommonSpecifications(
                 imagePath: 'assets/jhgf.png',
-                value: "${bikes.kmDriven}",
+                value: "${bikes.kilometersDriven}",
                 labelStyle: "Km driven",
               ),
               CommonSpecifications(
@@ -269,7 +270,7 @@ class BikeDetails extends StatelessWidget {
             children: [
               CommonSpecifications(
                 imagePath: 'assets/eddc.png',
-                value: "${bikes.owners}",
+                value: "${bikes.numberOfOwners}",
                 labelStyle: "No. of owner",
               ),
               CommonSpecifications(

@@ -29,7 +29,7 @@ class DashBoardController extends GetxController {
   RxBool isLoading = true.obs;
   RxInt selectedIndex = 0.obs;
 
-  Rx<dynamic> id = 0.obs;
+  Rx<dynamic> id = "0".obs;
   Rx<TextEditingController> locationText = TextEditingController().obs;
   RxString location = ''.obs;
 
@@ -126,7 +126,7 @@ class DashBoardController extends GetxController {
 
   Future<CarsModel?> getCarsListApi() async {
     Map<String, dynamic> params = {
-      'location': location.value,
+      'city': location.value,
       'brand': filterBrand.value,
       'color': filterColor.value,
       'km_driven': filterBudget.value,
@@ -157,7 +157,7 @@ class DashBoardController extends GetxController {
 
   Future<CarsModel?> getCarsDealsListApi() async {
     Map<String, dynamic> params = {
-      'location': location.value,
+      'city': location.value,
       'brand': "",
       'color': "",
       'km_driven': "",
@@ -188,7 +188,7 @@ class DashBoardController extends GetxController {
 
   Future<CarsModel?> getCarsListSearchApi() async {
     Map<String, dynamic> params = {
-      'location': location.value,
+      'city': location.value,
       'car_name': filterBrand.value,
     };
     getCarsList.clear();

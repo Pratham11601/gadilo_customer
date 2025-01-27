@@ -26,10 +26,8 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: Image(
-            image: NetworkImage(
-              "${cars.image![0]}",
-            ),
+          child: Image.network(
+            "${cars.carImage![0]}",
             width: 96.w,
             height: 151,
             fit: BoxFit.cover,
@@ -44,7 +42,7 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
               style: GoogleFonts.poppins(fontSize: 20.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
             ),
             Text(
-              " ${formatPriceRange(cars.price!)} ",
+              " ${formatPriceRange(cars.carPrice!)} ",
               style: GoogleFonts.poppins(fontSize: 14.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
             ),
           ],

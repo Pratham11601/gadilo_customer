@@ -224,6 +224,7 @@ class SettingController extends GetxController {
     return null;
   }
 
+  // final dio.Dio _dio = dio.Dio();
   Future<void> uploadImage(String imagePath) async {
     // Show loader
     Get.dialog(

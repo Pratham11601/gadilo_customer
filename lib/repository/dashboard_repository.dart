@@ -12,7 +12,7 @@ class DashboardRepository {
   static Future<CarsModel> getCarsApi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/fetch_car_details',
+        url: '/get_cars_by_filter',
         params: params,
         showLoading: showLoading,
       );
