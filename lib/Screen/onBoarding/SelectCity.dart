@@ -239,7 +239,7 @@ class _SelectCityState extends State<SelectCity> {
           Padding(
             padding: const EdgeInsets.all(0),
             child: ElevatedButton(
-              onPressed: () => Get.toNamed(Routes.HOME_SCREEN),
+              onPressed: () => Get.offNamed(Routes.HOME_SCREEN),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(29),

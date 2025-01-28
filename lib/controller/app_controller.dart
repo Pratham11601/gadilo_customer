@@ -36,7 +36,7 @@ class AppController extends GetxController {
 
     Future.delayed(Duration(seconds: 4), () {
       if (userId != null) {
-        debugPrint("isExistingUser ------->   ${isExistingUser}          ");
+        debugPrint("isExistingUser ------->   ${isExistingUser}   ");
 
         if (isExistingUser != null) {
           Get.offAllNamed(Routes.HOME_SCREEN);

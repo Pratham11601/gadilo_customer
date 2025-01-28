@@ -213,7 +213,7 @@ class Profile extends StatelessWidget {
           InkWell(
             onTap: () {
               LocalStorage.removeValue(StorageKey.userid);
-              Get.toNamed(Routes.LOGIN_SCREEN);
+              Get.offNamed(Routes.LOGIN_SCREEN);
             },
             child: Padding(
               padding: const EdgeInsets.all(15),
