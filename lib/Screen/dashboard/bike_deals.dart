@@ -49,7 +49,7 @@ class BikeDeal extends StatelessWidget {
           );
         }
 
-        if (dashboardController.getBikeDealList.isEmpty) {
+        if (dashboardController.getBikeByBrandList.isEmpty) {
           return Center(
             child: Text(
               'There are no Bike Available',
@@ -66,15 +66,15 @@ class BikeDeal extends StatelessWidget {
                 crossAxisCount: 2, childAspectRatio: 1, crossAxisSpacing: 1.w, mainAxisSpacing: 1.h, mainAxisExtent: 30.h),
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: dashboardController.getBikeDealList.length,
+            itemCount: dashboardController.getBikeByBrandList.length,
             itemBuilder: (context, index) => InkWell(
               onTap: () {
-                final bikes = dashboardController.getBikeDealList[index];
+                final bikes = dashboardController.getBikeByBrandList[index];
                 Navigator.push(context, MaterialPageRoute(builder: (context) => BikeDetails(bikes: bikes)));
               },
               child: buildBikeWidget(
                 context,
-                bike: dashboardController.getBikeDealList[index],
+                bike: dashboardController.getBikeByBrandList[index],
               ),
             ),
           );

@@ -16,6 +16,18 @@ String formatPriceRange(String price) {
   }
 }
 
+String formatToRoundedFigure(double value) {
+  if (value >= 10000000) {
+    return '${(value / 10000000).toStringAsFixed(1)} Cr'; // Crore
+  } else if (value >= 100000) {
+    return '${(value / 100000).toStringAsFixed(1)} L'; // Lakh
+  } else if (value >= 1000) {
+    return '${(value / 1000).toStringAsFixed(1)} K'; // Thousand
+  } else {
+    return value.toStringAsFixed(0); // Whole number
+  }
+}
+
 String capitalizeFirstLetter(String brand) {
   if (brand.isNotEmpty) {
     return brand[0].toUpperCase() + brand.substring(1);

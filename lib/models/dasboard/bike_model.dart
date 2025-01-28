@@ -47,6 +47,8 @@ class BikeList {
   String? id;
   String? view;
   String? ratings;
+  String? feedbackMsg;
+  String? shopAddress;
 
   BikeList(
       {this.bikeId,
@@ -67,7 +69,9 @@ class BikeList {
       this.createdAt,
       this.id,
       this.view,
-      this.ratings});
+      this.ratings,
+      this.feedbackMsg,
+      this.shopAddress});
 
   BikeList.fromJson(Map<String, dynamic> json) {
     bikeId = json['bike_id'];
@@ -89,6 +93,8 @@ class BikeList {
     id = json['id'];
     view = json['view'];
     ratings = json['ratings'];
+    feedbackMsg = json['feedback_msg'];
+    shopAddress = json['shop_address'];
   }
 
   Map<String, dynamic> toJson() {
@@ -112,6 +118,8 @@ class BikeList {
     data['id'] = this.id;
     data['view'] = this.view;
     data['ratings'] = this.ratings;
+    data['feedback_msg'] = this.feedbackMsg;
+    data['shop_address'] = this.shopAddress;
     return data;
   }
 }

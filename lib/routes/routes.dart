@@ -31,6 +31,8 @@ class Routes {
   static const CARS_DETAILS_SCREEN = "/spares_details_screen";
   static const CARS_DEAL_SCREEN = "/cars_deal_Screen";
   static const BIKE_DEAL_SCREEN = "/bike_deal_Screen";
+  static const BIKE_BY_BRAND_SCREEN = "/bike_brand_Screen";
+  static const CARS_BY_BRAND_SCREEN = "/cars_brandScreen";
 
   //Setting
   static const SupportAndF_SCREEN = "/support_screen";

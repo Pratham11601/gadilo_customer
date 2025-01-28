@@ -41,7 +41,6 @@ dependencies:
   dropdown_search: ^5.0.6
   flutter_rating_bar: ^4.0.0
   table_calendar: ^3.0.2
-  cloud_firestore: ^4.3.3
   fluttertoast: ^8.2.6
   otp_text_field: ^1.0.0
   google_maps_flutter: ^2.2.3
@@ -69,7 +68,8 @@ dependencies:
   carousel_slider: ^5.0.0
   advanced_salomon_bottom_bar: ^3.3.4
   salomon_bottom_bar:
-
+  cupertino_range_slider_improved: ^2.0.1
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:

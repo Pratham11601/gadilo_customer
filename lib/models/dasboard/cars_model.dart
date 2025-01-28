@@ -35,6 +35,8 @@ class CarsList {
   String? brand;
   String? model;
   String? status;
+  String? shop_address;
+  String? ratings;
   String? isAdvertised;
   String? contactNumber;
   String? kilometersDriven;
@@ -55,6 +57,7 @@ class CarsList {
       this.brand,
       this.model,
       this.status,
+      this.shop_address,
       this.isAdvertised,
       this.contactNumber,
       this.kilometersDriven,
@@ -78,12 +81,14 @@ class CarsList {
     isAdvertised = json['is_advertised'];
     contactNumber = json['contact_number'];
     kilometersDriven = json['kilometers_driven'];
+    ratings = json['ratings'];
     fuelType = json['fuel_type'];
     year = json['year'];
     transmissionType = json['transmission_type'];
     numberOfOwners = json['number_of_owners'];
     color = json['color'];
     createdAt = json['created_at'];
+    shop_address = json['shop_address'];
     id = json['id'];
     view = json['view'];
   }
@@ -95,7 +100,9 @@ class CarsList {
     data['car_price'] = this.carPrice;
     data['city'] = this.city;
     data['brand'] = this.brand;
+    data['shop_address'] = this.shop_address;
     data['model'] = this.model;
+    data['ratings'] = this.ratings;
     data['status'] = this.status;
     data['is_advertised'] = this.isAdvertised;
     data['contact_number'] = this.contactNumber;

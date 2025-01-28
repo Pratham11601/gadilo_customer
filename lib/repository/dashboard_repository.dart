@@ -3,6 +3,8 @@ import 'package:gadi_customer_repo/models/dasboard/bike_model.dart';
 import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
 
 import '../api/api_manager.dart';
+import '../models/auth/brandModel.dart';
+import '../models/dasboard/city_model.dart';
 import '../models/dasboard/spares_model.dart';
 
 class DashboardRepository {
@@ -103,10 +105,38 @@ class DashboardRepository {
   static Future<Bikemodel> getBikesSuggestionsAPi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.getAPICall(
-        url: '/get_bike_details1',
+        url: '/get_bikes_by_filter',
         showLoading: showLoading,
       );
       Bikemodel bikeModel = Bikemodel.fromJson(response);
+      return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<CityModel> getCityModel({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/city_name?city_name=${params}',
+        showLoading: showLoading,
+      );
+      CityModel bikeModel = CityModel.fromJson(response);
+      return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<brandNamesModel> getbrandModel({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/cars_by_brand?brand_name=${params}',
+        showLoading: showLoading,
+      );
+      brandNamesModel bikeModel = brandNamesModel.fromJson(response);
       return bikeModel;
     } catch (e) {
       debugPrint(e.toString());

@@ -11,7 +11,7 @@ enum City {
   Nagpur,
 }
 
-enum Colour { black, grey, red, blue, darkGreen }
+enum Colour { black, grey, red, blue, darkGreen, white, yellow, purple, orange, pink, cyan, brown }
 
 extension ColourExtension on Colour {
   String get displayName {
@@ -26,6 +26,20 @@ extension ColourExtension on Colour {
         return "Blue";
       case Colour.darkGreen:
         return "Dark Green";
+      case Colour.white:
+        return "White";
+      case Colour.yellow:
+        return "Yellow";
+      case Colour.purple:
+        return "Purple";
+      case Colour.orange:
+        return "Orange";
+      case Colour.pink:
+        return "Pink";
+      case Colour.cyan:
+        return "Cyan";
+      case Colour.brown:
+        return "Brown";
       default:
         return "";
     }
@@ -43,6 +57,20 @@ extension ColourExtension on Colour {
         return "blue";
       case Colour.darkGreen:
         return "dark_green";
+      case Colour.white:
+        return "white";
+      case Colour.yellow:
+        return "yellow";
+      case Colour.purple:
+        return "purple";
+      case Colour.orange:
+        return "orange";
+      case Colour.pink:
+        return "pink";
+      case Colour.cyan:
+        return "cyan";
+      case Colour.brown:
+        return "brown";
       default:
         return "";
     }

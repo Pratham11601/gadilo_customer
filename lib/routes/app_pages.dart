@@ -93,7 +93,7 @@ class AppPages {
       binding: DashboardBinding(),
     ),
     // GetPage(name: Routes.BIKE_DETAILS_SCREEN, page: () => BikeDetails(), binding: DashboardBinding(), transition: Transition.circularReveal),
-    GetPage(name: Routes.CARS_DEAL_SCREEN, page: () => CarsDeal(), binding: DashboardBinding(), transition: Transition.upToDown),
+    GetPage(name: Routes.CARS_DEAL_SCREEN, page: () => CarsDeal(), binding: DashboardBinding(), transition: Transition.circularReveal),
     GetPage(name: Routes.BIKE_DEAL_SCREEN, page: () => BikeDeal(), binding: DashboardBinding(), transition: Transition.downToUp),
 
     //Setting

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:gadi_customer_repo/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../models/dasboard/city_model.dart';
 
 class itemModel {
   late String imgUrl;
@@ -63,70 +66,41 @@ class _SelectCityState extends State<SelectCity> {
                 ],
                 borderRadius: BorderRadius.circular(29),
               ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Image.asset(
-                          "assets/rcr.png",
-                          width: 15,
-                          height: 15,
-                        ),
-                      ],
+              child: Expanded(
+                  child: TypeAheadField<CitySearchList>(
+                decorationBuilder: (context, child) => Material(
+                  borderRadius: BorderRadius.circular(200),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(200),
+                      border: Border.all(color: Colors.transparent), // Ensure no border
                     ),
+                    child: child,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 10.3, right: 10),
-                      child: TextField(
-                        controller: dashController.locationText.value,
-                        decoration: InputDecoration(
-                          hintText: "Search",
-                          hintStyle: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color.fromRGBO(91, 91, 91, 1),
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              dashController.saveLocation(dashController.locationText.value.text);
-                            },
-                            child: Container(
-                              width: 43,
-                              height: 34,
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(10, 98, 148, 1),
-                                borderRadius: BorderRadius.circular(23),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 0.5),
-                                    Image.asset(
-                                      "assets/wdeded.png",
-                                      width: 30,
-                                      height: 30,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(fontSize: 16),
-                        ),
-                        keyboardType: TextInputType.text,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                suggestionsCallback: (query) async {
+                  await dashController.fetchCities(query);
+                  return dashController.city;
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.cityName ?? ""),
+                  );
+                },
+                errorBuilder: (context, error) {
+                  return Center(
+                    child: Text("Error occurred!"),
+                  );
+                },
+                onSelected: (CitySearchList value) {
+                  dashController.saveLocation(value.cityName!);
+
+                  print(value.toString());
+                  print(value.toJson());
+                  print(value);
+                  print(value);
+                },
+              )),
             ),
           ),
           SizedBox(height: 20),

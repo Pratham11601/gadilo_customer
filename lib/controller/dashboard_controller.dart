@@ -10,6 +10,9 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Screen/onBoarding/SelectCity.dart';
+import '../models/auth/brandModel.dart';
+import '../models/auth/get_city_model.dart';
+import '../models/dasboard/city_model.dart';
 import '../models/dasboard/spares_model.dart';
 import '../models/dasboard/view_cars_model.dart';
 import '../repository/dashboard_repository.dart';
@@ -18,10 +21,11 @@ import '../utils/app_enums.dart';
 
 class DashBoardController extends GetxController {
   RxList<CarsList> getCarsList = <CarsList>[].obs;
-  RxList<CarsList> getCarsDealsList = <CarsList>[].obs;
+  RxList<CarsList> getCarsByBrandList = <CarsList>[].obs;
   RxList<CarsList> getCarsSuggestionList = <CarsList>[].obs;
   RxList<BikeList> getBikeList = <BikeList>[].obs;
-  RxList<BikeList> getBikeDealList = <BikeList>[].obs;
+
+  RxList<BikeList> getBikeByBrandList = <BikeList>[].obs;
   RxList<BikeList> getBikeSuggestionList = <BikeList>[].obs;
   RxList<SparesList> getSparedList = <SparesList>[].obs;
 
@@ -31,6 +35,10 @@ class DashBoardController extends GetxController {
 
   Rx<dynamic> id = "0".obs;
   Rx<TextEditingController> locationText = TextEditingController().obs;
+  Rx<TextEditingController> searchText = TextEditingController().obs;
+
+  var searchList = <String>[].obs;
+
   RxString location = ''.obs;
 
   RxString filterColor = ''.obs;
@@ -45,6 +53,17 @@ class DashBoardController extends GetxController {
 
   RxBool isImageVisible = true.obs;
   RxBool isBikeImageVisible = true.obs;
+
+  var minValue = 0.0.obs;
+  var maxValue = 10000000.0.obs;
+
+  void updateMin(double value) {
+    minValue.value = value;
+  }
+
+  void updateMax(double value) {
+    maxValue.value = value;
+  }
 
   void setFilterBrand(String brand) {
     filterBrand.value = brand;
@@ -67,12 +86,45 @@ class DashBoardController extends GetxController {
     filterOwners.value = owner;
   }
 
+  var cityList = <Cities>[].obs;
+
   void clearFilters() {
     filterColor.value = "";
     selectedFuelType.value = '';
     filterOwners.value = '';
     filterBudget.value = '';
+    filterBudget.value = '';
     update();
+  }
+
+  Future<CarsModel?> getCarsDealsListApi() async {
+    Map<String, dynamic> params = {
+      'city': location.value,
+      'brand': filterBrand.value,
+      'color': filterColor.value,
+      'fuel_type': selectedFuelType.value,
+      'search_filter': "",
+      'min_budget': minValue.value,
+      'max_budget': maxValue.value,
+      'number_of_owners': filterOwners.value,
+    };
+    isLoading.value = true;
+    try {
+      CarsModel getCarsApiresponse = await DashboardRepository.getCarsApi(params: params);
+      if (getCarsApiresponse.status == true) {
+        getCarsByBrandList.clear();
+        getCarsByBrandList.value = getCarsApiresponse.data!;
+
+        Get.toNamed(Routes.CARS_DEAL_SCREEN);
+      } else {
+        getCarsByBrandList.clear();
+      }
+    } catch (e) {
+      debugPrint("Error in getCarsListApi ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
   }
 
   RxString UserName = 'Welcome Back'.obs;
@@ -124,6 +176,25 @@ class DashBoardController extends GetxController {
     await launchUrl(launchUri);
   }
 
+  void openMaps(String query) async {
+    // Construct the Google Maps URL
+    final Uri googleMapsUri = Uri(
+      scheme: 'https',
+      host: 'www.google.com',
+      path: 'maps/search/$query', // Add the query directly to the path
+    );
+
+    // Print the generated URL for debugging
+    print(googleMapsUri.toString());
+
+    // Check if the URL can be launched
+    if (await canLaunch(googleMapsUri.toString())) {
+      await launch(googleMapsUri.toString());
+    } else {
+      throw 'Could not launch $googleMapsUri';
+    }
+  }
+
   Future<CarsModel?> getCarsListApi() async {
     Map<String, dynamic> params = {
       'city': location.value,
@@ -140,38 +211,6 @@ class DashBoardController extends GetxController {
         getCarsList.value = getCarsApiresponse.data!;
       } else {
         getCarsList.clear();
-        Get.snackbar(
-          "no cars found",
-          "Change filters or location",
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
-    } catch (e) {
-      debugPrint("Error in getCarsListApi ${e.toString()}");
-    } finally {
-      isLoading.value = false;
-    }
-    return null;
-  }
-
-  Future<CarsModel?> getCarsDealsListApi() async {
-    Map<String, dynamic> params = {
-      'city': location.value,
-      'brand': "",
-      'color': "",
-      'color': "",
-      'km_driven': "",
-      'search_filter': "",
-      'number_of_owners': "",
-    };
-    isLoading.value = true;
-    try {
-      CarsModel getCarsApiresponse = await DashboardRepository.getCarsApi(params: params);
-      if (getCarsApiresponse.status == true) {
-        getCarsDealsList.clear();
-        getCarsDealsList.value = getCarsApiresponse.data!;
-      } else {
-        getCarsDealsList.clear();
         Get.snackbar(
           "no cars found",
           "Change filters or location",
@@ -239,10 +278,7 @@ class DashBoardController extends GetxController {
   Future<Bikemodel?> getbikesDealsListApi() async {
     Map<String, dynamic> params = {
       'city': location.value,
-      'brand': "",
-      'color': "",
-      'km_driven': "",
-      'search_filter': "",
+      'brand': filterBrand.value,
     };
     debugPrint(params.toString());
 
@@ -252,7 +288,7 @@ class DashBoardController extends GetxController {
 
       if (getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
-          getBikeDealList.value = getBikeApiresponse.data!;
+          getBikeByBrandList.value = getBikeApiresponse.data!;
         }
       } else {
         Get.snackbar(
@@ -283,7 +319,7 @@ class DashBoardController extends GetxController {
     try {
       Bikemodel getBikeApiresponse = await DashboardRepository.getBikesAPi(params: params);
 
-      if (getBikeApiresponse.status == "success") {
+      if (getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
           getBikeList.value = getBikeApiresponse.data!;
         }
@@ -307,7 +343,7 @@ class DashBoardController extends GetxController {
     try {
       Bikemodel getBikeApiresponse = await DashboardRepository.getBikesSuggestionsAPi(params: null);
 
-      if (getBikeApiresponse.status == "success") {
+      if (getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
           getBikeSuggestionList.value = getBikeApiresponse.data!;
         }
@@ -326,12 +362,51 @@ class DashBoardController extends GetxController {
     return null;
   }
 
+  var city = <CitySearchList>[].obs;
+  Future<CityModel?> fetchCities(String query) async {
+    isLoading.value = true;
+    try {
+      CityModel getBikeApiresponse = await DashboardRepository.getCityModel(params: query);
+
+      if (getBikeApiresponse.status == "success") {
+        if (getBikeApiresponse.data != null) {
+          city.value = getBikeApiresponse.data ?? [];
+        }
+      } else {}
+    } catch (e) {
+      debugPrint("Error in getbikesListApi ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
+  }
+
+  var brand = <BrandNamesList>[].obs;
+  Future<brandNamesModel?> fetchBrands(String query) async {
+    isLoading.value = true;
+    try {
+      brandNamesModel getBikeApiresponse = await DashboardRepository.getbrandModel(params: query);
+
+      if (getBikeApiresponse.status == "success") {
+        if (getBikeApiresponse.data != null) {
+          brand.value = getBikeApiresponse.data ?? [];
+        }
+      } else {}
+    } catch (e) {
+      debugPrint("Error in getbikesListApi ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
+  }
+
   Future<Sparemodel?> getSpaeresListApi() async {
     Map<String, dynamic> params = {'city': location.value};
     isLoading.value = true;
     try {
       Sparemodel getSpareApiresponse = await DashboardRepository.getSparesApi(params: params);
       if (getSpareApiresponse.status == "success") {
+        getSparedList.value = getSpareApiresponse.data!;
         getSparedList.value = getSpareApiresponse.data!;
       } else {
         Get.snackbar(

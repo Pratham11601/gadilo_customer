@@ -1,7 +1,9 @@
+import 'package:cupertino_range_slider_improved/cupertino_range_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:gadi_customer_repo/utils/app_colors.dart';
 import 'package:gadi_customer_repo/utils/app_enums.dart';
+import 'package:gadi_customer_repo/utils/string_utils.dart';
 import 'package:gadi_customer_repo/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -84,9 +86,23 @@ class FilterDialog extends StatelessWidget {
       case Colour.blue:
         return Colors.blue;
       case Colour.darkGreen:
-        return Colors.green;
+        return Colors.green[800]!; // Darker green for darkGreen
+      case Colour.white:
+        return Colors.white;
+      case Colour.yellow:
+        return Colors.yellow;
+      case Colour.purple:
+        return Colors.purple;
+      case Colour.orange:
+        return Colors.orange;
+      case Colour.pink:
+        return Colors.pink;
+      case Colour.cyan:
+        return Colors.cyan;
+      case Colour.brown:
+        return Colors.brown;
       default:
-        return Colors.transparent;
+        return Colors.transparent; // Fallback color
     }
   }
 
@@ -113,7 +129,7 @@ class FilterDialog extends StatelessWidget {
                   children: [
                     buildFilterSection(
                       "Fuel Types",
-                      ["Petrols", "Diesel", "CNG", "LPG"],
+                      ["Petrols", "Diesel", "CNG", "LPG", "EV"],
                       controller.selectedFuelType,
                       controller.selectFuelType,
                     ),
@@ -129,7 +145,7 @@ class FilterDialog extends StatelessWidget {
                   children: [
                     buildFilterSection(
                       "Owners",
-                      ["First", "Second", "Third", "Fourth"],
+                      ["1", "2", "3", "4"],
                       controller.filterOwners,
                       controller.selectOwner,
                     ),
@@ -150,12 +166,30 @@ class FilterDialog extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    buildFilterSection(
-                      "Budgets",
-                      ["1L-5L", "5L-10L", "10L-15L", "30L+"],
-                      controller.filterBudget,
-                      controller.selectBudget,
-                    ),
+                    Obx(() {
+                      return Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: CupertinoRangeSlider(
+                          minValue: controller.minValue.value,
+                          maxValue: controller.maxValue.value,
+                          min: 0.0,
+                          max: 10000000.0,
+                          onMinChanged: (minVal) {
+                            controller.updateMin(minVal);
+                          },
+                          onMaxChanged: (maxVal) {
+                            controller.updateMax(maxVal);
+                          },
+                        ),
+                      );
+                    }),
+                    Obx(() {
+                      return Text(
+                        'Price Range: ${formatToRoundedFigure(controller.minValue.value)} - ${formatToRoundedFigure(controller.maxValue.value)}',
+                        style: TextStyle(fontSize: 20),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -177,8 +211,9 @@ class FilterDialog extends StatelessWidget {
               ),
               CustomButton(
                 onPressed: () {
-                  onApplyFilters();
                   Get.back();
+
+                  onApplyFilters();
                 },
                 label: 'Apply Filters',
               ),

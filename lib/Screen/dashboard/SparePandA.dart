@@ -149,25 +149,29 @@ class SparePandA extends StatelessWidget {
                 ],
               );
             } else {
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  crossAxisSpacing: 1.w,
-                  mainAxisSpacing: 5.h,
+              return SizedBox(
+                height: 75.h,
+                width: 99.w,
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1,
+                    crossAxisSpacing: 1.w,
+                    mainAxisSpacing: 5.h,
+                  ),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(1.w),
+                  itemCount: dashBoardController.getSparedList.length,
+                  itemBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        final spares = dashBoardController.getSparedList[index];
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SandADetails(spares: spares)));
+                      },
+                      child: spareItem(
+                        spares: dashBoardController.getSparedList[index],
+                      )),
                 ),
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding: EdgeInsets.all(1.w),
-                itemCount: dashBoardController.getSparedList.length,
-                itemBuilder: (context, index) => InkWell(
-                    onTap: () {
-                      final spares = dashBoardController.getSparedList[index];
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SandADetails(spares: spares)));
-                    },
-                    child: spareItem(
-                      spares: dashBoardController.getSparedList[index],
-                    )),
               );
             }
           })

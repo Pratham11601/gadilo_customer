@@ -11,22 +11,7 @@ class FilterContainer extends StatefulWidget {
 class _FilterContainerState extends State<FilterContainer> {
   @override
   Widget build(BuildContext context) {
-    return
-        // Container(
-        // child: Column(
-        //   crossAxisAlignment: CrossAxisAlignment.end,
-        //   children: [
-        //     Theme(
-        //       data: Theme.of(context).copyWith(
-        //         dividerColor: Colors.transparent,
-        //       ),
-        //       child: ExpansionTile(
-        //         showTrailingIcon: false,
-        //         title: Row(
-        //           crossAxisAlignment: CrossAxisAlignment.end,
-        //           mainAxisAlignment: MainAxisAlignment.end,
-        //           children: [
-        Container(
+    return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 1.h),
       height: 5.h,
       width: 27.w,
@@ -61,40 +46,5 @@ class _FilterContainerState extends State<FilterContainer> {
         ],
       ),
     );
-    //             ],
-    //           ),
-    //           children: [
-    //             Container(
-    //               decoration: BoxDecoration(
-    //                 color: Colors.white,
-    //                 borderRadius: BorderRadius.circular(10),
-    //                 boxShadow: [
-    //                   BoxShadow(
-    //                     color: Color.fromRGBO(0, 0, 0, 0.13),
-    //                     spreadRadius: 0.1,
-    //                     offset: Offset(0, 1),
-    //                   ),
-    //                 ],
-    //               ),
-    //               child: Row(
-    //                 children: [
-    //                   width(27.w),
-    //                   Container(
-    //                     width: 70.w,
-    //                     child: FilterDialogStyle(
-    //                       onApplyFilters: () {
-    //                         // Optionally hide after applying filters
-    //                       },
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

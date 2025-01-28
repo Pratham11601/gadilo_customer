@@ -8,6 +8,7 @@ import '../models/dasboard/cars_model.dart';
 
 Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
   return Container(
+    width: 63.w,
     margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.w),
     padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.w),
     decoration: BoxDecoration(
@@ -49,7 +50,7 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
           ),
         ),
         height(1.h),
-        Row(
+        Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -57,7 +58,7 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
               style: GoogleFonts.poppins(fontSize: 20.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
             ),
             Text(
-              " ${formatPriceRange(cars.carPrice!)} ",
+              "₹${cars.carPrice} ",
               style: GoogleFonts.poppins(fontSize: 14.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
             ),
           ],
