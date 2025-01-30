@@ -1,15 +1,17 @@
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/routes/routes.dart';
 import 'package:gadi_customer_repo/widgets/custom_button.dart';
+import 'package:gadi_customer_repo/widgets/snack_abar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../controller/auth_controller.dart';
-import '../../widgets/common_password_field.dart';
 import '../../widgets/common_phone_textfileds.dart';
+import '../../widgets/constant_widgets.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -71,27 +73,11 @@ class Login extends StatelessWidget {
                   authController.phone.value,
                   " Enter your Phone Number",
                 ),
-                SizedBox(height: 2.3.h),
-                Common_text_field(
-                  authController.password.value,
-                  " Enter Password",
-                  "Password should includes combination letter capital,small,numbers and special symbols",
-                  (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your password";
-                    }
-
-                    return null;
-                  },
-                ),
-                SizedBox(height: 1.h),
-                _buildForgotPasswordLink(),
-                SizedBox(height: 5.h),
+                SizedBox(height: 23.h),
                 _buildLoginButton(),
                 SizedBox(height: 3.h),
-                _buildNewToAppText(),
+                _buildNewToAppText(context),
                 SizedBox(height: 1.h),
-                _buildRegisterLink(),
               ],
             ),
           ),
@@ -100,76 +86,107 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _buildForgotPasswordLink() {
-    return Row(
-      children: [
-        SizedBox(width: 60.w),
-        InkWell(
-          onTap: () {
-            Get.toNamed(Routes.RESET_PASSWORD_SCREEN);
-          },
-          child: Text(
-            'Forgot Password?',
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(
-                color: Colors.grey.shade800,
-                //fontWeight: FontWeight.bold,
-                fontSize: 15.sp,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildLoginButton() {
     return CustomButton(
       width: 85.w,
       label: "Login",
-      labelStyle:GoogleFonts.poppins(
-      textStyle: TextStyle(
-        fontWeight: FontWeight.w400,
-         fontSize: 16.sp
-      )),
       onPressed: () {
+        showToast("Sending OTP Request ");
         if (_formKey.currentState!.validate()) {
-          authController.loginUser();
+          authController.sendOTPApiCall();
         }
       },
     );
   }
 
-  Widget _buildNewToAppText() {
-    return Text(
-      'New to App?',
-      style: GoogleFonts.poppins(
-        textStyle: TextStyle(
-          color: Color.fromRGBO(15, 15, 20, 1),
-          fontWeight: FontWeight.w400,
-          fontSize: 16.sp,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRegisterLink() {
-    return InkWell(
-      onTap: () {
-        Get.toNamed(Routes.Register_SCREEN);
-      },
-      child: Text(
-        'Register',
-        style: GoogleFonts.poppins(
-          textStyle: TextStyle(
-            color: Color.fromRGBO(0, 90, 192, 1),
-            fontWeight: FontWeight.w400,
-            fontSize: 16.sp,
-            decoration: TextDecoration.underline,
-            decorationColor: Color.fromRGBO(0, 90, 192, 1),
+  Widget _buildNewToAppText(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Obx(() => InkWell(
+              onTap: () {
+                authController.toggleCheckbox();
+              },
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: authController.isChecked.value ? Color.fromRGBO(10, 98, 148, 1) : Colors.transparent,
+                  border: Border.all(color: Color.fromRGBO(181, 181, 181, 1)),
+                ),
+                child: authController.isChecked.value ? Icon(Icons.check, color: Color.fromRGBO(251, 254, 255, 1), size: 20) : null,
+              ),
+            )),
+        width(5),
+        SizedBox(
+          width: 77.w,
+          child: RichText(
+            textAlign: TextAlign.left,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'By creating an account you confirm ',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Color.fromRGBO(15, 15, 20, 1),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+                TextSpan(
+                  text: 'Terms of use',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Colors.blue, // Change color as needed
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Get.toNamed(Routes.TERMS_CONDN_SCREEN);
+                    },
+                ),
+                TextSpan(
+                  text: ' and ',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Color.fromRGBO(15, 15, 20, 1),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+                TextSpan(
+                  text: 'Privacy policy',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Colors.blue, // Change color as needed
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Get.toNamed(Routes.PRIVACY_POLICY_SCREEN);
+                    },
+                ),
+                TextSpan(
+                  text: '.',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Color.fromRGBO(15, 15, 20, 1),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

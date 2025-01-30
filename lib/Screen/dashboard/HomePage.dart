@@ -4,10 +4,8 @@ import 'package:gadi_customer_repo/Screen/dashboard/SparePandA.dart';
 import 'package:gadi_customer_repo/Screen/dashboard/bike_screen.dart';
 import 'package:gadi_customer_repo/Screen/dashboard/cars_screen.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
+import 'package:gadi_customer_repo/utils/app_colors.dart';
 import 'package:get/get.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
-import '../../utils/app_colors.dart';
 
 class DashboardScreen extends StatelessWidget {
   DashBoardController dashBoardController = Get.find();
@@ -29,30 +27,29 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Obx(() {
-        return SalomonBottomBar(
+        return BottomNavigationBar(
           currentIndex: dashBoardController.selectedIndex.value,
-          selectedColorOpacity: 1,
-          selectedItemColor: Colors.white,
+          selectedItemColor: ColorsForApp.primaryColor,
+          selectedLabelStyle: TextStyle(color: ColorsForApp.primaryColor),
+          unselectedItemColor: Colors.grey,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
           onTap: (index) {
             dashBoardController.selectedIndex.value = index;
           },
           items: [
             /// Home
-            SalomonBottomBarItem(
-              icon: Icon(Icons.home),
-              activeIcon: Icon(
-                Icons.home,
-                color: Colors.white,
+            BottomNavigationBarItem(
+              label: "Car",
+              icon: Icon(
+                Icons.directions_car,
+                size: 22,
               ),
-              title: Text(
-                "Home",
-                style: TextStyle(color: Colors.white),
-              ),
-              selectedColor: ColorsForApp.primaryColor,
             ),
 
             /// Bike
-            SalomonBottomBarItem(
+            BottomNavigationBarItem(
+              label: "Bike",
               icon: Image.asset(
                 'assets/iyrd.png',
                 width: 20,
@@ -60,7 +57,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               activeIcon: ColorFiltered(
                 colorFilter: ColorFilter.mode(
-                  Colors.white,
+                  ColorsForApp.primaryColor,
                   BlendMode.srcIn,
                 ),
                 child: Image.asset(
@@ -69,15 +66,11 @@ class DashboardScreen extends StatelessWidget {
                   height: 20,
                 ),
               ),
-              title: Text(
-                "Bike",
-                style: TextStyle(color: Colors.white),
-              ),
-              selectedColor: ColorsForApp.primaryColor,
             ),
 
             /// Spare Parts & Accessories
-            SalomonBottomBarItem(
+            BottomNavigationBarItem(
+              label: "Spare Parts and accersories",
               icon: Image.asset(
                 'assets/tfddx.png',
                 width: 20,
@@ -85,7 +78,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               activeIcon: ColorFiltered(
                 colorFilter: ColorFilter.mode(
-                  Colors.white,
+                  ColorsForApp.primaryColor,
                   BlendMode.srcIn,
                 ),
                 child: Image.asset(
@@ -94,29 +87,21 @@ class DashboardScreen extends StatelessWidget {
                   height: 20,
                 ),
               ),
-              title: Text(
-                "Spare Parts",
-                style: TextStyle(color: Colors.white),
-              ),
-              selectedColor: ColorsForApp.primaryColor,
             ),
 
             /// Profile
-            SalomonBottomBarItem(
+            BottomNavigationBarItem(
+              label: "Profile",
               icon: Image.asset(
                 'assets/yugrx.png',
                 width: 20,
                 height: 20,
               ),
-              activeIcon: Icon(Icons.person_3_rounded, color: Colors.white),
-              title: Text(
-                "Profile",
-                style: TextStyle(color: Colors.white),
-              ),
-              selectedColor: ColorsForApp.primaryColor,
+              activeIcon: Icon(Icons.person_3_rounded, color: ColorsForApp.primaryColor),
             ),
           ],
         );
+        ;
       }),
     );
   }

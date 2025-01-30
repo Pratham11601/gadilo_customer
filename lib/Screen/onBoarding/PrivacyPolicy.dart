@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/controller/auth_controller.dart';
+import 'package:gadi_customer_repo/widgets/back_common_button.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,28 +28,7 @@ class PrivacyPolicy extends StatelessWidget {
         children: [
           SizedBox(height: 4),
           Row(
-            children: [
-              SizedBox(width: 20),
-              Container(
-                width: 50,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Color.fromRGBO(15, 15, 20, 0.32),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(27),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/assa.png',
-                    width: 24,
-                    height: 24,
-                  ),
-                ),
-              ),
-            ],
+            children: [SizedBox(width: 20), CommonBackButton()],
           ),
           SizedBox(height: 12),
           Text(

@@ -8,6 +8,9 @@ import 'package:sizer/sizer.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/text_style.dart';
+import '../../widgets/Common_dialog.dart';
+import '../../widgets/clear_filter_button.dart';
+import '../../widgets/common_filter_container.dart';
 import '../../widgets/common_spare_item.dart';
 import '../../widgets/constant_widgets.dart';
 
@@ -32,87 +35,106 @@ class SparePandA extends StatelessWidget {
           SizedBox(
             height: 42,
             width: 361,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  const BoxShadow(
-                    color: Color.fromRGBO(111, 111, 111, 0.13),
-                    spreadRadius: 2,
-                    blurRadius: 9,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(29),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Image.asset(
-                          "assets/rcr.png",
-                          width: 15,
-                          height: 15,
-                        ),
-                      ],
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                      offset: Offset(1, 1),
                     ),
-                  ),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        debugPrint("Hello");
-                        await dashBoardController.getCarsListApi();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 10.3, right: 10),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Search",
-                            hintStyle: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: const Color.fromRGBO(91, 91, 91, 1),
-                            ),
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Container(
-                                width: 43,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(10, 98, 148, 1),
-                                  borderRadius: BorderRadius.circular(70),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 3),
-                                  child: Image.asset(
-                                    "assets/wdeded.png",
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                          ),
-                          keyboardType: TextInputType.text,
-                        ),
+                  ]),
+                  width: 91.w,
+                  child: TextField(
+                    style: TextStyle(fontSize: 18),
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                      prefixIcon: Icon(Icons.search),
+                      hintText: "Search Cities",
+                      filled: true,
+                      fillColor: Colors.white, // Background color
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.grey, width: 1),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
                       ),
                     ),
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        dashBoardController.fetchCities(value);
+                      } else {
+                        dashBoardController.fetchCities("");
+                      }
+                    },
                   ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10.3, right: 10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        hintStyle: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromRGBO(91, 91, 91, 1),
+                        ),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                      ),
+                      keyboardType: TextInputType.text,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Obx(() {
+                return Visibility(
+                    visible: dashBoardController.isSparesFilterApplied.value,
+                    child: GestureDetector(
+                        onTap: () {
+                          dashBoardController.VehicleType.value = "";
+                          dashBoardController.filterOwners.value = "";
+                          dashBoardController.spareType.value = "";
+                          dashBoardController.isSparesFilterApplied.toggle();
+                          dashBoardController.getSpaeresListApi();
+                        },
+                        child: CustomClearFilterButton()));
+              }),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return FilterDialogForSpares(
+                        onApplyFilters: () {
+                          dashBoardController.isSparesFilterApplied.value = true;
+                          dashBoardController.getSparedList.clear();
+                          dashBoardController.getSpaeresListApi();
+                        },
+                      );
+                    },
+                  );
+                },
+                child: FilterContainer(),
+              ),
+            ],
+          ),
           Obx(() {
-            if (dashBoardController.isLoading.value) {
+            if (dashBoardController.isLoadingInSpares.value) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +157,7 @@ class SparePandA extends StatelessWidget {
                 ],
               );
             }
-            if (dashBoardController.getCarsList.isEmpty) {
+            if (dashBoardController.getSparedList.isEmpty) {
               return Column(
                 children: [
                   height(32.h),
@@ -159,7 +181,6 @@ class SparePandA extends StatelessWidget {
                     crossAxisSpacing: 1.w,
                     mainAxisSpacing: 5.h,
                   ),
-                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   padding: EdgeInsets.all(1.w),
                   itemCount: dashBoardController.getSparedList.length,

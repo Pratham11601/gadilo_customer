@@ -14,7 +14,7 @@ class SingleDropdownFilter extends StatelessWidget {
           children: [
             _buildFilter(
               title: "By Fuel Type",
-              options: ["Petrol", "Diesel", "CNG", "LPG"],
+              options: ["Petrol", "Diesel", "CNG"],
             ),
             Divider(),
             _buildFilter(

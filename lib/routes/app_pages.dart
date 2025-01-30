@@ -1,7 +1,5 @@
-import 'package:gadi_customer_repo/Screen/SetNewPassword.dart';
 import 'package:gadi_customer_repo/Screen/dashboard/HomePage.dart';
 import 'package:gadi_customer_repo/Screen/dashboard/bike_deals.dart';
-import 'package:gadi_customer_repo/Screen/onBoarding/CreatePassword.dart';
 import 'package:gadi_customer_repo/Screen/onBoarding/Login.dart';
 import 'package:gadi_customer_repo/Screen/onBoarding/Password.dart';
 import 'package:gadi_customer_repo/Screen/onBoarding/Register.dart';
@@ -45,23 +43,7 @@ class AppPages {
       binding: AuthBinding(),
     ),
 
-    GetPage(
-      name: Routes.OTP_SCREEN,
-      page: () => OTP(),
-      binding: AuthBinding(),
-    ),
-
-    GetPage(
-      name: Routes.CREATE_PASSWORD_SCREEN,
-      page: () => CreatePassword(),
-      binding: AuthBinding(),
-    ),
-
-    // GetPage(
-    //     name: Routes.REGISTRATION_SUCCESSFULL_SCREEN,
-    //     page: () => RegistrationSuccessful(),
-    //     binding: AuthBinding(),
-    //     transition: Transition.zoom),
+    GetPage(name: Routes.OTP_SCREEN, page: () => OTP(), binding: AuthBinding(), transition: Transition.leftToRight),
 
     GetPage(name: Routes.SELECT_CITY_SCREEN, page: () => SelectCity(), binding: DashboardBinding(), transition: Transition.zoom),
 
@@ -83,8 +65,6 @@ class AppPages {
     GetPage(name: Routes.TERMS_CONDN_SCREEN, page: () => Terms_ofUser(), binding: AuthBinding()),
 
     GetPage(name: Routes.VERIFY_MOB_SCREEN, page: () => VerifyMobNo(), binding: AuthBinding(), transition: Transition.zoom),
-
-    GetPage(name: Routes.SET_NEW_PASSWORD_SCREEN, page: () => SetNewPassword(), binding: AuthBinding(), transition: Transition.rightToLeft),
 
     // HOME
     GetPage(

@@ -1,15 +1,15 @@
-class CityModel {
+class homePageCityModel {
   String? status;
-  List<CitySearchList>? data;
+  List<CityModel>? data;
 
-  CityModel({this.status, this.data});
+  homePageCityModel({this.status, this.data});
 
-  CityModel.fromJson(Map<String, dynamic> json) {
+  homePageCityModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <CitySearchList>[];
+      data = <CityModel>[];
       json['data'].forEach((v) {
-        data!.add(new CitySearchList.fromJson(v));
+        data!.add(new CityModel.fromJson(v));
       });
     }
   }
@@ -24,16 +24,18 @@ class CityModel {
   }
 }
 
-class CitySearchList {
+class CityModel {
   String? cityId;
   String? cityName;
+  String? cityImg;
   String? cityCountry;
 
-  CitySearchList({this.cityId, this.cityName, this.cityCountry});
+  CityModel({this.cityId, this.cityName, this.cityImg, this.cityCountry});
 
-  CitySearchList.fromJson(Map<String, dynamic> json) {
+  CityModel.fromJson(Map<String, dynamic> json) {
     cityId = json['city_id'];
     cityName = json['city_name'];
+    cityImg = json['city_img'];
     cityCountry = json['city_country'];
   }
 
@@ -41,6 +43,7 @@ class CitySearchList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['city_id'] = this.cityId;
     data['city_name'] = this.cityName;
+    data['city_img'] = this.cityImg;
     data['city_country'] = this.cityCountry;
     return data;
   }

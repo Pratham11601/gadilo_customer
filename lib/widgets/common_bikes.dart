@@ -8,7 +8,7 @@ import '../models/dasboard/bike_model.dart';
 Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
   return SizedBox(
     height: 32.h,
-    width: 43.w,
+    width: 56.w,
     child: InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => BikeDetails(bikes: bike)));

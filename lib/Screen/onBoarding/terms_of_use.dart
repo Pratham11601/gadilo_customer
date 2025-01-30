@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gadi_customer_repo/widgets/back_common_button.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -22,42 +23,17 @@ class Terms_ofUser extends StatelessWidget {
           child: Center(
               child: Column(
         children: [
-          SizedBox(height: 4),
           Row(
             children: [
-              SizedBox(width: 20),
-              Container(
-                width: 50,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Color.fromRGBO(15, 15, 20, 0.32),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(27),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/assa.png',
-                    width: 24,
-                    height: 24,
-                  ),
-                ),
-              ),
+              CommonBackButton(),
             ],
-          ),
-          SizedBox(height: 12),
-          Text(
-            "Privacy & Security",
-            style: GoogleFonts.poppins(fontSize: 18, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 20),
           Row(
             children: [
               SizedBox(width: 15),
               Text(
-                "Privacy Policy",
+                "Terms of use",
                 style: GoogleFonts.poppins(fontSize: 16, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w400),
               ),
             ],
@@ -81,7 +57,7 @@ class Terms_ofUser extends StatelessWidget {
                       children: [
                         height(12.h),
                         Text(
-                          'NO Privacys fetch Try again',
+                          'empty Data ',
                           style: TextHelper.size16(context).copyWith(
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                             fontWeight: FontWeight.bold,

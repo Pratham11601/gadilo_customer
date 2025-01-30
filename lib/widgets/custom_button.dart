@@ -56,7 +56,7 @@ class CustomButton extends StatelessWidget {
         splashColor: Colors.transparent,
         child: Text(
           label,
-          style: TextHelper.size18(context)
+          style: TextHelper.size20(context)
               .copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.surface)
               .merge(labelStyle),
         ),

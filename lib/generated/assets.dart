@@ -66,6 +66,7 @@ class Assets {
   static const String assetsGfrg = 'assets/gfrg.png';
   static const String assetsGgb = 'assets/ggb.png';
   static const String assetsGgygg = 'assets/ggygg.png';
+  static const String assetsGroupp = 'assets/groupp.png';
   static const String assetsGtddc = 'assets/gtddc.png';
   static const String assetsGtg = 'assets/gtg.png';
   static const String assetsGttg = 'assets/gttg.png';
@@ -98,12 +99,15 @@ class Assets {
   static const String assetsKjmn = 'assets/kjmn.png';
   static const String assetsLydc = 'assets/lydc.png';
   static const String assetsMaps = 'assets/maps.png';
+  static const String assetsModel = 'assets/model.png';
   static const String assetsNew = 'assets/new.png';
   static const String assetsNjkn = 'assets/njkn.png';
   static const String assetsOcc = 'assets/occ.png';
   static const String assetsOikjm = 'assets/oikjm.png';
   static const String assetsOrcs = 'assets/orcs.png';
   static const String assetsOsa = 'assets/osa.png';
+  static const String assetsOtpround = 'assets/otpround.png';
+  static const String assetsPngWaterMarks = 'assets/png_waterMarks.png';
   static const String assetsQap = 'assets/qap.png';
   static const String assetsRcr = 'assets/rcr.png';
   static const String assetsRdx = 'assets/rdx.png';
@@ -179,4 +183,16 @@ class Assets {
   static const String bikeimagesRoyal = 'assets/bikeimages/royal.png';
   static const String bikeimagesSuzuki = 'assets/bikeimages/suzuki.png';
   static const String bikeimagesVidaa = 'assets/bikeimages/vidaa.png';
+  static const String bindingAppBinding = 'lib/binding/app_binding.dart';
+  static const String bindingAuthBinding = 'lib/binding/auth_binding.dart';
+  static const String bindingDashboardBinding = 'lib/binding/dashboard_binding.dart';
+  static const String bindingSettingBinding = 'lib/binding/setting_binding.dart';
+  static const String controllerAppController = 'lib/controller/app_controller.dart';
+  static const String controllerAuthController = 'lib/controller/auth_controller.dart';
+
+  static const String widgetsCustomNavigationBar = 'lib/widgets/custom_navigation_bar.dart';
+  static const String widgetsCustomTextfield = 'lib/widgets/custom_textfield.dart';
+  static const String widgetsDialog = 'lib/widgets/dialog.dart';
+  static const String widgetsSnackAbar = 'lib/widgets/snack_abar.dart';
+  static const String widgetsSnackbar = 'lib/widgets/snackbar.dart';
 }

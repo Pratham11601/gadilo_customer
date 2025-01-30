@@ -59,7 +59,6 @@ class SettingController extends GetxController {
       if (userResponse.status == "success") {
         name.value.text = userResponse.data!.name!;
         phone.value.text = userResponse.data!.phone!;
-        address.value.text = userResponse.data!.address!;
         profile_photo.value = userResponse.data!.profilePhoto!;
 
         debugPrint("${profile_photo.value}");
@@ -86,7 +85,6 @@ class SettingController extends GetxController {
       if (userResponse.status == "success") {
         name.value.text = userResponse.data!.name!;
         phone.value.text = userResponse.data!.phone!; // Assuming phone exists
-        address.value.text = userResponse.data!.address!;
         profile_photo.value = userResponse.data!.profilePhoto!;
 
         debugPrint("${profile_photo.value}");
@@ -94,7 +92,7 @@ class SettingController extends GetxController {
         return userResponse;
       } else {
         Get.snackbar(
-          'Failed',
+          'Customer Details APi Failed',
           userResponse.status.toString(),
           backgroundColor: ColorsForApp.alertColor,
         );

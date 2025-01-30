@@ -4,18 +4,47 @@ import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
 
 import '../api/api_manager.dart';
 import '../models/auth/brandModel.dart';
-import '../models/dasboard/city_model.dart';
+import '../models/dasboard/banerModel.dart';
+import '../models/dasboard/homePageCityModel.dart';
 import '../models/dasboard/spares_model.dart';
 
 class DashboardRepository {
   DashboardRepository._();
   static APIManager apiManager = APIManager();
 
+  static Future<bannerImagesModel> getBannerApi({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/banner_img',
+        showLoading: showLoading,
+      );
+      bannerImagesModel getBanners = bannerImagesModel.fromJson(response);
+      return getBanners;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
   static Future<CarsModel> getCarsApi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.postFormAPICall(
         url: '/get_cars_by_filter',
         params: params,
+        showLoading: showLoading,
+      );
+      CarsModel getCarsModel = CarsModel.fromJson(response);
+      return getCarsModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<CarsModel> getRandomFiveCarsApi({bool showLoading = true}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/get_car_random',
         showLoading: showLoading,
       );
       CarsModel getCarsModel = CarsModel.fromJson(response);
@@ -60,7 +89,7 @@ class DashboardRepository {
   static Future<Sparemodel> getSparesApi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/PageController/get_spare_parts_by_location',
+        url: '/get_spare_parts_by_filter',
         params: params,
         showLoading: showLoading,
       );
@@ -77,6 +106,20 @@ class DashboardRepository {
       var response = await apiManager.postFormAPICall(
         url: '/get_bikes_by_filter',
         params: params,
+        showLoading: showLoading,
+      );
+      Bikemodel bikeModel = Bikemodel.fromJson(response);
+      return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<Bikemodel> getRandomFiveBikesAPi({bool showLoading = true}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/get_bike_random',
         showLoading: showLoading,
       );
       Bikemodel bikeModel = Bikemodel.fromJson(response);
@@ -116,14 +159,28 @@ class DashboardRepository {
     }
   }
 
-  static Future<CityModel> getCityModel({bool showLoading = true, required dynamic params}) async {
+  static Future<homePageCityModel> getCityModel({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.getAPICall(
         url: '/city_name?city_name=${params}',
         showLoading: showLoading,
       );
-      CityModel bikeModel = CityModel.fromJson(response);
+      homePageCityModel bikeModel = homePageCityModel.fromJson(response);
       return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<homePageCityModel> getdefaultCities({bool showLoading = true}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/get_cities_homepage',
+        showLoading: showLoading,
+      );
+      homePageCityModel getBanners = homePageCityModel.fromJson(response);
+      return getBanners;
     } catch (e) {
       debugPrint(e.toString());
       rethrow;

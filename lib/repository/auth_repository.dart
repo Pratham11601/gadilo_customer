@@ -14,7 +14,7 @@ class AuthRepository {
   static Future<SendOtpModel> sendOTPApi({required dynamic params, bool showLoading = true}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/PageController/send_otp',
+        url: '/send_otpauth',
         params: params,
         showLoading: showLoading,
       );
@@ -44,7 +44,7 @@ class AuthRepository {
   static Future<StatusMessageCommonModel> verifyOTPApi({required dynamic params, bool showLoading = true}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/PageController/verify_otp',
+        url: '/verifyOtpauth',
         params: params,
         showLoading: showLoading,
       );
@@ -59,7 +59,7 @@ class AuthRepository {
   static Future<LoginUserModel> loginApi({required dynamic params, bool showLoading = true}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/PageController/login',
+        url: '/send_otpauth',
         params: params,
         showLoading: showLoading,
       );

@@ -8,8 +8,8 @@ import 'package:gadi_customer_repo/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../routes/routes.dart';
 import '../../utils/app_colors.dart';
+import '../../widgets/back_common_button.dart';
 
 class MyProfile extends StatelessWidget {
   MyProfile({super.key});
@@ -27,6 +27,7 @@ class MyProfile extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        leading: CommonBackButton(),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -119,7 +120,6 @@ class MyProfile extends StatelessWidget {
                               children: [
                                 TextEditing("Name", settingController.name.value, context),
                                 TextEditing("Phone", settingController.phone.value, context),
-                                TextEditing("Address", settingController.address.value, context),
                               ],
                             ),
                           ),
@@ -131,15 +131,7 @@ class MyProfile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              height(7.h),
-                              _addressContainer(
-                                addressText: 'Add Address',
-                                iconData: Icons.add_circle_outline_sharp,
-                                onTap: () {
-                                  Get.toNamed(Routes.ADD_ADDRESS_SCREEN);
-                                },
-                              ),
-                              height(2.h),
+                              height(11.h),
                               SizedBox(
                                 width: 85.w,
                                 child: CustomButton(
@@ -213,7 +205,7 @@ class MyProfile extends StatelessWidget {
               width: 83.w,
               child: CommonTextField(
                 controller: contoller,
-                hintText: "Enter your Address",
+                hintText: "Enter your ${title}",
                 keyboardType: TextInputType.text,
               ),
             ),

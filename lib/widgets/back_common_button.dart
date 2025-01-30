@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommonBackButton extends StatelessWidget {
-  CommonBackButton({super.key});
+  final Function? onBack;
+  CommonBackButton({super.key, this.onBack});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Get.back();
+        if (onBack != null) {
+          onBack!();
+        } else {
+          Get.back();
+        }
       },
       child: Row(
         children: [
           SizedBox(width: 10),
           Container(
-            width: 40,
-            height: 30,
+            width: 45,
+            height: 35,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(

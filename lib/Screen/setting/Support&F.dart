@@ -29,13 +29,14 @@ class SupportAndF extends StatelessWidget {
             children: [
               SizedBox(width: 5),
               CommonBackButton(),
+              width(12.w),
+              Text(
+                "Support & Feedback",
+                style: GoogleFonts.poppins(fontSize: 18, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w500),
+              ),
             ],
           ),
           SizedBox(height: 12),
-          Text(
-            "Support & Feedback",
-            style: GoogleFonts.poppins(fontSize: 18, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w500),
-          ),
           SizedBox(height: 21),
           Row(
             children: [
@@ -61,7 +62,7 @@ class SupportAndF extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             child: Container(
                 width: double.infinity,
-                height: 111,
+                height: 123,
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(242, 242, 242, 1),
                   borderRadius: BorderRadius.circular(4),
@@ -79,12 +80,12 @@ class SupportAndF extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          width(20.w),
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(bottom: 30, right: 5),
+                              padding: EdgeInsets.only(bottom: 00, right: 5),
                               child: TextField(
                                 controller: settingController.message.value,
+                                maxLines: 4,
                                 decoration: InputDecoration(
                                   hintText: "I have an issue regarding..",
                                   hintStyle: GoogleFonts.poppins(

@@ -8,6 +8,8 @@ import 'package:gadi_customer_repo/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import 'constant_widgets.dart';
+
 class FilterDialog extends StatelessWidget {
   final DashBoardController controller = Get.put(DashBoardController());
   final VoidCallback onApplyFilters;
@@ -116,6 +118,8 @@ class FilterDialog extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Theme(
                 data: Theme.of(context).copyWith(
@@ -129,7 +133,7 @@ class FilterDialog extends StatelessWidget {
                   children: [
                     buildFilterSection(
                       "Fuel Types",
-                      ["Petrols", "Diesel", "CNG", "LPG", "EV"],
+                      ["Petrol", "Diesel", "CNG", "EV"],
                       controller.selectedFuelType,
                       controller.selectFuelType,
                     ),
@@ -200,15 +204,140 @@ class FilterDialog extends StatelessWidget {
                 child: ExpansionTile(
                   title: Text("By Colour", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px)),
                   children: [
-                    buildFilterSectionColors(
-                      "Colors",
-                      Colour.values,
-                      controller.selectedColor,
-                      controller.setFilterColor,
+                    Center(
+                      child: SizedBox(
+                        width: 68.w,
+                        child: buildFilterSectionColors(
+                          "Colors",
+                          Colour.values,
+                          controller.selectedColor,
+                          controller.setFilterColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
+              CustomButton(
+                onPressed: () {
+                  Get.back();
+
+                  onApplyFilters();
+                },
+                label: 'Apply Filters',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FilterDialogForSpares extends StatelessWidget {
+  final DashBoardController controller = Get.put(DashBoardController());
+  final VoidCallback onApplyFilters;
+
+  FilterDialogForSpares({required this.onApplyFilters});
+
+  Widget buildFilterSection(String title, List<String> options, RxString selectedOption, Function(String) onSelect) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 1.h),
+        Wrap(
+          spacing: 2.w,
+          runSpacing: 1.h,
+          children: options.map((option) {
+            return GestureDetector(
+              onTap: () => onSelect(option),
+              child: Obx(() => Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.51.h),
+                    decoration: BoxDecoration(
+                      color: selectedOption.value == option ? ColorsForApp.primaryColor.withOpacity(0.05) : Colors.grey[100],
+                      border:
+                          selectedOption.value == option ? Border.all(color: ColorsForApp.primaryColor) : Border.all(color: Colors.grey),
+                    ),
+                    child: Text(
+                      option,
+                      style: TextStyle(fontSize: 19.sp, color: selectedOption.value == option ? ColorsForApp.primaryColor : Colors.black),
+                    ),
+                  )),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Theme(
+                data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent,
+                ),
+                child: ExpansionTile(
+                  title: Text(
+                    "By Vehicle Type",
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px),
+                  ),
+                  children: [
+                    buildFilterSection(
+                      "Vehicle Types",
+                      ["car", "bike"],
+                      controller.VehicleType,
+                      controller.selectVehicleType,
+                    ),
+                  ],
+                ),
+              ),
+              Theme(
+                data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent,
+                ),
+                child: ExpansionTile(
+                  title: Text("By Number of Owners", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px)),
+                  children: [
+                    buildFilterSection(
+                      "Owners",
+                      ["1", "2", "3", "4"],
+                      controller.filterOwners,
+                      controller.selectOwner,
+                    ),
+                  ],
+                ),
+              ),
+              Theme(
+                data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent,
+                ),
+                child: ExpansionTile(
+                  title: Text(
+                    "By Type",
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px),
+                  ),
+                  children: [
+                    buildFilterSection(
+                      "Types",
+                      ["old", "new"],
+                      controller.spareType,
+                      controller.selectSpareType,
+                    ),
+                  ],
+                ),
+              ),
+              height(10),
               CustomButton(
                 onPressed: () {
                   Get.back();

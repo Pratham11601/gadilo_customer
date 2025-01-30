@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/generated/assets.dart';
 import 'package:gadi_customer_repo/models/dasboard/bike_model.dart';
 import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
@@ -6,50 +8,78 @@ import 'package:gadi_customer_repo/models/setting/user_details_model.dart';
 import 'package:gadi_customer_repo/repository/setting_repositiory.dart';
 import 'package:gadi_customer_repo/routes/routes.dart';
 import 'package:gadi_customer_repo/utils/storage_config.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Screen/onBoarding/SelectCity.dart';
 import '../models/auth/brandModel.dart';
 import '../models/auth/get_city_model.dart';
-import '../models/dasboard/city_model.dart';
+import '../models/dasboard/banerModel.dart';
+import '../models/dasboard/homePageCityModel.dart';
 import '../models/dasboard/spares_model.dart';
 import '../models/dasboard/view_cars_model.dart';
 import '../repository/dashboard_repository.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_enums.dart';
+import '../widgets/snack_abar.dart';
 
 class DashBoardController extends GetxController {
   RxList<CarsList> getCarsList = <CarsList>[].obs;
   RxList<CarsList> getCarsByBrandList = <CarsList>[].obs;
   RxList<CarsList> getCarsSuggestionList = <CarsList>[].obs;
+  RxList<CarsList> getCarsRandomList = <CarsList>[].obs;
+
+  RxList<baneerImages> getBannerImg = <baneerImages>[].obs;
+
   RxList<BikeList> getBikeList = <BikeList>[].obs;
+  RxList<BikeList> getBikesRandom = <BikeList>[].obs;
 
   RxList<BikeList> getBikeByBrandList = <BikeList>[].obs;
   RxList<BikeList> getBikeSuggestionList = <BikeList>[].obs;
-  RxList<SparesList> getSparedList = <SparesList>[].obs;
 
   FilterOption? selectedFilterOption;
   RxBool isLoading = true.obs;
+
+  RxBool isLoadingRandom = true.obs;
+
+  RxBool isLoadingInBikes = true.obs;
+  RxBool isLoadingInSpares = true.obs;
+  RxBool isLoadingInCas = true.obs;
+  RxBool isloadingLocation = false.obs;
   RxInt selectedIndex = 0.obs;
 
   Rx<dynamic> id = "0".obs;
   Rx<TextEditingController> locationText = TextEditingController().obs;
   Rx<TextEditingController> searchText = TextEditingController().obs;
-
   var searchList = <String>[].obs;
-
   RxString location = ''.obs;
+
+  void clearFilters() {
+    filterColor.value = "";
+    selectedFuelType.value = '';
+    filterOwners.value = '';
+    filterBudget.value = '';
+    VehicleType.value = '';
+    VehicleType.value = '';
+    spareType.value = '';
+    update();
+  }
 
   RxString filterColor = ''.obs;
   RxString filterBrand = ''.obs;
   RxString selectedFuelType = ''.obs;
   RxString filterOwners = ''.obs;
   RxString filterBudget = ''.obs;
+
+  final RxString VehicleType = "".obs;
+  final RxString spareType = "".obs;
+
   Rx<Colour?> selectedColor = Rx<Colour?>(null);
 
   RxBool isCarFilterApplied = false.obs;
   RxBool isBikeFilterApplied = false.obs;
+  RxBool isSparesFilterApplied = false.obs;
 
   RxBool isImageVisible = true.obs;
   RxBool isBikeImageVisible = true.obs;
@@ -57,44 +87,30 @@ class DashBoardController extends GetxController {
   var minValue = 0.0.obs;
   var maxValue = 10000000.0.obs;
 
-  void updateMin(double value) {
-    minValue.value = value;
-  }
-
-  void updateMax(double value) {
-    maxValue.value = value;
-  }
-
-  void setFilterBrand(String brand) {
-    filterBrand.value = brand;
-  }
-
-  void setFilterColor(Colour color) {
-    selectedColor.value = color;
-    filterColor.value = color.backendValue;
-  }
-
-  void selectFuelType(String fuelType) {
-    selectedFuelType.value = fuelType;
-  }
-
-  void selectBudget(String budget) {
-    filterBudget.value = budget;
-  }
-
-  void selectOwner(String owner) {
-    filterOwners.value = owner;
-  }
-
   var cityList = <Cities>[].obs;
 
-  void clearFilters() {
-    filterColor.value = "";
-    selectedFuelType.value = '';
-    filterOwners.value = '';
-    filterBudget.value = '';
-    filterBudget.value = '';
-    update();
+  RxList<SparesList> getSparedList = <SparesList>[].obs;
+  Future<Sparemodel?> getSpaeresListApi() async {
+    Map<String, dynamic> params = {
+      'city': location.value,
+      'vehicle_type': VehicleType.value,
+      'number_of_owners': filterOwners.value,
+      'type': spareType.value,
+    };
+    isLoadingInSpares.value = true;
+    try {
+      Sparemodel getSpareApiresponse = await DashboardRepository.getSparesApi(params: params);
+      isLoadingInSpares.value = false;
+
+      if (getSpareApiresponse.status == true) {
+        getSparedList.value = getSpareApiresponse.data!;
+      } else {}
+    } catch (e) {
+      debugPrint("Error in spare ${e.toString()}");
+    } finally {
+      isLoadingInSpares.value = false;
+    }
+    return null;
   }
 
   Future<CarsModel?> getCarsDealsListApi() async {
@@ -103,95 +119,168 @@ class DashBoardController extends GetxController {
       'brand': filterBrand.value,
       'color': filterColor.value,
       'fuel_type': selectedFuelType.value,
-      'search_filter': "",
       'min_budget': minValue.value,
       'max_budget': maxValue.value,
       'number_of_owners': filterOwners.value,
     };
-    isLoading.value = true;
+    isLoadingInCas.value = true;
     try {
       CarsModel getCarsApiresponse = await DashboardRepository.getCarsApi(params: params);
+      isLoadingInCas.value = false;
       if (getCarsApiresponse.status == true) {
         getCarsByBrandList.clear();
         getCarsByBrandList.value = getCarsApiresponse.data!;
-
-        Get.toNamed(Routes.CARS_DEAL_SCREEN);
       } else {
         getCarsByBrandList.clear();
       }
     } catch (e) {
       debugPrint("Error in getCarsListApi ${e.toString()}");
     } finally {
-      isLoading.value = false;
+      isLoadingInCas.value = false;
     }
     return null;
   }
 
-  RxString UserName = 'Welcome Back'.obs;
+  Future<CarsModel?> getRandomFiveCars() async {
+    isLoadingRandom.value = true;
+    try {
+      CarsModel getCarsApiresponse = await DashboardRepository.getRandomFiveCarsApi();
+      isLoadingRandom.value = false;
+      if (getCarsApiresponse.status == "true" || getCarsApiresponse.status == true) {
+        getCarsRandomList.value = getCarsApiresponse.data!;
+        debugPrint(getCarsRandomList.value.toString());
+      } else {}
+    } catch (e) {
+      debugPrint("Error in random Cars ${e.toString()}");
+    } finally {
+      isLoadingRandom.value = false;
+    }
+    return null;
+  }
 
   @override
   void onInit() async {
     super.onInit();
-    location.value = await LocalStorage.fetchValue(StorageKey.userLocation) ?? 'null';
-    id.value = await LocalStorage.fetchValue(StorageKey.userid);
+    getDefaultCities();
+    getBanners();
+    clearFilters();
+
+    location.value = await LocalStorage.fetchValue(StorageKey.userLocation);
+    id.value = await LocalStorage.fetchValue(StorageKey.userid) ?? "1";
     getUserDetails();
 
-    getSpaeresListApi();
+    //Home Screen
+    await getRandomFiveCars();
+    await getFiveRandomBikes();
+    await getSpaeresListApi();
 
-    getCarsListSuggestionApi();
-    getCarsListApi();
-    getCarsDealsListApi();
+    // on Selected Brand or Show All
+    await getCarsListApi();
+    await getbikesListApi();
 
-    getbikesListApi();
-    getMoreListBikeThisAPi();
-    getbikesDealsListApi();
+    await getCarsListSuggestionApi();
+    await getCarsDealsListApi();
+    await getbikesDealsListApi();
   }
 
+  void showNonDismissibleDialog({
+    required TextEditingController controller,
+  }) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Enter Name'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Please enter your name.'),
+            const SizedBox(height: 10),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (controller.text.isEmpty) {
+                // Show a warning if the field is empty
+                Get.snackbar(
+                  'Error',
+                  'Name cannot be empty!',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red.withOpacity(0.8),
+                  colorText: Colors.white,
+                );
+              } else {
+                Get.back(); // Dismiss the dialog
+                // Add your logic here after the dialog is closed
+              }
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+      barrierDismissible: false, // Prevents dismissing the dialog by tapping outside
+    );
+  }
+
+  Rx<TextEditingController> name = TextEditingController().obs;
+  Rx<TextEditingController> phone = TextEditingController().obs;
+  Rx<TextEditingController> address = TextEditingController().obs;
+
   Future<userDetails?> getUserDetails() async {
+    //TODO
     Map<String, dynamic> params = {'id': id.value};
     debugPrint(params.toString());
     try {
       userDetails userResponse = await SettingRepositiory.getUserDeatils(params: params);
       if (userResponse.status == "success") {
-        UserName.value = userResponse.data!.name!;
+        name.value.text = userResponse.data!.name!;
+
+        if (name.value.text.isEmpty || name.value.text.isNull || name.value.text == "".obs) {
+          showNonDismissibleDialog(controller: name.value);
+        }
+
+        phone.value.text = userResponse.data!.phone!;
+
         return userResponse;
-      } else {
-        Get.snackbar(
-          'Failed',
-          userResponse.status.toString(),
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
+      } else {}
     } catch (e) {
       debugPrint("Error in Contact ${e..toString}");
     }
     return null;
   }
 
-  void makePhoneCall(String phoneNumber) async {
-    final Uri launchUri = Uri(
-      scheme: 'tel',
-      path: phoneNumber,
-    );
-    await launchUrl(launchUri);
-  }
+  var cityName = 'Fetch Current Location'.obs;
+  Future<void> getCityNameFromCoordinates(double latitude, double longitude) async {
+    const apiKey = 'AIzaSyD71mBgK5iq7VKL4Q51bkTI_lSk6tPd_Xc';
+    final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
 
-  void openMaps(String query) async {
-    // Construct the Google Maps URL
-    final Uri googleMapsUri = Uri(
-      scheme: 'https',
-      host: 'www.google.com',
-      path: 'maps/search/$query', // Add the query directly to the path
-    );
+    try {
+      final response = await http.get(Uri.parse(url));
 
-    // Print the generated URL for debugging
-    print(googleMapsUri.toString());
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == 'OK') {
+          final results = data['results'];
+          for (var component in results[0]['address_components']) {
+            if (component['types'].contains('locality')) {
+              cityName.value = component['long_name'];
+              debugPrint(cityName.value);
+              saveLocation(cityName.value);
 
-    // Check if the URL can be launched
-    if (await canLaunch(googleMapsUri.toString())) {
-      await launch(googleMapsUri.toString());
-    } else {
-      throw 'Could not launch $googleMapsUri';
+              return;
+            }
+          }
+        }
+      }
+      cityName.value = 'City not found';
+    } catch (e) {
+      cityName.value = 'Error fetching city';
     }
   }
 
@@ -203,74 +292,61 @@ class DashBoardController extends GetxController {
       'km_driven': filterBudget.value,
       'search_filter': filterColor.value,
     };
-    isLoading.value = true;
+    isLoadingInCas.value = true;
     try {
       CarsModel getCarsApiresponse = await DashboardRepository.getCarsApi(params: params);
+      isLoadingInCas.value = false;
+
       if (getCarsApiresponse.status == true) {
         getCarsList.clear();
         getCarsList.value = getCarsApiresponse.data!;
       } else {
         getCarsList.clear();
-        Get.snackbar(
-          "no cars found",
-          "Change filters or location",
-          backgroundColor: ColorsForApp.alertColor,
-        );
       }
     } catch (e) {
       debugPrint("Error in getCarsListApi ${e.toString()}");
     } finally {
-      isLoading.value = false;
+      isLoadingInCas.value = false;
     }
     return null;
   }
 
-  Future<CarsModel?> getCarsListSearchApi() async {
-    Map<String, dynamic> params = {
-      'city': location.value,
-      'car_name': filterBrand.value,
-    };
-    getCarsList.clear();
-    isLoading.value = true;
+  Future<bannerImagesModel?> getBanners() async {
     try {
-      CarsModel getCarsApiresponse = await DashboardRepository.getSearchForCarsApi(params: params);
-      if (getCarsApiresponse.status is String && getCarsApiresponse.status == "success" ||
-          getCarsApiresponse.status is bool && getCarsApiresponse.status == true) {
-        getCarsList.clear();
-        getCarsList.value = getCarsApiresponse.data!;
-      } else {
-        getCarsList.clear();
-        Get.snackbar(
-          "no cars found",
-          "Change filters or location",
-          backgroundColor: ColorsForApp.alertColor,
-        );
+      bannerImagesModel getCarsApiresponse = await DashboardRepository.getBannerApi(params: null);
+      if (getCarsApiresponse.status == "success") {
+        getBannerImg.value = getCarsApiresponse.data!;
       }
     } catch (e) {
       debugPrint("Error in getCarsListApi ${e.toString()}");
-    } finally {
-      isLoading.value = false;
-    }
+    } finally {}
+    return null;
+  }
+
+  RxList<CityModel> cityListModel = <CityModel>[].obs;
+  Future<homePageCityModel?> getDefaultCities() async {
+    try {
+      homePageCityModel getCarsApiresponse = await DashboardRepository.getdefaultCities();
+      if (getCarsApiresponse.status == "success") {
+        cityListModel.value = getCarsApiresponse.data!;
+      }
+    } catch (e) {
+      debugPrint("Error in getCarsListApi ${e.toString()}");
+    } finally {}
     return null;
   }
 
   Future<CarsModel?> getCarsListSuggestionApi() async {
-    isLoading.value = true;
+    isLoadingInCas.value = true;
     try {
       CarsModel getCarsApiresponse = await DashboardRepository.getCarsSuggestionApi();
       if (getCarsApiresponse.status == true) {
         getCarsSuggestionList.value = getCarsApiresponse.data!;
-      } else {
-        Get.snackbar(
-          'Failed',
-          "Something went wrong",
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
+      } else {}
     } catch (e) {
       debugPrint("Error in getCarsListApi ${e.toString()}");
     } finally {
-      isLoading.value = false;
+      isLoadingInCas.value = false;
     }
     return null;
   }
@@ -279,13 +355,17 @@ class DashBoardController extends GetxController {
     Map<String, dynamic> params = {
       'city': location.value,
       'brand': filterBrand.value,
+      'color': filterColor.value,
+      'fuel_type': selectedFuelType.value,
+      'min_budget': minValue.value,
+      'max_budget': maxValue.value,
+      'number_of_owners': filterOwners.value,
     };
     debugPrint(params.toString());
-
-    isLoading.value = true;
+    isLoadingInBikes.value = true;
     try {
       Bikemodel getBikeApiresponse = await DashboardRepository.getBikesAPi(params: params);
-
+      isLoadingInBikes.value = false;
       if (getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
           getBikeByBrandList.value = getBikeApiresponse.data!;
@@ -300,7 +380,7 @@ class DashBoardController extends GetxController {
     } catch (e) {
       debugPrint("Error in getbikesListApi ${e.toString()}");
     } finally {
-      isLoading.value = false;
+      isLoadingInBikes.value = false;
     }
     return null;
   }
@@ -315,62 +395,51 @@ class DashBoardController extends GetxController {
     };
     debugPrint(params.toString());
 
-    isLoading.value = true;
+    isLoadingInBikes.value = true;
     try {
       Bikemodel getBikeApiresponse = await DashboardRepository.getBikesAPi(params: params);
+      isLoadingInBikes.value = false;
 
       if (getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
           getBikeList.value = getBikeApiresponse.data!;
         }
-      } else {
-        Get.snackbar(
-          'Failed',
-          "Something went wrong",
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
+      } else {}
     } catch (e) {
-      debugPrint("Error in getbikesListApi ${e.toString()}");
+      debugPrint("Error in getbikesListApi  All ${e.toString()}");
     } finally {
-      isLoading.value = false;
+      isLoadingInBikes.value = false;
     }
     return null;
   }
 
-  Future<Bikemodel?> getMoreListBikeThisAPi() async {
-    isLoading.value = true;
+  Future<Bikemodel?> getFiveRandomBikes() async {
+    isLoadingRandom.value = true;
     try {
-      Bikemodel getBikeApiresponse = await DashboardRepository.getBikesSuggestionsAPi(params: null);
+      Bikemodel getBikeApiresponse = await DashboardRepository.getRandomFiveBikesAPi();
+      isLoadingRandom.value = false;
 
-      if (getBikeApiresponse.status == true) {
+      if (getBikeApiresponse.status == "true" || getBikeApiresponse.status == true) {
         if (getBikeApiresponse.data != null) {
-          getBikeSuggestionList.value = getBikeApiresponse.data!;
+          getBikesRandom.value = getBikeApiresponse.data!;
         }
-      } else {
-        Get.snackbar(
-          'Failed',
-          "Something went wrong",
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
+      } else {}
     } catch (e) {
-      debugPrint("Error in getbikesListApi ${e.toString()}");
+      debugPrint("Error in getbikesListApi  Random ${e.toString()}");
     } finally {
-      isLoading.value = false;
+      isLoadingRandom.value = false;
     }
     return null;
   }
 
-  var city = <CitySearchList>[].obs;
-  Future<CityModel?> fetchCities(String query) async {
+  Future<homePageCityModel?> fetchCities(String query) async {
     isLoading.value = true;
     try {
-      CityModel getBikeApiresponse = await DashboardRepository.getCityModel(params: query);
+      homePageCityModel getBikeApiresponse = await DashboardRepository.getCityModel(params: query);
 
       if (getBikeApiresponse.status == "success") {
         if (getBikeApiresponse.data != null) {
-          city.value = getBikeApiresponse.data ?? [];
+          cityListModel.value = getBikeApiresponse.data ?? [];
         }
       } else {}
     } catch (e) {
@@ -394,29 +463,6 @@ class DashBoardController extends GetxController {
       } else {}
     } catch (e) {
       debugPrint("Error in getbikesListApi ${e.toString()}");
-    } finally {
-      isLoading.value = false;
-    }
-    return null;
-  }
-
-  Future<Sparemodel?> getSpaeresListApi() async {
-    Map<String, dynamic> params = {'city': location.value};
-    isLoading.value = true;
-    try {
-      Sparemodel getSpareApiresponse = await DashboardRepository.getSparesApi(params: params);
-      if (getSpareApiresponse.status == "success") {
-        getSparedList.value = getSpareApiresponse.data!;
-        getSparedList.value = getSpareApiresponse.data!;
-      } else {
-        Get.snackbar(
-          'Failed',
-          "Something went wrong cant fetch Spares ",
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
-    } catch (e) {
-      debugPrint("Error in spare ${e.toString()}");
     } finally {
       isLoading.value = false;
     }
@@ -467,32 +513,140 @@ class DashBoardController extends GetxController {
   ];
 
   Future<void> saveLocation(String savedlocation) async {
-    debugPrint("Location  Changed to   ${location.value} ");
+    await LocalStorage.storeValue(StorageKey.userLocation, savedlocation);
+
     getCarsList.clear();
     getSparedList.clear();
     getBikeList.clear();
-    await LocalStorage.storeValue(StorageKey.userLocation, savedlocation);
     location.value = await LocalStorage.fetchValue(StorageKey.userLocation) ?? '';
-    Get.toNamed(Routes.HOME_SCREEN);
+    await getSpaeresListApi();
     await getbikesListApi();
     await getCarsListApi();
-    await getSpaeresListApi();
+
+    Get.offNamed(Routes.HOME_SCREEN);
   }
 
-  final List<Item> itemList = [
-    Item('assets/dcdp.png', "Pune"),
-    Item('assets/ferv.png', "Mumbai"),
-    Item('assets/jujnh.png', "Delhi"),
-    Item('assets/kjmn.png', "Jaipur"),
-    Item('assets/occ.png', "Bangalore"),
-    Item('assets/oikjm.png', "Hyderabad"),
-    Item('assets/zax.png', "Kolkata"),
-    Item('assets/dedlj.png', "Chennai"),
-    Item('assets/cdxs.png', "Noida"),
-    Item('assets/sxsx.png', "Indore"),
-    Item('assets/fczsx.png', "Lucknow"),
-    Item('assets/kjhgfd.png', "Gurgaon"),
-  ];
+  Future<void> fetchCurrentLocation() async {
+    isloadingLocation.value = true;
+
+    try {
+      debugPrint("1");
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      debugPrint("Service Enabled: $serviceEnabled");
+
+      if (!serviceEnabled) {
+        showToast("Please Enabled your Location");
+        throw Exception('Location services are disabled.');
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      debugPrint("2 - Permission is: $permission");
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        debugPrint("3 - Requested Permission: $permission");
+        if (permission == LocationPermission.denied) {
+          showToast(
+            "Please Enabled your Location and allow location ",
+          );
+          throw Exception('Location permissions are denied.');
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        showToast("Please Give access from Setting");
+        throw Exception('Location permissions are permanently denied. We cannot request permissions.');
+      }
+
+      debugPrint("4 - Permissions granted, fetching position...");
+
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
+      ).timeout(
+        const Duration(seconds: 12),
+        onTimeout: () {
+          showToast("Network and GPS Latency is too low");
+          debugPrint("Timeout while fetching position");
+          throw Exception('Timeout while fetching position');
+        },
+      );
+
+      debugPrint("5 - Position fetched: ${position.latitude}, ${position.longitude}");
+      print(position.latitude);
+
+      print(position.longitude);
+
+      await getCityNameFromCoordinates(position.latitude, position.longitude);
+    } catch (e) {
+      cityName.value = 'Error fetching location';
+      print('Error: $e');
+    } finally {
+      isloadingLocation.value = false;
+    }
+  }
+
+  void makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
+  void updateMin(double value) {
+    minValue.value = value;
+  }
+
+  void updateMax(double value) {
+    maxValue.value = value;
+  }
+
+  void setFilterBrand(String brand) {
+    filterBrand.value = brand;
+  }
+
+  void setFilterColor(Colour color) {
+    selectedColor.value = color;
+    filterColor.value = color.backendValue;
+  }
+
+  void selectFuelType(String fuelType) {
+    selectedFuelType.value = fuelType;
+  }
+
+  void selectVehicleType(String vehcleType) {
+    VehicleType.value = vehcleType;
+  }
+
+  void selectSpareType(String Type) {
+    spareType.value = Type;
+  }
+
+  void selectBudget(String budget) {
+    filterBudget.value = budget;
+  }
+
+  void selectOwner(String owner) {
+    filterOwners.value = owner;
+  }
+
+  void openMaps(String query) async {
+    final Uri googleMapsUri = Uri(
+      scheme: 'https',
+      host: 'www.google.com',
+      path: 'maps/search/$query',
+    );
+
+    // Print the generated URL for debugging
+    print(googleMapsUri.toString());
+
+    // Check if the URL can be launched
+    if (await canLaunch(googleMapsUri.toString())) {
+      await launch(googleMapsUri.toString());
+    } else {
+      throw 'Could not launch $googleMapsUri';
+    }
+  }
 
   final List<City> cities = City.values;
 }

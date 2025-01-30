@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/routes/routes.dart';
+import 'package:gadi_customer_repo/widgets/snack_abar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -172,7 +173,7 @@ class Profile extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Get.toNamed(Routes.ABOUT_US_SCREEN);
+              showToast("Will Navigate on Play-store for Rating");
             },
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -203,6 +204,86 @@ class Profile extends StatelessWidget {
                         SizedBox(width: 20),
                         Text(
                           "Rate Us",
+                          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                        ),
+                      ],
+                    ),
+                  )),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.TERMS_CONDN_SCREEN);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                  width: double.infinity,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(204, 236, 255, 1),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.12),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Image.asset(
+                          'assets/xsxcs.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        SizedBox(width: 20),
+                        Text(
+                          "Terms and Conditions",
+                          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                        ),
+                      ],
+                    ),
+                  )),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.PRIVACY_POLICY_SCREEN);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                  width: double.infinity,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(204, 236, 255, 1),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.12),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Image.asset(
+                          'assets/xsxcs.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        SizedBox(width: 20),
+                        Text(
+                          "Privacy Policy",
                           style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                         ),
                       ],

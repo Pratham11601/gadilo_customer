@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -42,18 +41,28 @@ class SplashScreenState extends State<SplashScreen> {
       ),
       body: Column(
         children: [
-          height(18.h),
-          Center(child: Image.asset('assets/gadilo_bharat.png').animate().fadeOut()),
-          height(11.h),
+          height(21.h),
+          Center(
+              child: Image.asset(
+            'assets/gadilo_bharat.png',
+            width: 80.w,
+            height: 80.w,
+          )),
+          height(21.h),
           Text(
             textAlign: TextAlign.center,
             "Welcome to GADILO!",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 19.sp),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp),
           ),
-          Text(
-            textAlign: TextAlign.center,
-            "Dive into the world of cars, bikes & accessories.Your big find is just clicks away",
-            style: TextStyle(color: Colors.white, fontSize: 17.sp),
+          Center(
+            child: SizedBox(
+              width: 77.w,
+              child: Text(
+                textAlign: TextAlign.center,
+                "Dive into the world of cars, bikes & accessories.Your big find is just clicks away",
+                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+              ),
+            ),
           ),
         ],
       ),

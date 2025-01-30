@@ -1,22 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gadi_customer_repo/controller/auth_controller.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
-import 'package:gadi_customer_repo/utils/app_colors.dart';
 import 'package:gadi_customer_repo/utils/string_utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/auth/brandModel.dart';
 import '../../models/dasboard/view_cars_model.dart';
 import '../../routes/routes.dart';
+import '../../utils/app_colors.dart';
 import '../../utils/text_styles.dart';
-import '../../widgets/Common_dialog.dart';
-import '../../widgets/clear_filter_button.dart';
 import '../../widgets/common_cards_cars.dart';
-import '../../widgets/common_filter_container.dart';
 import '../../widgets/constant_widgets.dart';
 import 'CarDetails.dart';
 
@@ -28,20 +23,16 @@ class CarsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: RefreshIndicator(
-          onRefresh: () async {
-            await dashboardController.getCarsListApi();
-          },
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
           child: Column(
             children: [
-              height(3.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Obx(() {
-                    return Text(" Hey ${capitalizeFirstLetter(dashboardController.UserName.value)}!",
+                    return Text(" Welcome ${capitalizeFirstLetter(dashboardController.name.value.text)}!",
                         style: TextHelper.size18(context)
                             .copyWith(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.bold));
                   }),
@@ -69,115 +60,64 @@ class CarsScreen extends StatelessWidget {
                 ],
               ),
               _buildHeader(),
-              height(2.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              height(4.h),
+              _buildCarGridView(dashboardController.cars),
+              Column(
                 children: [
-                  Obx(() {
-                    return Visibility(
-                        visible: dashboardController.isCarFilterApplied.value,
-                        child: GestureDetector(
-                            onTap: () {
-                              dashboardController.filterBrand.value = "";
-                              dashboardController.filterColor.value = "";
-                              dashboardController.filterBudget.value = "";
-                              dashboardController.filterColor.value = "";
-                              dashboardController.isCarFilterApplied.toggle();
-                              dashboardController.getCarsListApi();
-                            },
-                            child: CustomClearFilterButton()));
-                  }),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FilterDialog(
-                            onApplyFilters: () {
-                              dashboardController.isCarFilterApplied.value = true;
-                              dashboardController.getCarsByBrandList.clear();
-                              dashboardController.getCarsDealsListApi();
-                              Get.toNamed(Routes.CARS_DEAL_SCREEN);
-                            },
-                          );
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("  Top Trending", style: TextHelper.size18(context).copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.CARS_DEAL_SCREEN);
                         },
-                      );
-                    },
-                    child: FilterContainer(),
-                  ),
-                ],
-              ),
-              _buildBrandRow(),
-              Obx(() {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Visibility(
-                      visible: dashboardController.isImageVisible.value,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 125),
-                          GestureDetector(
-                            onTap: () {
-                              dashboardController.isImageVisible.toggle();
-                            },
-                            child: Text(
-                              "View all brands",
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "View More",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: const Color.fromRGBO(0, 90, 192, 1),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 5),
-                          Image.asset(
-                            'assets/iuhg.png',
-                            width: 24,
-                            height: 24,
-                          ),
-                        ],
+                            Image.asset(
+                              'assets/iuhg.png',
+                              width: 18,
+                              height: 18,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    if (dashboardController.isImageVisible.value == false) _buildCarGridView(dashboardController.cars),
-                  ],
-                );
-              }),
-              Column(
-                children: [
+                    ],
+                  ),
+                  height(1.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Obx(() {
-                        if (dashboardController.isLoading.value) {
-                          return Column(
+                        if (dashboardController.isLoadingInCas.value) {
+                          return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              height(12.h),
-                              const Center(
+                              height(11.h),
+                              Center(
                                 child: CupertinoActivityIndicator(
                                   radius: 30,
                                   color: ColorsForApp.primaryColor,
                                 ),
                               ),
-                              Text(
-                                'Loading cars',
-                                style: TextHelper.size16(context).copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
                             ],
                           );
                         }
 
-                        if (dashboardController.getCarsList.isEmpty) {
+                        if (dashboardController.getCarsRandomList.isEmpty) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              height(19.h),
+                              height(18.h),
                               Text(
                                 'Opps ! No Cars Found ',
                                 style: TextHelper.size16(context).copyWith(
@@ -190,22 +130,22 @@ class CarsScreen extends StatelessWidget {
                           );
                         } else {
                           return SizedBox(
-                            height: 32.h,
+                            height: 31.h,
                             width: 95.w,
                             child: ListView.builder(
                               shrinkWrap: true,
                               padding: EdgeInsets.zero,
                               scrollDirection: Axis.horizontal,
-                              itemCount: dashboardController.getCarsList.length,
+                              itemCount: dashboardController.getCarsRandomList.length,
                               itemBuilder: (context, index) => InkWell(
                                 onTap: () {
                                   dashboardController.getCarsListSuggestionApi();
-                                  final cars = dashboardController.getCarsList[index];
+                                  final cars = dashboardController.getCarsRandomList[index];
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => CarDetails(cars: cars)));
                                 },
                                 child: buildCommonCarsCard(
                                   context,
-                                  cars: dashboardController.getCarsList[index],
+                                  cars: dashboardController.getCarsRandomList[index],
                                 ),
                               ),
                             ),
@@ -216,7 +156,6 @@ class CarsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              height(1.h),
             ],
           ),
         ),
@@ -230,75 +169,68 @@ class CarsScreen extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
-          child: Image.network(
-            'https://gadilobharat.com/assets/images/c.jpg',
-            width: 361,
-            height: 205,
-            fit: BoxFit.cover,
-          ),
+          child: Obx(() {
+            if (dashboardController.getBannerImg.isNotEmpty) {
+              return Image.network('${dashboardController.getBannerImg[0].banImg!}', width: 94.w, height: 26.h, fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                return Icon(
+                  Icons.error, // Error icon
+                  size: 24.0, // Adjust size as needed
+                  color: Colors.red, // Color of the icon
+                );
+              });
+            } else {
+              return CircularProgressIndicator(); // Show a loading indicator while fetching
+            }
+          }),
         ),
         Positioned(
           bottom: -24,
-          left: 7,
+          left: 1.w,
           child: SizedBox(
             height: 52,
-            width: 350,
             child: GestureDetector(
               onTap: () {},
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(111, 111, 111, 0.13),
-                      spreadRadius: 2,
-                      blurRadius: 9,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(29),
-                ),
                 child: Row(
                   children: [
-                    Expanded(
-                        child: TypeAheadField<BrandNamesList>(
-                      controller: dashboardController.searchText.value,
-                      decorationBuilder: (context, child) => Material(
-                        borderRadius: BorderRadius.circular(200),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(200),
-                            border: Border.all(color: Colors.transparent), // Ensure no border
-                          ),
-                          child: child,
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                          offset: Offset(1, 1),
                         ),
+                      ]),
+                      width: 91.w,
+                      child: TextField(
+                        style: TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                          prefixIcon: Icon(Icons.search),
+                          hintText: "Search Cities",
+                          filled: true,
+                          fillColor: Colors.white, // Background color
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.grey, width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          if (value.isNotEmpty) {
+                            dashboardController.fetchCities(value);
+                          } else {
+                            dashboardController.fetchCities("");
+                          }
+                        },
                       ),
-                      suggestionsCallback: (query) async {
-                        await dashboardController.fetchBrands(query);
-                        return dashboardController.brand;
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          title: Text(suggestion.brandName ?? ""),
-                        );
-                      },
-                      errorBuilder: (context, error) {
-                        return Center(
-                          child: Text("Error occurred!"),
-                        );
-                      },
-                      onSelected: (BrandNamesList value) {
-                        dashboardController.getCarsByBrandList.clear();
-                        dashboardController.setFilterBrand(value.brandName!);
-                        dashboardController.getCarsDealsListApi();
-                        Get.toNamed(Routes.CARS_DEAL_SCREEN);
-
-                        print(value.toString());
-                        print(value.toJson());
-                        print(value);
-                        print(value);
-                      },
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -306,64 +238,6 @@ class CarsScreen extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildBrandRow() {
-    return Column(
-      children: [
-        Text(
-          "Explore by brands",
-          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildBrandContainer('assets/zxcv.png', "Maruti Suzuki"),
-            _buildBrandContainer('assets/sdfgh.png', "Toyota"),
-            _buildBrandContainer('assets/iuyhgf.png', "Honda"),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBrandContainer(String assetPath, String brandName) {
-    return GestureDetector(
-      onTap: () {
-        dashboardController.getCarsByBrandList.clear();
-        dashboardController.setFilterBrand(brandName);
-        dashboardController.getCarsDealsListApi();
-        Get.toNamed(Routes.CARS_DEAL_SCREEN);
-        dashboardController.isImageVisible.value == true ? true.obs : dashboardController.isImageVisible.toggle();
-      },
-      child: Container(
-        height: 13.h,
-        width: 31.w,
-        decoration: BoxDecoration(
-          color: const Color.fromRGBO(255, 255, 255, 1),
-          border: Border.all(
-            color: const Color.fromRGBO(244, 244, 244, 1),
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: 11),
-            Image.asset(
-              assetPath,
-              width: 46,
-              height: 46,
-            ),
-            const SizedBox(height: 5),
-            Text(
-              brandName,
-              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

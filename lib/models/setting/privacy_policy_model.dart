@@ -1,51 +1,50 @@
-/// YApi QuickType插件生成，具体参考文档:https://plugins.jetbrains.com/plugin/18847-yapi-quicktype/documentation
-
-import 'dart:convert';
-
-PrivacyPolicyModel privacyPolicyModelFromJson(String str) => PrivacyPolicyModel.fromJson(json.decode(str));
-
-String privacyPolicyModelToJson(PrivacyPolicyModel data) => json.encode(data.toJson());
-
 class PrivacyPolicyModel {
-  PrivacyPolicyModel({
-    required this.cities,
-    required this.status,
-  });
+  bool? status;
+  int? errorCode;
+  List<PrivacyPolicy>? privacyPolicy;
 
-  List<PrivacyPolicy> cities;
-  bool status;
+  PrivacyPolicyModel({this.status, this.errorCode, this.privacyPolicy});
 
-  factory PrivacyPolicyModel.fromJson(Map<dynamic, dynamic> json) => PrivacyPolicyModel(
-        cities: List<PrivacyPolicy>.from(json["cities"].map((x) => PrivacyPolicy.fromJson(x))),
-        status: json["status"],
-      );
+  PrivacyPolicyModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    errorCode = json['error_code'];
+    if (json['privacy_policy'] != null) {
+      privacyPolicy = <PrivacyPolicy>[];
+      json['privacy_policy'].forEach((v) {
+        privacyPolicy!.add(new PrivacyPolicy.fromJson(v));
+      });
+    }
+  }
 
-  Map<dynamic, dynamic> toJson() => {
-        "cities": List<dynamic>.from(cities.map((x) => x.toJson())),
-        "status": status,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['error_code'] = this.errorCode;
+    if (this.privacyPolicy != null) {
+      data['privacy_policy'] = this.privacyPolicy!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
 class PrivacyPolicy {
-  PrivacyPolicy({
-    required this.createdAt,
-    required this.id,
-    required this.policyText,
-  });
+  String? id;
+  String? policyText;
+  String? createdAt;
 
-  DateTime createdAt;
-  String id;
-  String policyText;
+  PrivacyPolicy({this.id, this.policyText, this.createdAt});
 
-  factory PrivacyPolicy.fromJson(Map<dynamic, dynamic> json) => PrivacyPolicy(
-        createdAt: DateTime.parse(json["created_at"]),
-        id: json["id"],
-        policyText: json["policy_text"],
-      );
+  PrivacyPolicy.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    policyText = json['policy_text'];
+    createdAt = json['created_at'];
+  }
 
-  Map<dynamic, dynamic> toJson() => {
-        "created_at": createdAt.toIso8601String(),
-        "id": id,
-        "policy_text": policyText,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['policy_text'] = this.policyText;
+    data['created_at'] = this.createdAt;
+    return data;
+  }
 }

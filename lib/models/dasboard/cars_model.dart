@@ -1,13 +1,11 @@
 class CarsModel {
-  bool? status;
-  int? errorCode;
+  dynamic status;
   List<CarsList>? data;
 
-  CarsModel({this.status, this.errorCode, this.data});
+  CarsModel({this.status, this.data});
 
   CarsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    errorCode = json['error_code'];
     if (json['data'] != null) {
       data = <CarsList>[];
       json['data'].forEach((v) {
@@ -19,7 +17,6 @@ class CarsModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    data['error_code'] = this.errorCode;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }

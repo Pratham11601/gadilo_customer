@@ -12,7 +12,7 @@ class _FilterContainerState extends State<FilterContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 1.h),
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0.h),
       height: 5.h,
       width: 27.w,
       decoration: BoxDecoration(

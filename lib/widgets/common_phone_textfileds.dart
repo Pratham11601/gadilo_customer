@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/app_colors.dart';
-import 'constant_widgets.dart';
 
 Widget buildPhoneNumberField(
   TextEditingController controller,
@@ -14,6 +13,7 @@ Widget buildPhoneNumberField(
     child: TextFormField(
       controller: controller,
       decoration: InputDecoration(
+        counterText: "",
         prefixIcon: SizedBox(
           width: 16.5.w,
           child: Row(
@@ -51,6 +51,7 @@ Widget buildPhoneNumberField(
           color: Colors.red,
         ),
       ),
+      maxLength: 10,
       style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16.sp)),
       keyboardType: TextInputType.phone,
       validator: (value) {

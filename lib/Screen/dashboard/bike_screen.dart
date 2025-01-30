@@ -1,20 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
-import 'package:gadi_customer_repo/generated/assets.dart';
-import 'package:gadi_customer_repo/utils/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/auth/brandModel.dart';
 import '../../models/dasboard/view_cars_model.dart';
 import '../../routes/routes.dart';
 import '../../utils/text_styles.dart';
-import '../../widgets/Common_dialog.dart';
 import '../../widgets/common_bikes.dart';
-import '../../widgets/common_filter_container.dart';
 import '../../widgets/constant_widgets.dart';
 import 'BikeDetails.dart';
 
@@ -32,83 +26,43 @@ class BikeScreen extends StatelessWidget {
             children: [
               _buildHeader(),
               SizedBox(height: 5.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FilterDialog(
-                            onApplyFilters: () {
-                              dashboardController.isBikeFilterApplied.value = true;
-                              dashboardController.getBikeByBrandList.clear();
-                              dashboardController.getbikesDealsListApi();
-                              dashboardController.isBikeFilterApplied.value = true;
-                              Get.toNamed(Routes.BIKE_DEAL_SCREEN);
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: FilterContainer(),
-                  ),
-                ],
-              ),
-              Center(
-                child: Text(
-                  "Explore by brands",
-                  style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
-                ),
-              ),
-              _buildBrandRow(),
-              Obx(() {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              _buildbikeBrandssGridView(dashboardController.bikeList),
+              height(4),
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.BIKE_DEAL_SCREEN);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Visibility(
-                      visible: dashboardController.isBikeImageVisible.value,
-                      child: Row(
-                        children: [
-                          SizedBox(width: 125),
-                          InkWell(
-                            onTap: () {
-                              dashboardController.isBikeImageVisible.toggle();
-                            },
-                            child: Text(
-                              "View all brands",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color.fromRGBO(0, 90, 192, 1),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Image.asset(
-                            'assets/iuhg.png',
-                            width: 24,
-                            height: 24,
-                          ),
-                        ],
+                    Text(
+                      "View More",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: const Color.fromRGBO(0, 90, 192, 1),
                       ),
                     ),
-                    if (dashboardController.isBikeImageVisible.value == false) _buildbikeBrandssGridView(dashboardController.bikeList),
+                    Image.asset(
+                      'assets/iuhg.png',
+                      width: 18,
+                      height: 18,
+                    ),
                   ],
-                );
-              }),
+                ),
+              ),
+              height(4),
               Obx(() {
-                if (dashboardController.isLoading.value) {
+                if (dashboardController.isLoadingInBikes.value) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       height(42.h),
-                      Center(
+                      const Center(
                         child: CupertinoActivityIndicator(
                           radius: 30,
-                          color: ColorsForApp.primaryColor,
+                          color: Colors.grey,
                         ),
                       ),
                       Text(
@@ -122,8 +76,7 @@ class BikeScreen extends StatelessWidget {
                     ],
                   );
                 }
-
-                if (dashboardController.bikeList.isEmpty) {
+                if (dashboardController.getBikesRandom.isEmpty) {
                   return Column(
                     children: [
                       height(12.h),
@@ -139,23 +92,22 @@ class BikeScreen extends StatelessWidget {
                   );
                 } else {
                   return SizedBox(
-                    height: 32.h,
+                    height: 26.h,
                     width: 95.w,
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.horizontal,
-                      itemCount: dashboardController.getBikeList.length,
+                      itemCount: dashboardController.getBikesRandom.length,
                       itemBuilder: (context, index) => InkWell(
                         onTap: () {
-                          debugPrint("  <--debug--> ${dashboardController.getBikeList[index].toString()}");
-
-                          final bikes = dashboardController.getBikeList[index];
+                          debugPrint("  <--debug--> ${dashboardController.getBikesRandom[index].toString()}");
+                          final bikes = dashboardController.getBikesRandom[index];
                           Navigator.push(context, MaterialPageRoute(builder: (context) => BikeDetails(bikes: bikes)));
                         },
                         child: buildBikeWidget(
                           context,
-                          bike: dashboardController.getBikeList[index],
+                          bike: dashboardController.getBikesRandom[index],
                         ),
                       ),
                     ),
@@ -175,87 +127,69 @@ class BikeScreen extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
-          child: Image.network(
-            'https://gadilobharat.com/assets/images/c.jpg',
-            width: 361,
-            height: 205,
-            fit: BoxFit.cover,
-          ),
+          child: Obx(() {
+            if (dashboardController.getBannerImg.isNotEmpty) {
+              return Image.network('${dashboardController.getBannerImg[1].banImg!}', width: 94.w, height: 26.h, fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                return Icon(
+                  Icons.error, // Error icon
+                  size: 24.0, // Adjust size as needed
+                  color: Colors.red, // Color of the icon
+                );
+              });
+            } else {
+              return CircularProgressIndicator(); // Show a loading indicator while fetching
+            }
+          }),
         ),
         Positioned(
           bottom: -24,
-          left: 7,
+          left: 1.w,
           child: SizedBox(
             height: 52,
-            width: 350,
             child: GestureDetector(
               onTap: () {},
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color.fromRGBO(111, 111, 111, 0.13),
-                      spreadRadius: 2,
-                      blurRadius: 9,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(29),
-                ),
                 child: Row(
                   children: [
-                    SizedBox(
-                      width: 50,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 20),
-                          Image.asset(
-                            "assets/rcr.png",
-                            width: 5.w,
-                            height: 5.w,
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                          offset: Offset(1, 1),
+                        ),
+                      ]),
+                      width: 91.w,
+                      child: TextField(
+                        style: TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                          prefixIcon: Icon(Icons.search),
+                          hintText: "Search Brand",
+                          filled: true,
+                          fillColor: Colors.white,
+                          // Background color
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.grey, width: 1),
                           ),
-                        ],
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          if (value.isNotEmpty) {
+                            dashboardController.fetchCities(value);
+                          } else {
+                            dashboardController.fetchCities("");
+                          }
+                        },
                       ),
                     ),
-                    Expanded(
-                        child: TypeAheadField<BrandNamesList>(
-                      controller: dashboardController.searchText.value,
-                      decorationBuilder: (context, child) => Material(
-                        borderRadius: BorderRadius.circular(200),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(200),
-                            border: Border.all(color: Colors.transparent), // Ensure no border
-                          ),
-                          child: child,
-                        ),
-                      ),
-                      suggestionsCallback: (query) async {
-                        await dashboardController.fetchBrands(query);
-                        return dashboardController.brand;
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          title: Text(suggestion.brandName ?? ""),
-                        );
-                      },
-                      errorBuilder: (context, error) {
-                        return Center(
-                          child: Text("Error occurred!"),
-                        );
-                      },
-                      onSelected: (BrandNamesList value) {
-                        dashboardController.getBikeByBrandList.clear();
-                        dashboardController.setFilterBrand(value.brandName!);
-                        dashboardController.getBikeByBrandList();
-                        Get.toNamed(Routes.BIKE_DEAL_SCREEN);
-                        print(value.toString());
-                        print(value.toJson());
-                        print(value);
-                        print(value);
-                      },
-                    )),
                   ],
                 ),
               ),
@@ -266,60 +200,11 @@ class BikeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBrandRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _buildBrandContainer('assets/njkn.png', "TVS"),
-        _buildBrandContainer('assets/vfcxdc.png', "Yamaha"),
-        _buildBrandContainer(Assets.bikeimagesHonda, "Honda"),
-      ],
-    );
-  }
-
-  Widget _buildBrandContainer(String assetPath, String brandName) {
-    return InkWell(
-      onTap: () {
-        dashboardController.getBikeByBrandList.clear();
-        dashboardController.setFilterBrand(brandName);
-        dashboardController.getbikesDealsListApi();
-        Get.toNamed(Routes.BIKE_DEAL_SCREEN);
-      },
-      child: Container(
-        height: 13.h,
-        width: 31.w,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 1),
-          border: Border.all(
-            color: Color.fromRGBO(244, 244, 244, 1),
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Column(
-          children: [
-            SizedBox(height: 11),
-            Image.asset(
-              assetPath,
-              width: 46,
-              height: 46,
-            ),
-            SizedBox(height: 5),
-            Text(
-              brandName,
-              style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildbikeBrandssGridView(List<VehicleBrandsModel> cars) {
     return Container(
       height: 80.h,
       child: GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 1,
@@ -332,12 +217,10 @@ class BikeScreen extends StatelessWidget {
           return InkWell(
             onTap: () {
               String brandName = car.brand.toString().split('.').last;
-              dashboardController.getBikeList.clear();
+              dashboardController.getBikeByBrandList.clear();
               dashboardController.setFilterBrand(brandName);
               dashboardController.getbikesDealsListApi();
               Get.toNamed(Routes.BIKE_DEAL_SCREEN);
-
-              dashboardController.isBikeImageVisible.value == true ? true.obs : dashboardController.isBikeImageVisible.toggle();
             },
             child: Container(
               height: 40.h,
@@ -345,7 +228,7 @@ class BikeScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
-                  color: Color.fromRGBO(244, 244, 244, 1),
+                  color: const Color.fromRGBO(244, 244, 244, 1),
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(6),
@@ -358,13 +241,13 @@ class BikeScreen extends StatelessWidget {
                     width: 46,
                     height: 46,
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     car.brand.toString().split('.').last, // Get the enum name
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Color.fromRGBO(15, 15, 20, 1),
+                      color: const Color.fromRGBO(15, 15, 20, 1),
                     ),
                   ),
                 ],

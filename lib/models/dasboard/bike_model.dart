@@ -1,6 +1,6 @@
 class Bikemodel {
   bool? status;
-  int? errorCode;
+  dynamic errorCode;
   List<BikeList>? data;
 
   Bikemodel({this.status, this.errorCode, this.data});

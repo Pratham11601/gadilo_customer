@@ -106,7 +106,7 @@ class FilterDialogStyle extends StatelessWidget {
               children: [
                 buildFilterSection(
                   "Fuel Types",
-                  ["Petrol", "Diesel", "CNG", "LPG"],
+                  ["Petrol", "Diesel", "CNG", ],
                   controller.selectedFuelType,
                   controller.selectFuelType,
                 ),

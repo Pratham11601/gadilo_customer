@@ -1,21 +1,24 @@
 class SendOtpModel {
-  bool? status;
+  String? success;
+  String? errorCode;
   String? message;
-  int? otp;
+  String? id;
 
-  SendOtpModel({this.status, this.message, this.otp});
+  SendOtpModel({this.success, this.errorCode, this.message, this.id});
 
   SendOtpModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
+    success = json['success'];
+    errorCode = json['error_code'];
     message = json['message'];
-    otp = json['otp'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    data['success'] = this.success;
+    data['error_code'] = this.errorCode;
     data['message'] = this.message;
-    data['otp'] = this.otp;
+    data['id'] = this.id;
     return data;
   }
 }

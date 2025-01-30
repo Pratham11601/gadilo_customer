@@ -18,15 +18,30 @@ Widget spareItem({required SparesList spares}) {
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                spares.images![0],
+                spares.photo![0],
                 fit: BoxFit.fill,
                 height: 17.h,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 17.h, // Match the height of the original image
+                    decoration: BoxDecoration(
+                      color: Colors.grey, // Placeholder color
+                      borderRadius: BorderRadius.circular(10.0), // Match the border radius
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Image not available',
+                        style: TextStyle(color: Colors.white, fontSize: 15), // Placeholder text color
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             Column(
               children: [
                 Text(
-                  "${spares.name}",
+                  "${spares.model}",
                   style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
                 ),
                 Text(
@@ -38,22 +53,21 @@ Widget spareItem({required SparesList spares}) {
           ],
         )),
     Positioned(
-      top: -9,
+      top: 1,
       left: 60,
       child: Container(
-        width: 52,
-        height: 20,
+        width: 55,
+        height: 21,
         decoration: BoxDecoration(
-          color: spares.spareVersion == "old" ? Colors.blue : Color.fromRGBO(126, 255, 131, 1),
+          color: spares.type == "old" ? Colors.blue : Colors.green,
           borderRadius: BorderRadius.circular(11),
         ),
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 2.9),
               Text(
-                "${spares.spareVersion}",
-                style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w400, color: const Color.fromRGBO(0, 0, 0, 1)),
+                "${spares.type}",
+                style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color.fromRGBO(0, 0, 0, 1)),
               ),
             ],
           ),
