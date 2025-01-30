@@ -66,7 +66,7 @@ class _SelectCityState extends State<SelectCity> {
                 if (value.isNotEmpty) {
                   dashController.fetchCities(value);
                 } else {
-                  dashController.fetchCities("");
+                  dashController.getDefaultCities();
                 }
               },
             ),
@@ -133,7 +133,7 @@ class _SelectCityState extends State<SelectCity> {
                 ),
                 itemCount: dashController.cityListModel.length,
                 itemBuilder: (context, index) {
-                  return InkWell(
+                  return GestureDetector(
                     onTap: () {
                       dashController.saveLocation(dashController.cityListModel[index].cityName!);
                     },

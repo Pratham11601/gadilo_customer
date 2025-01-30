@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gadi_customer_repo/models/dasboard/bike_model.dart';
 import 'package:gadi_customer_repo/routes/routes.dart';
+import 'package:gadi_customer_repo/utils/string_utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -96,8 +97,8 @@ class BikeDetails extends StatelessWidget {
               children: [
                 Text(
                   textAlign: TextAlign.left,
-                  "    ${bikes.brand} ${bikes.model} ",
-                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                  "    ${capitalizeFirstLetter(bikes.brand!)} ${capitalizeFirstLetter(bikes.model!)} ",
+                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                 ),
               ],
             ),
@@ -117,7 +118,7 @@ class BikeDetails extends StatelessWidget {
               children: [
                 width(3.w),
                 RatingBar.builder(
-                  initialRating: double.parse(bikes.ratings ?? "0.0"),
+                  initialRating: double.parse(bikes.ratings ?? "4.0"),
                   minRating: 1,
                   direction: Axis.horizontal,
                   itemSize: 4.5.w,
@@ -166,7 +167,7 @@ class BikeDetails extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            dashBoardController.openMaps(bikes.shopAddress ?? "katraj puhe");
+                            dashBoardController.openMaps(bikes.shopAddress ?? "Viman Nagar");
                           },
                           child: Image.asset(
                             '${Assets.assetsMaps}',
@@ -232,10 +233,6 @@ class BikeDetails extends StatelessWidget {
                   value: "${bikes.fuelType}",
                   labelStyle: "Fuel",
                 ),
-                SizedBox(
-                  width: 32.w,
-                  height: 28.w,
-                )
               ],
             ),
             const SizedBox(height: 15),
@@ -273,8 +270,7 @@ class BikeDetails extends StatelessWidget {
                   ],
                 );
               }
-
-              if (dashBoardController.bikeList.isEmpty) {
+              if (dashBoardController.getBikeByBrandList.isEmpty) {
                 return Column(
                   children: [
                     height(12.h),
@@ -290,18 +286,16 @@ class BikeDetails extends StatelessWidget {
                 );
               } else {
                 return SizedBox(
-                  height: 555,
-                  width: 555,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, childAspectRatio: 1, crossAxisSpacing: 1.w, mainAxisSpacing: 1.h, mainAxisExtent: 26.h),
-                    physics: const NeverScrollableScrollPhysics(),
+                  height: 30.h,
+                  width: 100.w,
+                  child: ListView.builder(
                     shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.zero,
-                    itemCount: dashBoardController.getBikeSuggestionList.length,
+                    itemCount: dashBoardController.getBikeByBrandList.length,
                     itemBuilder: (context, index) => buildBikeWidget(
                       context,
-                      bike: dashBoardController.getBikeSuggestionList[index],
+                      bike: dashBoardController.getBikeByBrandList[index],
                     ),
                   ),
                 );

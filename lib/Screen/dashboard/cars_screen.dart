@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/dasboard/view_cars_model.dart';
+import '../../models/auth/brandModel.dart';
 import '../../routes/routes.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/text_styles.dart';
@@ -61,7 +61,9 @@ class CarsScreen extends StatelessWidget {
               ),
               _buildHeader(),
               height(4.h),
-              _buildCarGridView(dashboardController.cars),
+              Obx(() {
+                return _buildCarGridView(dashboardController.carbrand);
+              }),
               Column(
                 children: [
                   Row(
@@ -224,9 +226,9 @@ class CarsScreen extends StatelessWidget {
                         ),
                         onChanged: (value) {
                           if (value.isNotEmpty) {
-                            dashboardController.fetchCities(value);
+                            dashboardController.fetchCarBrandsBySearchAPI(value);
                           } else {
-                            dashboardController.fetchCities("");
+                            dashboardController.fetchCarBrandsBydefaultAPI();
                           }
                         },
                       ),
@@ -241,9 +243,21 @@ class CarsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCarGridView(List<VehicleBrandsModel> cars) {
-    return SizedBox(
-      height: 83.h,
+  Widget _buildCarGridView(List<BrandNamesList> cars) {
+    // Define the number of rows and the height for each row
+    const int maxRows = 4;
+    double rowHeight = 16.h;
+
+    final itemCount = cars.length;
+    final rowCount = (itemCount / 3).ceil();
+    print(rowCount);
+    print(rowCount);
+    print(rowCount);
+    print(rowCount);
+    final gridHeight = rowCount > maxRows ? maxRows * rowHeight : rowCount * rowHeight;
+
+    return Container(
+      height: gridHeight,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -254,39 +268,38 @@ class CarsScreen extends StatelessWidget {
         ),
         itemCount: cars.length,
         itemBuilder: (context, index) {
-          final car = cars[index];
+          final bikes = cars[index];
           return InkWell(
             onTap: () {
-              dashboardController.isCarFilterApplied.value = true;
-              String brandName = car.brand.toString().split('.').last;
-              dashboardController.getCarsByBrandList.clear();
-              dashboardController.setFilterBrand(brandName);
-              dashboardController.getCarsDealsListApi();
-              Get.toNamed(Routes.CARS_DEAL_SCREEN);
-              dashboardController.isImageVisible.value == true ? true.obs : dashboardController.isImageVisible.toggle();
+              dashboardController.getBikeByBrandList.clear();
+              dashboardController.setFilterBrand(bikes.brandName!);
+              dashboardController.getbikesDealsListApi();
+              Get.toNamed(Routes.BIKE_DEAL_SCREEN);
             },
             child: Container(
-              height: 40.h,
+              height: 20.h,
               width: 31.h,
               decoration: BoxDecoration(
-                color: Colors.white,
                 border: Border.all(
                   color: const Color.fromRGBO(244, 244, 244, 1),
                   width: 1,
                 ),
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    car.imagePath,
-                    width: 46,
-                    height: 46,
+                  Image.network(
+                    bikes.brandImg ?? "",
+                    width: 51,
+                    height: 51,
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return Icon(Icons.error, size: 51); // Display an error icon
+                    },
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    car.brand.toString().split('.').last, // Get the enum name
+                    bikes.brandName ?? " ", // Get the enum name
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,

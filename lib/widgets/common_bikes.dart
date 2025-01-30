@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../Screen/dashboard/BikeDetails.dart';
 import '../models/dasboard/bike_model.dart';
+import '../utils/string_utils.dart';
 
 Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
   return SizedBox(
@@ -34,12 +35,12 @@ Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "${bike.brand} ${bike.model}  ",
+                  "    ${capitalizeFirstLetter(bike.brand!)} ${capitalizeFirstLetter(bike.model!)} ",
                   style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
                 ),
                 Center(
                   child: Text(
-                    "₹${bike.bikePrice!}",
+                    "₹${formatPriceRange(bike.bikePrice!)}",
                     style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                   ),
                 ),

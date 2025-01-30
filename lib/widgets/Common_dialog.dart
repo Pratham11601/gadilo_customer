@@ -307,22 +307,6 @@ class FilterDialogForSpares extends StatelessWidget {
                   dividerColor: Colors.transparent,
                 ),
                 child: ExpansionTile(
-                  title: Text("By Number of Owners", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px)),
-                  children: [
-                    buildFilterSection(
-                      "Owners",
-                      ["1", "2", "3", "4"],
-                      controller.filterOwners,
-                      controller.selectOwner,
-                    ),
-                  ],
-                ),
-              ),
-              Theme(
-                data: Theme.of(context).copyWith(
-                  dividerColor: Colors.transparent,
-                ),
-                child: ExpansionTile(
                   title: Text(
                     "By Type",
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px),

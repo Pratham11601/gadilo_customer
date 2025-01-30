@@ -1,7 +1,7 @@
 String formatPriceRange(String price) {
   double parsedPrice = double.tryParse(price) ?? 0.0;
 
-  double range = parsedPrice * 0.12; // 10% range
+  double range = parsedPrice * 0.05; // 10% range
   double lowerLimit = parsedPrice - range;
   double upperLimit = parsedPrice + range;
 

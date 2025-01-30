@@ -3,6 +3,7 @@ import 'package:gadi_customer_repo/routes/routes.dart';
 import 'package:gadi_customer_repo/widgets/snack_abar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
 import '../utils/app_enums.dart';
 import '../utils/storage_config.dart';
@@ -23,10 +24,10 @@ class Profile extends StatelessWidget {
               child: Center(
                   child: Column(
         children: [
-          SizedBox(height: 35),
+          SizedBox(height: 10),
           Text(
             "Profile",
-            style: GoogleFonts.poppins(fontSize: 18, color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.w500),
+            style: GoogleFonts.poppins(fontSize: 19.sp, color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 10),
           InkWell(
@@ -41,7 +42,7 @@ class Profile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(204, 236, 255, 1),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color.fromRGBO(0, 0, 0, 0.12),
                         spreadRadius: 1,
@@ -107,7 +108,7 @@ class Profile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(204, 236, 255, 1),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color.fromRGBO(0, 0, 0, 0.12),
                         spreadRadius: 1,
@@ -183,7 +184,7 @@ class Profile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(204, 236, 255, 1),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color.fromRGBO(0, 0, 0, 0.12),
                         spreadRadius: 1,
@@ -223,7 +224,7 @@ class Profile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(204, 236, 255, 1),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color.fromRGBO(0, 0, 0, 0.12),
                         spreadRadius: 1,
@@ -263,7 +264,7 @@ class Profile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(204, 236, 255, 1),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color.fromRGBO(0, 0, 0, 0.12),
                         spreadRadius: 1,
@@ -304,7 +305,7 @@ class Profile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(204, 236, 255, 1),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color.fromRGBO(0, 0, 0, 0.12),
                         spreadRadius: 1,

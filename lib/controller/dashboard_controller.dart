@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gadi_customer_repo/generated/assets.dart';
 import 'package:gadi_customer_repo/models/dasboard/bike_model.dart';
 import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
 import 'package:gadi_customer_repo/models/setting/user_details_model.dart';
@@ -36,7 +35,6 @@ class DashBoardController extends GetxController {
   RxList<BikeList> getBikesRandom = <BikeList>[].obs;
 
   RxList<BikeList> getBikeByBrandList = <BikeList>[].obs;
-  RxList<BikeList> getBikeSuggestionList = <BikeList>[].obs;
 
   FilterOption? selectedFilterOption;
   RxBool isLoading = true.obs;
@@ -164,7 +162,6 @@ class DashBoardController extends GetxController {
     getDefaultCities();
     getBanners();
     clearFilters();
-
     location.value = await LocalStorage.fetchValue(StorageKey.userLocation);
     id.value = await LocalStorage.fetchValue(StorageKey.userid) ?? "1";
     getUserDetails();
@@ -173,6 +170,7 @@ class DashBoardController extends GetxController {
     await getRandomFiveCars();
     await getFiveRandomBikes();
     await getSpaeresListApi();
+    await fetchCarBrandsBydefaultAPI();
 
     // on Selected Brand or Show All
     await getCarsListApi();
@@ -181,6 +179,7 @@ class DashBoardController extends GetxController {
     await getCarsListSuggestionApi();
     await getCarsDealsListApi();
     await getbikesDealsListApi();
+    fetchBikeBrandsBydefaultAPI();
   }
 
   void showNonDismissibleDialog({
@@ -450,19 +449,74 @@ class DashBoardController extends GetxController {
     return null;
   }
 
-  var brand = <BrandNamesList>[].obs;
-  Future<brandNamesModel?> fetchBrands(String query) async {
+  var carbrand = <BrandNamesList>[].obs;
+  Future<brandNamesModel?> fetchCarBrandsBySearchAPI(String query) async {
     isLoading.value = true;
     try {
       brandNamesModel getBikeApiresponse = await DashboardRepository.getbrandModel(params: query);
 
       if (getBikeApiresponse.status == "success") {
         if (getBikeApiresponse.data != null) {
-          brand.value = getBikeApiresponse.data ?? [];
+          carbrand.value = getBikeApiresponse.data ?? [];
         }
       } else {}
     } catch (e) {
-      debugPrint("Error in getbikesListApi ${e.toString()}");
+      debugPrint("Error in search Car ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
+  }
+
+  Future<brandNamesModel?> fetchCarBrandsBydefaultAPI() async {
+    isLoading.value = true;
+    try {
+      brandNamesModel getBikeApiresponse = await DashboardRepository.getDefaultbrandCarsModel();
+
+      if (getBikeApiresponse.status == "success") {
+        if (getBikeApiresponse.data != null) {
+          carbrand.value = getBikeApiresponse.data ?? [];
+        }
+      } else {}
+    } catch (e) {
+      debugPrint("Error in search Car ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
+  }
+
+  var bikebrand = <BrandNamesList>[].obs;
+  Future<brandNamesModel?> fetchBikeBrandsBySearchAPI(String query) async {
+    isLoading.value = true;
+    try {
+      brandNamesModel getBikeApiresponse = await DashboardRepository.getbrandModel(params: query);
+
+      if (getBikeApiresponse.status == "success") {
+        if (getBikeApiresponse.data != null) {
+          bikebrand.value = getBikeApiresponse.data ?? [];
+        }
+      } else {}
+    } catch (e) {
+      debugPrint("Error in search bikebrand ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+    return null;
+  }
+
+  Future<brandNamesModel?> fetchBikeBrandsBydefaultAPI() async {
+    isLoading.value = true;
+    try {
+      brandNamesModel getBikeApiresponse = await DashboardRepository.getDefaultbrandBikeModel();
+
+      if (getBikeApiresponse.status == "success") {
+        if (getBikeApiresponse.data != null) {
+          bikebrand.value = getBikeApiresponse.data ?? [];
+        }
+      } else {}
+    } catch (e) {
+      debugPrint("Error in search bikebrand ${e.toString()}");
     } finally {
       isLoading.value = false;
     }
@@ -493,23 +547,6 @@ class DashBoardController extends GetxController {
     VehicleBrandsModel(CarBrand.Lexus, 'assets/tssx.png'),
     VehicleBrandsModel(CarBrand.Renault, 'assets/igdzx.png'),
     VehicleBrandsModel(CarBrand.Jeep, 'assets/trwz.png'),
-  ];
-
-  final List<VehicleBrandsModel> bikeList = [
-    VehicleBrandsModel(BikeBrand.OLA, Assets.bikeimagesOla),
-    VehicleBrandsModel(BikeBrand.Ducati, Assets.bikeimagesDucatti),
-    VehicleBrandsModel(BikeBrand.BAJAJ, Assets.bikeimagesBajaj),
-    VehicleBrandsModel(BikeBrand.Suzuki, Assets.bikeimagesSuzuki),
-    VehicleBrandsModel(BikeBrand.Vida, Assets.bikeimagesVidaa),
-    VehicleBrandsModel(BikeBrand.BAJAJ, Assets.bikeimagesBajaj),
-    VehicleBrandsModel(BikeBrand.KTM, Assets.bikeimagesKtm),
-    VehicleBrandsModel(BikeBrand.Hero, Assets.bikeimagesHero),
-    VehicleBrandsModel(BikeBrand.Keeway, Assets.bikeimagesKeeway),
-    VehicleBrandsModel(BikeBrand.Ather, Assets.bikeimagesAther),
-    VehicleBrandsModel(BikeBrand.Jawa, Assets.bikeimagesJawa),
-    VehicleBrandsModel(BikeBrand.Revolt, Assets.bikeimagesRevolt),
-    VehicleBrandsModel("Royal Enfield", Assets.bikeimagesRoyal),
-    VehicleBrandsModel("Harley Davidson", Assets.bikeimagesHrlydavid)
   ];
 
   Future<void> saveLocation(String savedlocation) async {

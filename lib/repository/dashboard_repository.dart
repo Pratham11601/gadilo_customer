@@ -200,4 +200,46 @@ class DashboardRepository {
       rethrow;
     }
   }
+
+  static Future<brandNamesModel> getDefaultbrandCarsModel({bool showLoading = true}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/get_car_homepage',
+        showLoading: showLoading,
+      );
+      brandNamesModel bikeModel = brandNamesModel.fromJson(response);
+      return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<brandNamesModel> getDefaultbrandBikeModel({bool showLoading = true}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/get_bike_homepage',
+        showLoading: showLoading,
+      );
+      brandNamesModel bikeModel = brandNamesModel.fromJson(response);
+      return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<brandNamesModel> getBikebrandModelbySearch({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/get_bike_brand?brand_name=${params}',
+        showLoading: showLoading,
+      );
+      brandNamesModel bikeModel = brandNamesModel.fromJson(response);
+      return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
 }

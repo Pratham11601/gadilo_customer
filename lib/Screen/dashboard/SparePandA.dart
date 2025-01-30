@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/Screen/dashboard/S&ADetails.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../utils/app_colors.dart';
@@ -52,7 +51,7 @@ class SparePandA extends StatelessWidget {
                     decoration: InputDecoration(
                       hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                       prefixIcon: Icon(Icons.search),
-                      hintText: "Search Cities",
+                      hintText: "Search here....",
                       filled: true,
                       fillColor: Colors.white, // Background color
                       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -74,30 +73,10 @@ class SparePandA extends StatelessWidget {
                     },
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10.3, right: 10),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Search",
-                        hintStyle: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: const Color.fromRGBO(91, 91, 91, 1),
-                        ),
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                      ),
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                      ),
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
+          height(1.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -133,6 +112,7 @@ class SparePandA extends StatelessWidget {
               ),
             ],
           ),
+          height(1.h),
           Obx(() {
             if (dashBoardController.isLoadingInSpares.value) {
               return Column(
@@ -195,7 +175,8 @@ class SparePandA extends StatelessWidget {
                 ),
               );
             }
-          })
+          }),
+          height(3.h),
         ],
       )))),
     );

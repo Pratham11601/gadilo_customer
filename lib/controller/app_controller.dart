@@ -34,7 +34,7 @@ class AppController extends GetxController {
 
     // Initialize api manager
 
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(Duration(seconds: 2), () {
       if (userId != null) {
         debugPrint("isExistingUser ------->   ${isExistingUser}   ");
 

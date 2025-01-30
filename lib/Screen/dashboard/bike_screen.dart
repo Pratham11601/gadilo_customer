@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/dasboard/view_cars_model.dart';
+import '../../models/auth/brandModel.dart';
 import '../../routes/routes.dart';
 import '../../utils/text_styles.dart';
 import '../../widgets/common_bikes.dart';
@@ -24,9 +24,37 @@ class BikeScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.SELECT_CITY_SCREEN);
+                    },
+                    child: Row(
+                      children: [
+                        Obx(() {
+                          return Text(
+                            dashboardController.location.value,
+                            style: TextHelper.size18(context),
+                          );
+                        }),
+                        Image.asset(
+                          'assets/juhf.png',
+                          width: 24,
+                          height: 24,
+                        ),
+                        width(3.w)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               _buildHeader(),
-              SizedBox(height: 5.h),
-              _buildbikeBrandssGridView(dashboardController.bikeList),
+              SizedBox(height: 4.h),
+              Obx(() {
+                return _buildbikeBrandssGridView(dashboardController.bikebrand);
+              }),
               height(4),
               GestureDetector(
                 onTap: () {
@@ -48,10 +76,11 @@ class BikeScreen extends StatelessWidget {
                       width: 18,
                       height: 18,
                     ),
+                    width(5)
                   ],
                 ),
               ),
-              height(4),
+              height(2.h),
               Obx(() {
                 if (dashboardController.isLoadingInBikes.value) {
                   return Column(
@@ -93,7 +122,7 @@ class BikeScreen extends StatelessWidget {
                 } else {
                   return SizedBox(
                     height: 26.h,
-                    width: 95.w,
+                    width: 100.w,
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
@@ -183,9 +212,9 @@ class BikeScreen extends StatelessWidget {
                         ),
                         onChanged: (value) {
                           if (value.isNotEmpty) {
-                            dashboardController.fetchCities(value);
+                            dashboardController.fetchBikeBrandsBySearchAPI(value);
                           } else {
-                            dashboardController.fetchCities("");
+                            dashboardController.fetchBikeBrandsBydefaultAPI();
                           }
                         },
                       ),
@@ -200,9 +229,20 @@ class BikeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildbikeBrandssGridView(List<VehicleBrandsModel> cars) {
+  Widget _buildbikeBrandssGridView(List<BrandNamesList> bike) {
+    const int maxRows = 4;
+    double rowHeight = 16.h;
+
+    final itemCount = bike.length;
+    final rowCount = (itemCount / 3).ceil();
+    print(rowCount);
+    print(rowCount);
+    print(rowCount);
+    print(rowCount);
+    final gridHeight = rowCount > maxRows ? maxRows * rowHeight : rowCount * rowHeight;
+
     return Container(
-      height: 80.h,
+      height: gridHeight,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -211,39 +251,40 @@ class BikeScreen extends StatelessWidget {
           crossAxisSpacing: 1.w,
           mainAxisSpacing: 1.h,
         ),
-        itemCount: cars.length,
+        itemCount: bike.length,
         itemBuilder: (context, index) {
-          final car = cars[index];
+          final bikes = bike[index];
           return InkWell(
             onTap: () {
-              String brandName = car.brand.toString().split('.').last;
               dashboardController.getBikeByBrandList.clear();
-              dashboardController.setFilterBrand(brandName);
+              dashboardController.setFilterBrand(bikes.brandName!);
               dashboardController.getbikesDealsListApi();
               Get.toNamed(Routes.BIKE_DEAL_SCREEN);
             },
             child: Container(
-              height: 40.h,
+              height: 20.h,
               width: 31.h,
               decoration: BoxDecoration(
-                color: Colors.white,
                 border: Border.all(
                   color: const Color.fromRGBO(244, 244, 244, 1),
                   width: 1,
                 ),
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    car.imagePath,
-                    width: 46,
-                    height: 46,
+                  Image.network(
+                    bikes.brandImg ?? "",
+                    width: 51,
+                    height: 51,
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return Icon(Icons.error, size: 51); // Display an error icon
+                    },
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    car.brand.toString().split('.').last, // Get the enum name
+                    bikes.brandName ?? " ", // Get the enum name
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
