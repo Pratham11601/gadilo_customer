@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/text_style.dart';
@@ -24,6 +23,7 @@ class CommonTextField extends StatelessWidget {
   final String? counterText;
   final InputBorder? border;
   final int? maxLines;
+  final bool? read;
   final TextStyle? errorStyle;
   final void Function(String)? onChanged;
 
@@ -35,6 +35,7 @@ class CommonTextField extends StatelessWidget {
     this.color,
     this.onTap,
     this.decoration,
+    this.read,
     this.labelText,
     this.labelStyle,
     this.hintText,
@@ -59,6 +60,7 @@ class CommonTextField extends StatelessWidget {
       width: width,
       child: TextField(
         controller: controller,
+        readOnly: read ?? false,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: hintStyle ??
@@ -69,18 +71,6 @@ class CommonTextField extends StatelessWidget {
           labelText: labelText,
           labelStyle: labelStyle,
           prefixIcon: prefixIcon,
-          suffix: Container(
-            width: 6.h,
-            decoration: BoxDecoration(
-              color: ColorsForApp.backGroundColor,
-              border: Border.all(color: ColorsForApp.primaryColor),
-              borderRadius: BorderRadius.circular(27),
-            ),
-            child: Icon(
-              Icons.mode_outlined,
-              color: ColorsForApp.primaryColor,
-            ),
-          ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: ColorsForApp.colorBlackShade),
           ),

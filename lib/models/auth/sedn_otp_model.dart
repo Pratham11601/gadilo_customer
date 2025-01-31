@@ -2,7 +2,7 @@ class SendOtpModel {
   String? success;
   String? errorCode;
   String? message;
-  String? id;
+  dynamic id;
 
   SendOtpModel({this.success, this.errorCode, this.message, this.id});
 

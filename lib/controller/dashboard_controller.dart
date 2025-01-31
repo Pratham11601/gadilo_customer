@@ -12,14 +12,13 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../models/app/status_message_common_model.dart';
 import '../models/auth/brandModel.dart';
 import '../models/auth/get_city_model.dart';
 import '../models/dasboard/banerModel.dart';
 import '../models/dasboard/homePageCityModel.dart';
 import '../models/dasboard/spares_model.dart';
-import '../models/dasboard/view_cars_model.dart';
 import '../repository/dashboard_repository.dart';
-import '../utils/app_colors.dart';
 import '../utils/app_enums.dart';
 import '../widgets/snack_abar.dart';
 
@@ -111,6 +110,64 @@ class DashBoardController extends GetxController {
     return null;
   }
 
+  Future<Sparemodel?> getSpaeresSearchListApi(String query) async {
+    try {
+      Sparemodel getSpareApiresponse = await DashboardRepository.searchSParesApi(params: query);
+      if (getSpareApiresponse.status == true || getSpareApiresponse.status == 'success') {
+        getSparedList.value = getSpareApiresponse.data!;
+      } else {
+        getSparedList.clear();
+      }
+    } catch (e) {
+      debugPrint("Error in spare ${e.toString()}");
+    } finally {}
+    return null;
+  }
+
+  Future<userDetails?> UpdateUseDetails() async {
+    Map<String, dynamic> params = {'id': id.value, 'name': name.value.text};
+    debugPrint(params.toString());
+    try {
+      userDetails userResponse = await SettingRepositiory.updateUserDetailsAPi(params: params);
+      // Get.back();
+
+      if (userResponse.status == "success") {
+        name.value.text = userResponse.data!.username!;
+
+        return userResponse;
+      } else {
+        Get.snackbar(
+          'Failed',
+          userResponse.status.toString(),
+        );
+      }
+    } catch (e) {
+      debugPrint("Error in Contact ${e..toString}");
+    }
+    return null;
+  }
+
+  Future<SendInquiry?> addInquiryApiCall(String dealerId, String category, String ProductID) async {
+    Map<String, dynamic> params = {
+      'dealer_id': dealerId,
+      'category': category,
+      'product_id': ProductID,
+    };
+    isLoadingInSpares.value = true;
+    try {
+      SendInquiry getSpareApiresponse = await DashboardRepository.addInquriy(params: params);
+
+      if (getSpareApiresponse.status == "success") {
+        debugPrint(getSpareApiresponse.message);
+      }
+    } catch (e) {
+      debugPrint("Error in spare ${e.toString()}");
+    } finally {
+      isLoadingInSpares.value = false;
+    }
+    return null;
+  }
+
   Future<CarsModel?> getCarsDealsListApi() async {
     Map<String, dynamic> params = {
       'city': location.value,
@@ -182,70 +239,41 @@ class DashBoardController extends GetxController {
     fetchBikeBrandsBydefaultAPI();
   }
 
-  void showNonDismissibleDialog({
-    required TextEditingController controller,
-  }) {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Enter Name'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Please enter your name.'),
-            const SizedBox(height: 10),
-            TextField(
-              controller: controller,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              if (controller.text.isEmpty) {
-                // Show a warning if the field is empty
-                Get.snackbar(
-                  'Error',
-                  'Name cannot be empty!',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.red.withOpacity(0.8),
-                  colorText: Colors.white,
-                );
-              } else {
-                Get.back(); // Dismiss the dialog
-                // Add your logic here after the dialog is closed
-              }
-            },
-            child: const Text('Submit'),
-          ),
-        ],
-      ),
-      barrierDismissible: false, // Prevents dismissing the dialog by tapping outside
-    );
-  }
-
   Rx<TextEditingController> name = TextEditingController().obs;
   Rx<TextEditingController> phone = TextEditingController().obs;
   Rx<TextEditingController> address = TextEditingController().obs;
 
   Future<userDetails?> getUserDetails() async {
-    //TODO
-    Map<String, dynamic> params = {'id': id.value};
-    debugPrint(params.toString());
+    id.value = await LocalStorage.fetchValue(StorageKey.userid) ?? "1";
+
+    debugPrint("Flag one");
     try {
-      userDetails userResponse = await SettingRepositiory.getUserDeatils(params: params);
+      userDetails userResponse = await SettingRepositiory.getUserDeatils(id: id.value);
       if (userResponse.status == "success") {
-        name.value.text = userResponse.data!.name!;
+        name.value.text = userResponse.data!.username!;
+        phone.value.text = userResponse.data!.mobileNumber!;
+        debugPrint(name.value.text);
+        debugPrint("Flag Two");
 
-        if (name.value.text.isEmpty || name.value.text.isNull || name.value.text == "".obs) {
-          showNonDismissibleDialog(controller: name.value);
-        }
+        return userResponse;
+      } else {}
+    } catch (e) {
+      debugPrint("Error in Contact ${e..toString}");
+    }
+    return null;
+  }
 
-        phone.value.text = userResponse.data!.phone!;
+  Future<userDetails?> getUserDetailsAfterCity() async {
+    id.value = await LocalStorage.fetchValue(StorageKey.userid) ?? "1";
 
+    debugPrint("Flag one");
+    try {
+      userDetails userResponse = await SettingRepositiory.getUserDeatils(id: id.value);
+      if (userResponse.status == "success") {
+        name.value.text = userResponse.data!.username!;
+        phone.value.text = userResponse.data!.mobileNumber!;
+
+        debugPrint(name.value.text);
         return userResponse;
       } else {}
     } catch (e) {
@@ -301,6 +329,22 @@ class DashBoardController extends GetxController {
         getCarsList.value = getCarsApiresponse.data!;
       } else {
         getCarsList.clear();
+      }
+    } catch (e) {
+      debugPrint("Error in getCarsListApi ${e.toString()}");
+    } finally {
+      isLoadingInCas.value = false;
+    }
+    return null;
+  }
+
+  Future<CarsModel?> getSearchForCarsApi(String query) async {
+    try {
+      CarsModel getCarsApiresponse = await DashboardRepository.getSearchForCarsApi(params: query);
+      if (getCarsApiresponse.status == true) {
+        getCarsList.value = getCarsApiresponse.data!;
+      } else {
+        getCarsByBrandList.clear();
       }
     } catch (e) {
       debugPrint("Error in getCarsListApi ${e.toString()}");
@@ -370,11 +414,25 @@ class DashBoardController extends GetxController {
           getBikeByBrandList.value = getBikeApiresponse.data!;
         }
       } else {
-        Get.snackbar(
-          'Failed',
-          "Something went wrong",
-          backgroundColor: ColorsForApp.alertColor,
-        );
+        showToast("Network error");
+      }
+    } catch (e) {
+      debugPrint("Error in getbikesListApi ${e.toString()}");
+    } finally {
+      isLoadingInBikes.value = false;
+    }
+    return null;
+  }
+
+  Future<Bikemodel?> getModelSearchBikes(String query) async {
+    try {
+      Bikemodel getBikeApiresponse = await DashboardRepository.getBikesForModelSearchAPi(params: query);
+      if (getBikeApiresponse.status == true) {
+        if (getBikeApiresponse.data != null) {
+          getBikeByBrandList.value = getBikeApiresponse.data!;
+        }
+      } else {
+        getBikeByBrandList.clear();
       }
     } catch (e) {
       debugPrint("Error in getbikesListApi ${e.toString()}");
@@ -531,24 +589,6 @@ class DashBoardController extends GetxController {
     update();
   }
 
-  final List<VehicleBrandsModel> cars = [
-    VehicleBrandsModel(CarBrand.Volvo, 'assets/yuyul.png'),
-    VehicleBrandsModel(CarBrand.MG, 'assets/jjivvv.png'),
-    VehicleBrandsModel(CarBrand.Hyundai, 'assets/gttg.png'),
-    VehicleBrandsModel(CarBrand.Kia, 'assets/ftthj.png'),
-    VehicleBrandsModel(CarBrand.Volkswagen, 'assets/kjhgd.png'),
-    VehicleBrandsModel(CarBrand.Citroen, 'assets/lydc.png'),
-    VehicleBrandsModel(CarBrand.Nissan, 'assets/jrfex.png'),
-    VehicleBrandsModel(CarBrand.Mercedes, 'assets/yurex.png'),
-    VehicleBrandsModel(CarBrand.BMW, 'assets/hfdfh.png'),
-    VehicleBrandsModel(CarBrand.Audi, 'assets/gtddc.png'),
-    VehicleBrandsModel(CarBrand.Mahindra, 'assets/jgxfxf.png'),
-    VehicleBrandsModel(CarBrand.Tata, 'assets/ffdx.png'),
-    VehicleBrandsModel(CarBrand.Lexus, 'assets/tssx.png'),
-    VehicleBrandsModel(CarBrand.Renault, 'assets/igdzx.png'),
-    VehicleBrandsModel(CarBrand.Jeep, 'assets/trwz.png'),
-  ];
-
   Future<void> saveLocation(String savedlocation) async {
     await LocalStorage.storeValue(StorageKey.userLocation, savedlocation);
 
@@ -560,6 +600,7 @@ class DashBoardController extends GetxController {
     await getbikesListApi();
     await getCarsListApi();
 
+    await getUserDetailsAfterCity();
     Get.offNamed(Routes.HOME_SCREEN);
   }
 

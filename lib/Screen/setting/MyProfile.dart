@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/controller/setting_controller.dart';
 import 'package:gadi_customer_repo/utils/text_style.dart';
@@ -80,10 +79,7 @@ class MyProfile extends StatelessWidget {
                                     fit: BoxFit.fill,
                                     errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                       return Center(
-                                        child: CupertinoActivityIndicator(
-                                          radius: 20,
-                                          color: ColorsForApp.primaryColor,
-                                        ),
+                                        child: Icon(Icons.person_3_sharp),
                                       );
                                     },
                                   );
@@ -118,8 +114,8 @@ class MyProfile extends StatelessWidget {
                             width: 89.w,
                             child: Column(
                               children: [
-                                TextEditing("Name", settingController.name.value, context),
-                                TextEditing("Phone", settingController.phone.value, context),
+                                TextEditing("Name", settingController.name.value, false, context),
+                                TextEditing("Phone", settingController.phone.value, true, context),
                               ],
                             ),
                           ),
@@ -156,41 +152,7 @@ class MyProfile extends StatelessWidget {
     );
   }
 
-  Widget _addressContainer({
-    required String addressText,
-    required IconData iconData,
-    void Function()? onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue), // Blue border
-          borderRadius: BorderRadius.circular(35), // Rounded corners
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the content
-          children: [
-            Icon(
-              iconData,
-              color: Colors.blue, // Icon color
-            ),
-            SizedBox(width: 8), // Space between icon and text
-            Text(
-              addressText,
-              style: TextStyle(
-                color: Colors.black, // Text color
-                fontSize: 16, // Text size
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget TextEditing(String title, TextEditingController contoller, BuildContext context) {
+  Widget TextEditing(String title, TextEditingController contoller, bool read, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,6 +167,7 @@ class MyProfile extends StatelessWidget {
               width: 83.w,
               child: CommonTextField(
                 controller: contoller,
+                read: read,
                 hintText: "Enter your ${title}",
                 keyboardType: TextInputType.text,
               ),

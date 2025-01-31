@@ -3,6 +3,7 @@ import 'package:gadi_customer_repo/models/dasboard/bike_model.dart';
 import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
 
 import '../api/api_manager.dart';
+import '../models/app/status_message_common_model.dart';
 import '../models/auth/brandModel.dart';
 import '../models/dasboard/banerModel.dart';
 import '../models/dasboard/homePageCityModel.dart';
@@ -57,9 +58,8 @@ class DashboardRepository {
 
   static Future<CarsModel> getSearchForCarsApi({bool showLoading = true, required dynamic params}) async {
     try {
-      var response = await apiManager.postFormAPICall(
-        url: '/search_car',
-        params: params,
+      var response = await apiManager.getAPICall(
+        url: '/search_car_name?model=$params',
         showLoading: showLoading,
       );
       CarsModel getCarsModel = CarsModel.fromJson(response);
@@ -95,6 +95,34 @@ class DashboardRepository {
       );
       Sparemodel getSpareModel = Sparemodel.fromJson(response);
       return getSpareModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<Sparemodel> searchSParesApi({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/search_spares_n?model=$params',
+        showLoading: showLoading,
+      );
+      Sparemodel getSpareModel = Sparemodel.fromJson(response);
+      return getSpareModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<Bikemodel> getBikesForModelSearchAPi({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/search_bike_name?model=$params',
+        showLoading: showLoading,
+      );
+      Bikemodel bikeModel = Bikemodel.fromJson(response);
+      return bikeModel;
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
@@ -139,6 +167,21 @@ class DashboardRepository {
       );
       Bikemodel bikeModel = Bikemodel.fromJson(response);
       return bikeModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<SendInquiry> addInquriy({bool showLoading = true, required dynamic params}) async {
+    try {
+      var response = await apiManager.postFormAPICall(
+        url: '/add_cust_inq',
+        params: params,
+        showLoading: showLoading,
+      );
+      SendInquiry addModel = SendInquiry.fromJson(response);
+      return addModel;
     } catch (e) {
       debugPrint(e.toString());
       rethrow;

@@ -55,11 +55,10 @@ class SettingRepositiory {
     }
   }
 
-  static Future<userDetails> getUserDeatils({required dynamic params, bool showLoading = true}) async {
+  static Future<userDetails> getUserDeatils({required dynamic id, bool showLoading = true}) async {
     try {
-      var response = await apiManager.postFormAPICall(
-        url: '/get_profile_details',
-        params: params,
+      var response = await apiManager.getAPICall(
+        url: 'get_user_by_i?user_id=$id',
         showLoading: showLoading,
       );
       userDetails userModel = userDetails.fromJson(response);
@@ -73,7 +72,7 @@ class SettingRepositiory {
   static Future<userDetails> updateUserDetailsAPi({required dynamic params, bool showLoading = true}) async {
     try {
       var response = await apiManager.postFormAPICall(
-        url: '/update_profile1',
+        url: '/update_user_profile',
         params: params,
         showLoading: showLoading,
       );
@@ -107,6 +106,20 @@ class SettingRepositiory {
         showLoading: showLoading,
       );
       PrivacyPolicyModel privacyModel = PrivacyPolicyModel.fromJson(response);
+      return privacyModel;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<termsModel> termsCondnApi({bool showLoading = true}) async {
+    try {
+      var response = await apiManager.getAPICall(
+        url: '/getTermsConditions',
+        showLoading: showLoading,
+      );
+      termsModel privacyModel = termsModel.fromJson(response);
       return privacyModel;
     } catch (e) {
       debugPrint(e.toString());

@@ -91,9 +91,12 @@ class Login extends StatelessWidget {
       width: 85.w,
       label: "Login",
       onPressed: () {
-        showToast("Sending OTP Request ");
         if (_formKey.currentState!.validate()) {
-          authController.sendOTPApiCall();
+          if (authController.isChecked.value == false) {
+            showToast("Accept terms and Conditions to Login");
+          } else {
+            authController.sendOTPApiCall();
+          }
         }
       },
     );

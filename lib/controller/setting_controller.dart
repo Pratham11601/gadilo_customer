@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/models/setting/status_string_response_model.dart';
 import 'package:gadi_customer_repo/models/setting/user_details_model.dart';
 import 'package:gadi_customer_repo/repository/setting_repositiory.dart';
+import 'package:gadi_customer_repo/widgets/constant_widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sizer/sizer.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/app_enums.dart';
@@ -45,21 +47,16 @@ class SettingController extends GetxController {
   }
 
   Future<userDetails?> UpdateUseDetails() async {
-    Map<String, dynamic> params = {
-      'id': userId,
-      'name': name.value.text,
-      'address': address.value.text,
-      'phone': phone.value.text,
-    };
+    Map<String, dynamic> params = {'id': userId, 'name': name.value.text};
     debugPrint(params.toString());
     try {
       Get.back();
 
       userDetails userResponse = await SettingRepositiory.updateUserDetailsAPi(params: params);
       if (userResponse.status == "success") {
-        name.value.text = userResponse.data!.name!;
-        phone.value.text = userResponse.data!.phone!;
-        profile_photo.value = userResponse.data!.profilePhoto!;
+        name.value.text = userResponse.data!.username!;
+        phone.value.text = userResponse.data!.mobileNumber!;
+        profile_photo.value = userResponse.data!.profile!;
 
         debugPrint("${profile_photo.value}");
 
@@ -78,14 +75,12 @@ class SettingController extends GetxController {
   }
 
   Future<userDetails?> getUserDetails() async {
-    Map<String, dynamic> params = {'id': userId};
-    debugPrint(params.toString());
     try {
-      userDetails userResponse = await SettingRepositiory.getUserDeatils(params: params);
+      userDetails userResponse = await SettingRepositiory.getUserDeatils(id: userId);
       if (userResponse.status == "success") {
-        name.value.text = userResponse.data!.name!;
-        phone.value.text = userResponse.data!.phone!; // Assuming phone exists
-        profile_photo.value = userResponse.data!.profilePhoto!;
+        name.value.text = userResponse.data!.username!;
+        phone.value.text = userResponse.data!.mobileNumber!; // Assuming phone exists
+        profile_photo.value = userResponse.data!.profile!;
 
         debugPrint("${profile_photo.value}");
 
@@ -94,36 +89,6 @@ class SettingController extends GetxController {
         Get.snackbar(
           'Customer Details APi Failed',
           userResponse.status.toString(),
-          backgroundColor: ColorsForApp.alertColor,
-        );
-      }
-    } catch (e) {
-      debugPrint("Error in Contact ${e..toString}");
-    }
-    return null;
-  }
-
-  Future<StatusStringResponseModel?> changePasswordApiCall() async {
-    Map<String, dynamic> params = {
-      'user_id': userId,
-      'current_password': currentPassword.value,
-      'new_password': newPassword.value,
-    };
-    debugPrint(params.toString());
-    try {
-      StatusStringResponseModel supportApiresponse = await SettingRepositiory.changePasswordApi(params: params);
-      if (supportApiresponse.status == "success") {
-        Get.snackbar(
-          supportApiresponse.message.toString(),
-          '',
-          backgroundColor: ColorsForApp.secondaryColor,
-        );
-
-        return supportApiresponse;
-      } else {
-        Get.snackbar(
-          'Failed',
-          supportApiresponse.message.toString(),
           backgroundColor: ColorsForApp.alertColor,
         );
       }
@@ -229,6 +194,7 @@ class SettingController extends GetxController {
       Center(
           child: Column(
         children: [
+          height(42.h),
           CircularProgressIndicator(),
         ],
       )),
@@ -237,25 +203,17 @@ class SettingController extends GetxController {
 
     try {
       dio.FormData formData = dio.FormData.fromMap({
-        'id': '1',
+        'id': userId,
         'name': name.value.text,
-        'address': address.value.text,
-        'phone': phone.value.text,
-        'profile_photo': await dio.MultipartFile.fromFile(imagePath),
+        'profile': await dio.MultipartFile.fromFile(imagePath),
       });
 
-      dio.Response response = await _dio.post(
-        'https://testingsites.in/Gadilo_api/update_profile1',
-        data: formData,
-        options: dio.Options(
-          headers: {
-            'Cookie': 'ci_session=7afod0o04bceoioindkjvi362pkv2ept',
-          },
-        ),
-      );
+      dio.Response response = await _dio.post('https://testingsites.in/Gadilo_api/update_user_profile', data: formData);
 
       // Close the loader
       Get.back();
+
+      debugPrint(response.toString());
 
       if (response.statusCode == 200) {
         getUserDetails();

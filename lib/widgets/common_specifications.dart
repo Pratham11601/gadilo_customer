@@ -16,7 +16,8 @@ class CommonSpecifications extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2),
-      width: 32.w,
+      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+      width: 30.w,
       height: 28.w,
       decoration: BoxDecoration(
         color: CupertinoColors.white,

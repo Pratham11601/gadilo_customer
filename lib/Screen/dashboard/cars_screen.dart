@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/controller/auth_controller.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:gadi_customer_repo/utils/string_utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../generated/assets.dart';
 import '../../models/auth/brandModel.dart';
+import '../../models/setting/user_details_model.dart';
 import '../../routes/routes.dart';
-import '../../utils/app_colors.dart';
 import '../../utils/text_styles.dart';
 import '../../widgets/common_cards_cars.dart';
 import '../../widgets/constant_widgets.dart';
@@ -31,11 +32,34 @@ class CarsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(() {
-                    return Text(" Welcome ${capitalizeFirstLetter(dashboardController.name.value.text)}!",
-                        style: TextHelper.size18(context)
-                            .copyWith(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.bold));
-                  }),
+                  FutureBuilder<userDetails?>(
+                    future: dashboardController.getUserDetails(),
+                    builder: (BuildContext context, AsyncSnapshot<userDetails?> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text(
+                          "  Welcome !",
+                          style: TextHelper.size18(context).copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("Error: ${snapshot.error}");
+                      } else if (snapshot.hasData) {
+                        String userName = snapshot.data!.data!.username!;
+                        return Text(
+                          "  Welcome ${capitalizeFirstLetter(userName)}!",
+                          style: TextHelper.size18(context).copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      } else {
+                        return Text("No user data available.");
+                      }
+                    },
+                  ),
+                  height(7),
                   InkWell(
                     onTap: () {
                       Get.toNamed(Routes.SELECT_CITY_SCREEN);
@@ -104,13 +128,7 @@ class CarsScreen extends StatelessWidget {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              height(11.h),
-                              Center(
-                                child: CupertinoActivityIndicator(
-                                  radius: 30,
-                                  color: ColorsForApp.primaryColor,
-                                ),
-                              ),
+                              Lottie.asset(Assets.assetsLoadingShimmer, width: 100.w),
                             ],
                           );
                         }
@@ -143,6 +161,13 @@ class CarsScreen extends StatelessWidget {
                                 onTap: () {
                                   dashboardController.getCarsListSuggestionApi();
                                   final cars = dashboardController.getCarsRandomList[index];
+
+                                  dashboardController.addInquiryApiCall(
+                                    cars.id!,
+                                    "car",
+                                    cars.carId!,
+                                  );
+
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => CarDetails(cars: cars)));
                                 },
                                 child: buildCommonCarsCard(
@@ -173,16 +198,25 @@ class CarsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
           child: Obx(() {
             if (dashboardController.getBannerImg.isNotEmpty) {
-              return Image.network('${dashboardController.getBannerImg[0].banImg!}', width: 94.w, height: 26.h, fit: BoxFit.cover,
+              return SizedBox(
+                width: 94.w,
+                height: 26.h,
+                child: Image.network(
+                  '${dashboardController.getBannerImg[0].banImg!}',
+                  width: 94.w,
+                  height: 26.h,
+                  fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                return Icon(
-                  Icons.error, // Error icon
-                  size: 24.0, // Adjust size as needed
-                  color: Colors.red, // Color of the icon
-                );
-              });
+                    return Icon(
+                      Icons.error,
+                      size: 55.0,
+                      color: Colors.red,
+                    );
+                  },
+                ),
+              );
             } else {
-              return CircularProgressIndicator(); // Show a loading indicator while fetching
+              return SizedBox(height: 24.h, child: Icon(Icons.downloading)); // Show a loading indicator while fetching
             }
           }),
         ),
@@ -191,50 +225,47 @@ class CarsScreen extends StatelessWidget {
           left: 1.w,
           child: SizedBox(
             height: 52,
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                          offset: Offset(1, 1),
-                        ),
-                      ]),
-                      width: 91.w,
-                      child: TextField(
-                        style: TextStyle(fontSize: 18),
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
-                          prefixIcon: Icon(Icons.search),
-                          hintText: "Search Cities",
-                          filled: true,
-                          fillColor: Colors.white, // Background color
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: Colors.grey, width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {
-                            dashboardController.fetchCarBrandsBySearchAPI(value);
-                          } else {
-                            dashboardController.fetchCarBrandsBydefaultAPI();
-                          }
-                        },
+            child: Container(
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                        offset: Offset(1, 1),
                       ),
+                    ]),
+                    width: 91.w,
+                    child: TextField(
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                        prefixIcon: Icon(Icons.search),
+                        hintText: "Search Vehicle Brands",
+                        filled: true,
+                        fillColor: Colors.white, // Background color
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: Colors.grey, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          dashboardController.fetchCarBrandsBySearchAPI(value);
+                        } else {
+                          dashboardController.fetchCarBrandsBydefaultAPI();
+                        }
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -250,10 +281,6 @@ class CarsScreen extends StatelessWidget {
 
     final itemCount = cars.length;
     final rowCount = (itemCount / 3).ceil();
-    print(rowCount);
-    print(rowCount);
-    print(rowCount);
-    print(rowCount);
     final gridHeight = rowCount > maxRows ? maxRows * rowHeight : rowCount * rowHeight;
 
     return Container(
@@ -268,13 +295,13 @@ class CarsScreen extends StatelessWidget {
         ),
         itemCount: cars.length,
         itemBuilder: (context, index) {
-          final bikes = cars[index];
+          final car = cars[index];
           return InkWell(
             onTap: () {
-              dashboardController.getBikeByBrandList.clear();
-              dashboardController.setFilterBrand(bikes.brandName!);
-              dashboardController.getbikesDealsListApi();
-              Get.toNamed(Routes.BIKE_DEAL_SCREEN);
+              dashboardController.getCarsByBrandList.clear();
+              dashboardController.setFilterBrand(car.brandName!);
+              dashboardController.getCarsDealsListApi();
+              Get.toNamed(Routes.CARS_DEAL_SCREEN);
             },
             child: Container(
               height: 20.h,
@@ -290,7 +317,7 @@ class CarsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.network(
-                    bikes.brandImg ?? "",
+                    car.brandImg ?? "",
                     width: 51,
                     height: 51,
                     errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
@@ -299,7 +326,7 @@ class CarsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    bikes.brandName ?? " ", // Get the enum name
+                    car.brandName ?? " ", // Get the enum name
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,

@@ -111,7 +111,6 @@ class Password extends StatelessWidget {
             label: "Change Password",
             onPressed: () async {
               if (settingController.newPassword.value.text.toString() == settingController.confirmnewPassword.value.text.toString()) {
-                settingController.changePasswordApiCall();
                 Get.back();
               } else {
                 print(settingController.newPassword.value.toString());

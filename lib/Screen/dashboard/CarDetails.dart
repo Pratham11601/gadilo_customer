@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:gadi_customer_repo/models/dasboard/cars_model.dart';
+import 'package:gadi_customer_repo/utils/string_utils.dart';
 import 'package:gadi_customer_repo/widgets/back_common_button.dart';
 import 'package:gadi_customer_repo/widgets/common_specifications.dart';
 import 'package:get/get.dart';
@@ -37,12 +38,12 @@ class CarDetails extends StatelessWidget {
           children: [
             //caurasel
             SizedBox(
-              height: 29.h,
+              height: 31.h,
               child: Stack(
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                      height: 29.h, // Set the height of the carousel
+                      height: 30.5.h, // Set the height of the carousel
                       autoPlay: true,
                       viewportFraction: 1.0,
                       enableInfiniteScroll: true,
@@ -59,7 +60,7 @@ class CarDetails extends StatelessWidget {
                               borderRadius: BorderRadius.circular(3.0),
                               child: Image.network(
                                 imageUrl,
-                                height: 29.h,
+                                height: 31.h,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -77,7 +78,7 @@ class CarDetails extends StatelessWidget {
                   ),
                   Positioned(
                     left: 4,
-                    top: 12,
+                    top: 21,
                     child: CommonBackButton(onBack: () {
                       Get.offAllNamed(Routes.HOME_SCREEN);
                     }),
@@ -85,14 +86,13 @@ class CarDetails extends StatelessWidget {
                 ],
               ),
             ),
-            height(2.w),
 
             //Price
             Row(
               children: [
                 Text(
                   textAlign: TextAlign.left,
-                  "    ₹ ${cars.carPrice}/-",
+                  "  ₹ ${cars.carPrice}/-",
                   style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                 ),
               ],
@@ -102,7 +102,7 @@ class CarDetails extends StatelessWidget {
               children: [
                 Text(
                   textAlign: TextAlign.left,
-                  "    ${cars.brand} ${cars.model} ",
+                  "   ${capitalizeFirstLetter(cars.brand!)} ${cars.model} ",
                   style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                 ),
               ],
@@ -111,7 +111,10 @@ class CarDetails extends StatelessWidget {
             Row(
               children: [
                 SizedBox(width: 2.2.w),
-                Icon(Icons.location_on_outlined),
+                Icon(
+                  Icons.location_on_outlined,
+                  size: 5.w,
+                ),
                 Text(
                   "${cars.shop_address}",
                   style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
@@ -124,11 +127,12 @@ class CarDetails extends StatelessWidget {
               children: [
                 width(3.w),
                 RatingBar.builder(
-                  initialRating: double.parse(cars.ratings ?? "0.0"),
+                  initialRating: double.parse(cars.ratings ?? "4.0"),
                   minRating: 1,
                   direction: Axis.horizontal,
                   itemSize: 4.5.w,
                   itemPadding: EdgeInsets.symmetric(horizontal: 1),
+                  ignoreGestures: true,
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     color: index < double.parse(cars.numberOfOwners!) ? Color.fromRGBO(255, 238, 83, 1) : Color.fromRGBO(210, 210, 210, 1),
@@ -176,7 +180,7 @@ class CarDetails extends StatelessWidget {
                             dashBoardController.openMaps(cars.shop_address ?? "katraj puhe");
                           },
                           child: Image.asset(
-                            '${Assets.assetsMaps}',
+                            '${Assets.assetsMappp}',
                             width: 22,
                             height: 22,
                           ),
@@ -303,6 +307,13 @@ class CarDetails extends StatelessWidget {
                     itemBuilder: (context, index) => InkWell(
                       onTap: () {
                         final cars = dashBoardController.getCarsSuggestionList[index];
+
+                        dashBoardController.addInquiryApiCall(
+                          cars.id!,
+                          "car",
+                          cars.carId!,
+                        );
+
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CarDetails(cars: cars)));
                       },
                       child: buildCommonCarsCard(

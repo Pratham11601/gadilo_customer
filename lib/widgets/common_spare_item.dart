@@ -20,7 +20,7 @@ Widget spareItem({required SparesList spares}) {
               child: Image.network(
                 spares.photo![0],
                 fit: BoxFit.fill,
-                height: 17.h,
+                height: 15.h,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     height: 17.h, // Match the height of the original image

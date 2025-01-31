@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../widgets/constant_widgets.dart';
-import '../../widgets/custom_button.dart';
 
 class VerifyMobNo extends StatefulWidget {
   VerifyMobNo({super.key});
@@ -307,20 +306,6 @@ class _VerifyMobNoState extends State<VerifyMobNo> {
                       ],
                     ),
                     height(20.w),
-                    CustomButton(
-                      width: 85.w,
-                      label: "Verify OTP",
-                      onPressed: () {
-                        authController.forgetPasswordOtpVerify(
-                          text1Controller.text,
-                          text2Controller.text,
-                          text3Controller.text,
-                          text4Controller.text,
-                          text5Controller.text,
-                          text6Controller.text,
-                        );
-                      },
-                    ),
                   ],
                 ),
               ))

@@ -43,6 +43,22 @@ class BikeScreen extends StatelessWidget {
                           'assets/juhf.png',
                           width: 24,
                           height: 24,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10.0), // Match the border radius
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Image not available',
+                                  style: TextStyle(color: Colors.white, fontSize: 15), // Placeholder text color
+                                ),
+                              ),
+                            );
+                          },
                         ),
                         width(3.w)
                       ],
@@ -132,6 +148,13 @@ class BikeScreen extends StatelessWidget {
                         onTap: () {
                           debugPrint("  <--debug--> ${dashboardController.getBikesRandom[index].toString()}");
                           final bikes = dashboardController.getBikesRandom[index];
+
+                          dashboardController.addInquiryApiCall(
+                            bikes.id!,
+                            "bike",
+                            bikes.bikeId!,
+                          );
+
                           Navigator.push(context, MaterialPageRoute(builder: (context) => BikeDetails(bikes: bikes)));
                         },
                         child: buildBikeWidget(
@@ -162,12 +185,12 @@ class BikeScreen extends StatelessWidget {
                   errorBuilder: (context, error, stackTrace) {
                 return Icon(
                   Icons.error, // Error icon
-                  size: 24.0, // Adjust size as needed
+                  size: 74.0, // Adjust size as needed
                   color: Colors.red, // Color of the icon
                 );
               });
             } else {
-              return CircularProgressIndicator(); // Show a loading indicator while fetching
+              return SizedBox(height: 24.h, child: Icon(Icons.downloading)); // Show a loading indicator while fetching
             }
           }),
         ),
@@ -176,51 +199,48 @@ class BikeScreen extends StatelessWidget {
           left: 1.w,
           child: SizedBox(
             height: 52,
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                          offset: Offset(1, 1),
-                        ),
-                      ]),
-                      width: 91.w,
-                      child: TextField(
-                        style: TextStyle(fontSize: 18),
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
-                          prefixIcon: Icon(Icons.search),
-                          hintText: "Search Brand",
-                          filled: true,
-                          fillColor: Colors.white,
-                          // Background color
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: Colors.grey, width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {
-                            dashboardController.fetchBikeBrandsBySearchAPI(value);
-                          } else {
-                            dashboardController.fetchBikeBrandsBydefaultAPI();
-                          }
-                        },
+            child: Container(
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                        offset: Offset(1, 1),
                       ),
+                    ]),
+                    width: 91.w,
+                    child: TextField(
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                        prefixIcon: Icon(Icons.search),
+                        hintText: "Search Bike Brands",
+                        filled: true,
+                        fillColor: Colors.white,
+                        // Background color
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: Colors.grey, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(color: Colors.grey.shade300, width: 2),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          dashboardController.fetchBikeBrandsBySearchAPI(value);
+                        } else {
+                          dashboardController.fetchBikeBrandsBydefaultAPI();
+                        }
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

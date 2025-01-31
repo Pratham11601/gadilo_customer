@@ -1,5 +1,5 @@
 class Sparemodel {
-  bool? status;
+  dynamic status;
   int? errorCode;
   List<SparesList>? data;
 

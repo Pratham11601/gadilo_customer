@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../controller/dashboard_controller.dart';
-import '../../utils/app_colors.dart';
+import '../../generated/assets.dart';
 import '../../utils/text_style.dart';
 import '../../widgets/Common_dialog.dart';
 import '../../widgets/clear_filter_button.dart';
@@ -53,9 +53,9 @@ class BikeDeal extends StatelessWidget {
               ),
               onChanged: (value) {
                 if (value.isNotEmpty) {
-                  dashboardController.fetchCities(value);
+                  dashboardController.getModelSearchBikes(value);
                 } else {
-                  dashboardController.fetchCities("");
+                  dashboardController.getbikesDealsListApi();
                 }
               },
             ),
@@ -107,21 +107,7 @@ class BikeDeal extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  height(12.h),
-                  Center(
-                    child: CupertinoActivityIndicator(
-                      radius: 20,
-                      color: ColorsForApp.primaryColor,
-                    ),
-                  ),
-                  Text(
-                    'Loading Bikes..',
-                    style: TextHelper.size16(context).copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  Lottie.asset(Assets.assetsLoadingShimmer, width: 100.w, height: 78.h),
                 ],
               );
             }
@@ -150,6 +136,13 @@ class BikeDeal extends StatelessWidget {
                   itemBuilder: (context, index) => InkWell(
                     onTap: () {
                       final bikes = dashboardController.getBikeByBrandList[index];
+
+                      dashboardController.addInquiryApiCall(
+                        bikes.id!,
+                        "bike",
+                        bikes.bikeId!,
+                      );
+
                       Navigator.push(context, MaterialPageRoute(builder: (context) => BikeDetails(bikes: bikes)));
                     },
                     child: buildBikeWidget(

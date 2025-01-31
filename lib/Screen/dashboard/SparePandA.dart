@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/Screen/dashboard/S&ADetails.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../utils/app_colors.dart';
+import '../../generated/assets.dart';
 import '../../utils/text_style.dart';
 import '../../widgets/Common_dialog.dart';
 import '../../widgets/clear_filter_button.dart';
@@ -33,7 +34,7 @@ class SparePandA extends StatelessWidget {
         children: [
           SizedBox(
             height: 42,
-            width: 361,
+            width: 91.w,
             child: Row(
               children: [
                 Container(
@@ -51,7 +52,7 @@ class SparePandA extends StatelessWidget {
                     decoration: InputDecoration(
                       hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                       prefixIcon: Icon(Icons.search),
-                      hintText: "Search here....",
+                      hintText: "Search Cities",
                       filled: true,
                       fillColor: Colors.white, // Background color
                       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -71,6 +72,27 @@ class SparePandA extends StatelessWidget {
                         dashBoardController.fetchCities("");
                       }
                     },
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10.3, right: 10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        hintStyle: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromRGBO(91, 91, 91, 1),
+                        ),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                      ),
+                      keyboardType: TextInputType.text,
+                    ),
                   ),
                 ),
               ],
@@ -120,20 +142,7 @@ class SparePandA extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   height(12.h),
-                  Center(
-                    child: CupertinoActivityIndicator(
-                      radius: 30,
-                      color: ColorsForApp.primaryColor,
-                    ),
-                  ),
-                  Text(
-                    'Loading',
-                    style: TextHelper.size16(context).copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  Lottie.asset(Assets.assetsLoadingShimmer, width: 100.w, height: 78.h),
                 ],
               );
             }
@@ -159,7 +168,7 @@ class SparePandA extends StatelessWidget {
                     crossAxisCount: 2,
                     childAspectRatio: 1,
                     crossAxisSpacing: 1.w,
-                    mainAxisSpacing: 5.h,
+                    mainAxisSpacing: 4.h,
                   ),
                   shrinkWrap: true,
                   padding: EdgeInsets.all(1.w),
@@ -176,7 +185,7 @@ class SparePandA extends StatelessWidget {
               );
             }
           }),
-          height(3.h),
+          height(15)
         ],
       )))),
     );

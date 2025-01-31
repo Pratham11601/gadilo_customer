@@ -170,7 +170,7 @@ class BikeDetails extends StatelessWidget {
                             dashBoardController.openMaps(bikes.shopAddress ?? "Viman Nagar");
                           },
                           child: Image.asset(
-                            '${Assets.assetsMaps}',
+                            '${Assets.assetsMappp}',
                             width: 22,
                             height: 22,
                           ),
@@ -289,15 +289,16 @@ class BikeDetails extends StatelessWidget {
                   height: 30.h,
                   width: 100.w,
                   child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.zero,
-                    itemCount: dashBoardController.getBikeByBrandList.length,
-                    itemBuilder: (context, index) => buildBikeWidget(
-                      context,
-                      bike: dashBoardController.getBikeByBrandList[index],
-                    ),
-                  ),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.zero,
+                      itemCount: dashBoardController.getBikeByBrandList.length,
+                      itemBuilder: (context, index) {
+                        return buildBikeWidget(
+                          context,
+                          bike: dashBoardController.getBikeByBrandList[index],
+                        );
+                      }),
                 );
               }
             }),

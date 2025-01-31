@@ -34,7 +34,7 @@ class Terms_ofUser extends StatelessWidget {
               SizedBox(width: 15),
               Text(
                 "Terms of use",
-                style: GoogleFonts.poppins(fontSize: 16, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.w400),
+                style: GoogleFonts.poppins(fontSize: 19, color: Color.fromRGBO(15, 15, 20, 1), fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -52,7 +52,7 @@ class Terms_ofUser extends StatelessWidget {
                 height: 70.h,
                 width: 80.w,
                 child: Obx(() {
-                  if (authController.privacyPolicyList.isEmpty) {
+                  if (authController.terms.isEmpty) {
                     return Column(
                       children: [
                         height(12.h),
@@ -70,13 +70,13 @@ class Terms_ofUser extends StatelessWidget {
                     return ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
-                      itemCount: authController.privacyPolicyList.length,
+                      itemCount: authController.terms.length,
                       itemBuilder: (context, index) {
-                        var privacyPolicy = authController.privacyPolicyList[index];
+                        var privacyPolicy = authController.terms[index];
                         return Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                            privacyPolicy.policyText.toString(),
+                            privacyPolicy.content.toString(),
                             style: GoogleFonts.poppins(
                               fontSize: 12.5,
                               color: Color.fromRGBO(79, 79, 79, 1),

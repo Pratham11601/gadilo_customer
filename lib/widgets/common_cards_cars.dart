@@ -8,8 +8,8 @@ import '../models/dasboard/cars_model.dart';
 
 Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
   return Container(
-    width: 44.w,
-    height: 25.h,
+    width: 54.w,
+    height: 24.h,
     margin: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.w),
     padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.w),
     child: Column(

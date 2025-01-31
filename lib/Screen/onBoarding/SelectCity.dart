@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gadi_customer_repo/controller/dashboard_controller.dart';
 import 'package:gadi_customer_repo/utils/app_colors.dart';
+import 'package:gadi_customer_repo/utils/app_enums.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../utils/storage_config.dart';
 import '../../widgets/constant_widgets.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/snack_abar.dart';
 
 class SelectCity extends StatefulWidget {
   SelectCity({super.key});
@@ -19,6 +23,75 @@ class _SelectCityState extends State<SelectCity> {
   int? activeIndex;
 
   final DashBoardController dashController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    checkUserLocation();
+  }
+
+  void checkUserLocation() async {
+    var isUser = await LocalStorage.fetchValue(StorageKey.userLocation);
+    if (isUser == null || isUser.isEmpty || !isUser) {
+      showNonDismissibleDialog();
+    }
+  }
+
+  void showNonDismissibleDialog() {
+    debugPrint("sss");
+
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents dismissing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: const Text(
+              'Welcome to Gadilo',
+              style: TextStyle(color: Colors.black, fontSize: 22),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Dive into the world of Cars, Bikes & Accessories.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  style: const TextStyle(fontSize: 22),
+                  controller: dashController.name.value,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter Your Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                CustomButton(
+                  onPressed: () {
+                    if (dashController.name.value.text.isEmpty) {
+                      showToast(
+                        'Name cannot be empty!',
+                      );
+                    } else {
+                      dashController.UpdateUseDetails();
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  label: "Continue",
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

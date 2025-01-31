@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../controller/dashboard_controller.dart';
-import '../../utils/app_colors.dart';
+import '../../generated/assets.dart';
 import '../../utils/text_style.dart';
 import '../../widgets/Common_dialog.dart';
 import '../../widgets/clear_filter_button.dart';
@@ -41,7 +41,7 @@ class CarsDeal extends StatelessWidget {
                 decoration: InputDecoration(
                   hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                   prefixIcon: Icon(Icons.search),
-                  hintText: "Search Cities",
+                  hintText: "Search Cars",
                   filled: true,
                   fillColor: Colors.white, // Background color
                   contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -56,9 +56,9 @@ class CarsDeal extends StatelessWidget {
                 ),
                 onChanged: (value) {
                   if (value.isNotEmpty) {
-                    dashboardController.fetchCities(value);
+                    dashboardController.getSearchForCarsApi(value);
                   } else {
-                    dashboardController.fetchCities("");
+                    dashboardController.getCarsDealsListApi();
                   }
                 },
               ),
@@ -102,28 +102,13 @@ class CarsDeal extends StatelessWidget {
                 ),
               ],
             ),
-            height(5),
             Obx(() {
               if (dashboardController.isLoadingInCas.value) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    height(32.h),
-                    const Center(
-                      child: CupertinoActivityIndicator(
-                        radius: 40,
-                        color: ColorsForApp.primaryColor,
-                      ),
-                    ),
-                    Text(
-                      'Loading cars',
-                      style: TextHelper.size16(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                    Lottie.asset(Assets.assetsLoadingShimmer, width: 100.w, height: 78.h),
                   ],
                 );
               }
@@ -154,7 +139,7 @@ class CarsDeal extends StatelessWidget {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 2,
-                      mainAxisExtent: 30.h,
+                      mainAxisExtent: 29.h,
                       crossAxisSpacing: 0.w,
                       mainAxisSpacing: 0.h,
                     ),
@@ -163,6 +148,13 @@ class CarsDeal extends StatelessWidget {
                     itemBuilder: (context, index) => InkWell(
                       onTap: () {
                         final cars = dashboardController.getCarsByBrandList[index];
+
+                        dashboardController.addInquiryApiCall(
+                          cars.id!,
+                          "car",
+                          cars.carId!,
+                        );
+
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CarDetails(cars: cars)));
                       },
                       child: buildCommonCarsCard(

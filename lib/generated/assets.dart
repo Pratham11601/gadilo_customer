@@ -2,10 +2,6 @@
 class Assets {
   Assets._();
 
-  static const String apiApiException = 'lib/api/api_exception.dart';
-  static const String apiApiManager = 'lib/api/api_manager.dart';
-  static const String appItemsModel = 'lib/models/app/items_model.dart';
-  static const String appStatusMessageCommonModel = 'lib/models/app/status_message_common_model.dart';
   static const String assetsApplogo = 'assets/applogo.png';
   static const String assetsAsdfp = 'assets/asdfp.png';
   static const String assetsAssa = 'assets/assa.png';
@@ -97,7 +93,9 @@ class Assets {
   static const String assetsKjhgd = 'assets/kjhgd.png';
   static const String assetsKjhgfd = 'assets/kjhgfd.png';
   static const String assetsKjmn = 'assets/kjmn.png';
+  static const String assetsLoadingShimmer = 'assets/loadingShimmer.json';
   static const String assetsLydc = 'assets/lydc.png';
+  static const String assetsMappp = 'assets/mappp.png';
   static const String assetsMaps = 'assets/maps.png';
   static const String assetsModel = 'assets/model.png';
   static const String assetsNew = 'assets/new.png';
@@ -162,11 +160,6 @@ class Assets {
   static const String assetsZax = 'assets/zax.png';
   static const String assetsZxcv = 'assets/zxcv.png';
   static const String assetsZxcvbg = 'assets/zxcvbg.png';
-  static const String authBrandModel = 'lib/models/auth/brandModel.dart';
-  static const String authGetCityModel = 'lib/models/auth/get_city_model.dart';
-  static const String authLoginUserModel = 'lib/models/auth/login_user_model.dart';
-  static const String authRegisterUserModel = 'lib/models/auth/register_user_model.dart';
-  static const String authSednOtpModel = 'lib/models/auth/sedn_otp_model.dart';
   static const String bikeimagesAiether = 'assets/bikeimages/aiether.png';
   static const String bikeimagesAther = 'assets/bikeimages/ather.png';
   static const String bikeimagesBajaj = 'assets/bikeimages/bajaj.png';
@@ -183,16 +176,4 @@ class Assets {
   static const String bikeimagesRoyal = 'assets/bikeimages/royal.png';
   static const String bikeimagesSuzuki = 'assets/bikeimages/suzuki.png';
   static const String bikeimagesVidaa = 'assets/bikeimages/vidaa.png';
-  static const String bindingAppBinding = 'lib/binding/app_binding.dart';
-  static const String bindingAuthBinding = 'lib/binding/auth_binding.dart';
-  static const String bindingDashboardBinding = 'lib/binding/dashboard_binding.dart';
-  static const String bindingSettingBinding = 'lib/binding/setting_binding.dart';
-  static const String controllerAppController = 'lib/controller/app_controller.dart';
-  static const String controllerAuthController = 'lib/controller/auth_controller.dart';
-
-  static const String widgetsCustomNavigationBar = 'lib/widgets/custom_navigation_bar.dart';
-  static const String widgetsCustomTextfield = 'lib/widgets/custom_textfield.dart';
-  static const String widgetsDialog = 'lib/widgets/dialog.dart';
-  static const String widgetsSnackAbar = 'lib/widgets/snack_abar.dart';
-  static const String widgetsSnackbar = 'lib/widgets/snackbar.dart';
 }

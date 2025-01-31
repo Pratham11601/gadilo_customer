@@ -33,7 +33,7 @@ class _OTPState extends State<OTP> {
   final TextEditingController text6Controller = TextEditingController();
 
   final TextEditingController otp = TextEditingController();
-  int _start = 45;
+  int _start = 15;
   bool _isClickable = false;
   Timer? _timer;
   @override
@@ -46,7 +46,7 @@ class _OTPState extends State<OTP> {
     setState(() {
       _isClickable = false;
     });
-    _start = 10;
+    _start = 12;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_start > 0) {

@@ -141,6 +141,11 @@ class SandADetails extends StatelessWidget {
                           itemBuilder: (context, index) => InkWell(
                               onTap: () {
                                 final spares = dashBoardController.getSparedList[index];
+                                dashBoardController.addInquiryApiCall(
+                                  spares.id!,
+                                  "spare",
+                                  spares.sparePartId!,
+                                );
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => SandADetails(spares: spares)));
                               },
                               child: Padding(
@@ -279,10 +284,10 @@ class SandADetails extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    dashBoardController.openMaps(spares.shopAddress ?? "katraj puhe");
+                    dashBoardController.openMaps(spares.shopAddress ?? "Nashik");
                   },
                   child: Image.asset(
-                    '${Assets.assetsMaps}',
+                    '${Assets.assetsMappp}',
                     width: 22,
                     height: 22,
                   ),

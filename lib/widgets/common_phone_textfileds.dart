@@ -18,13 +18,13 @@ Widget buildPhoneNumberField(
           width: 16.5.w,
           child: Row(
             children: [
-              const SizedBox(width: 7),
+              const SizedBox(width: 9),
               Image.asset(
                 "assets/drd.png",
                 width: 21,
                 height: 21,
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 3),
               Text(
                 "+91",
                 style: GoogleFonts.poppins(fontSize: 16.sp, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
