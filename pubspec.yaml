@@ -72,6 +72,7 @@ dependencies:
   cupertino_range_slider_improved: ^2.0.1
   pin_code_text_field: ^1.8.0
   cached_network_image: ^3.2.1  # Check for the latest version
+  pinput:
 
 
 dev_dependencies:

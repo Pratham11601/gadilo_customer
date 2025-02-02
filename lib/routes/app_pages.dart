@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 
 import '../Screen/AddAddress.dart';
 import '../Screen/SplashScreen.dart';
+import '../Screen/dashboard/SparePandA.dart';
 import '../Screen/dashboard/cars_deal.dart';
 import '../Screen/onBoarding/OTP.dart';
 import '../Screen/onBoarding/PrivacyPolicy.dart';
@@ -67,6 +68,9 @@ class AppPages {
     GetPage(name: Routes.VERIFY_MOB_SCREEN, page: () => VerifyMobNo(), binding: AuthBinding(), transition: Transition.zoom),
 
     // HOME
+
+    GetPage(name: Routes.SPARES_S, page: () => SparePandA(), binding: DashboardBinding(), transition: Transition.rightToLeftWithFade),
+
     GetPage(
       name: Routes.HOME_SCREEN,
       page: () => DashboardScreen(),

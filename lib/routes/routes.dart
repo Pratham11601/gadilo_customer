@@ -27,6 +27,7 @@ class Routes {
   // Dashboard
   static const HOME_SCREEN = "/home_screen";
   static const SPARES_DETAILS_SCREEN = "/spares_details_screen";
+  static const SPARES_S = "/spares_screen";
   static const BIKE_DETAILS_SCREEN = "/spares_details_screen";
   static const CARS_DETAILS_SCREEN = "/spares_details_screen";
   static const CARS_DEAL_SCREEN = "/cars_deal_Screen";

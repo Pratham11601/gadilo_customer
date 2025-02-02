@@ -120,7 +120,7 @@ class Login extends StatelessWidget {
                 child: authController.isChecked.value ? Icon(Icons.check, color: Color.fromRGBO(251, 254, 255, 1), size: 20) : null,
               ),
             )),
-        width(5),
+        width(10),
         SizedBox(
           width: 77.w,
           child: RichText(
@@ -133,7 +133,7 @@ class Login extends StatelessWidget {
                     textStyle: TextStyle(
                       color: Color.fromRGBO(15, 15, 20, 1),
                       fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
@@ -143,7 +143,7 @@ class Login extends StatelessWidget {
                     textStyle: TextStyle(
                       color: Colors.blue, // Change color as needed
                       fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
+                      fontSize: 14.5.sp,
                     ),
                   ),
                   recognizer: TapGestureRecognizer()
@@ -157,7 +157,7 @@ class Login extends StatelessWidget {
                     textStyle: TextStyle(
                       color: Color.fromRGBO(15, 15, 20, 1),
                       fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
@@ -167,7 +167,7 @@ class Login extends StatelessWidget {
                     textStyle: TextStyle(
                       color: Colors.blue, // Change color as needed
                       fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
+                      fontSize: 14.6.sp,
                     ),
                   ),
                   recognizer: TapGestureRecognizer()

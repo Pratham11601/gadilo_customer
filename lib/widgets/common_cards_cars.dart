@@ -28,11 +28,7 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
                 height: 151,
                 color: Colors.grey[300], // Placeholder background color
                 child: Center(
-                  child: Icon(
-                    Icons.error,
-                    size: 55,
-                    color: Colors.red,
-                  ),
+                  child: Text("NO Image Avalable"),
                 ),
               );
             },

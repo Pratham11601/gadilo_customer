@@ -32,6 +32,9 @@ class _SelectCityState extends State<SelectCity> {
 
   void checkUserLocation() async {
     var isUser = await LocalStorage.fetchValue(StorageKey.userLocation);
+
+    debugPrint("USer isss $isUser");
+
     if (isUser == null || isUser.isEmpty || !isUser) {
       showNonDismissibleDialog();
     }

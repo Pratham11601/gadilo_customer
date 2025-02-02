@@ -51,7 +51,7 @@ class SplashScreenState extends State<SplashScreen> {
           height(21.h),
           Text(
             textAlign: TextAlign.center,
-            "Welcome to GADILO!",
+            "Welcome to GADILO Bharat!",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp),
           ),
           Center(
@@ -59,7 +59,7 @@ class SplashScreenState extends State<SplashScreen> {
               width: 77.w,
               child: Text(
                 textAlign: TextAlign.center,
-                "Dive into the world of cars, bikes & accessories.Your big find is just clicks away",
+                "Dive into the world of Cars, Bikes & Spare parts accessories.Your big find is just clicks away",
                 style: TextStyle(color: Colors.white, fontSize: 14.sp),
               ),
             ),

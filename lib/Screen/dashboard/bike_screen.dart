@@ -35,7 +35,7 @@ class BikeScreen extends StatelessWidget {
                       children: [
                         Obx(() {
                           return Text(
-                            dashboardController.location.value,
+                            dashboardController.location!.value,
                             style: TextHelper.size18(context),
                           );
                         }),
@@ -72,13 +72,19 @@ class BikeScreen extends StatelessWidget {
                 return _buildbikeBrandssGridView(dashboardController.bikebrand);
               }),
               height(4),
+              Divider(),
               GestureDetector(
                 onTap: () {
                   Get.toNamed(Routes.BIKE_DEAL_SCREEN);
                 },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    width(15),
+                    Text(
+                      "Top Trending",
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(),
                     Text(
                       "View More",
                       style: GoogleFonts.poppins(
@@ -96,7 +102,7 @@ class BikeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              height(2.h),
+              height(1.h),
               Obx(() {
                 if (dashboardController.isLoadingInBikes.value) {
                   return Column(
@@ -178,19 +184,36 @@ class BikeScreen extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
+          borderRadius: BorderRadius.circular(15.0),
           child: Obx(() {
             if (dashboardController.getBannerImg.isNotEmpty) {
-              return Image.network('${dashboardController.getBannerImg[1].banImg!}', width: 94.w, height: 26.h, fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                return Icon(
-                  Icons.error, // Error icon
-                  size: 74.0, // Adjust size as needed
-                  color: Colors.red, // Color of the icon
+              final filteredBanners = dashboardController.getBannerImg.where((banner) => banner.banFor == "bike").toList();
+              if (filteredBanners.isNotEmpty) {
+                return SizedBox(
+                  width: 94.w,
+                  height: 26.h,
+                  child: Image.network(
+                    '${filteredBanners[0].banImg!}',
+                    width: 94.w,
+                    height: 26.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Text("Failed to Fetch Image");
+                    },
+                  ),
                 );
-              });
+              } else {
+                return SizedBox(
+                  height: 24.h,
+                  width: 94.w,
+                  child: Text("No bike banner available"),
+                );
+              }
             } else {
-              return SizedBox(height: 24.h, child: Icon(Icons.downloading)); // Show a loading indicator while fetching
+              return SizedBox(
+                width: 96.w,
+                height: 24.h,
+              );
             }
           }),
         ),

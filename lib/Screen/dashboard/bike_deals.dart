@@ -40,7 +40,7 @@ class BikeDeal extends StatelessWidget {
                 prefixIcon: Icon(Icons.search),
                 hintText: "Search By Model",
                 filled: true,
-                fillColor: Colors.white, // Background color
+                fillColor: Colors.white,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
@@ -82,15 +82,16 @@ class BikeDeal extends StatelessWidget {
               }),
               InkWell(
                 onTap: () {
+                  dashboardController.maxValue = 5000000.0.obs;
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return FilterDialog(
+                        budgetMaxPrice: 5000000.0,
                         onApplyFilters: () {
-                          dashboardController.getBikeByBrandList.clear();
+                          dashboardController.getCarsByBrandList.clear();
                           dashboardController.isCarFilterApplied.value = true;
-                          dashboardController.isBikeFilterApplied.value = true;
-                          dashboardController.getbikesDealsListApi();
+                          dashboardController.getCarsDealsListApi();
                         },
                       );
                     },

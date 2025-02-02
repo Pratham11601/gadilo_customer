@@ -68,7 +68,7 @@ class CarsScreen extends StatelessWidget {
                       children: [
                         Obx(() {
                           return Text(
-                            dashboardController.location.value,
+                            dashboardController.location!.value,
                             style: TextHelper.size18(context),
                           );
                         }),
@@ -90,6 +90,7 @@ class CarsScreen extends StatelessWidget {
               }),
               Column(
                 children: [
+                  Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -195,28 +196,40 @@ class CarsScreen extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
+          borderRadius: BorderRadius.circular(15.0),
           child: Obx(() {
             if (dashboardController.getBannerImg.isNotEmpty) {
-              return SizedBox(
-                width: 94.w,
-                height: 26.h,
-                child: Image.network(
-                  '${dashboardController.getBannerImg[0].banImg!}',
+              final filteredBanners = dashboardController.getBannerImg.where((banner) => banner.banFor == "car").toList();
+
+              if (filteredBanners.isNotEmpty) {
+                return SizedBox(
                   width: 94.w,
                   height: 26.h,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.error,
-                      size: 55.0,
-                      color: Colors.red,
-                    );
-                  },
-                ),
-              );
+                  child: Image.network(
+                    '${filteredBanners[0].banImg!}',
+                    width: 94.w,
+                    height: 26.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.error,
+                        size: 55.0,
+                        color: Colors.red,
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return SizedBox(
+                  height: 24.h,
+                  child: Text("No bike banner available"),
+                );
+              }
             } else {
-              return SizedBox(height: 24.h, child: Icon(Icons.downloading)); // Show a loading indicator while fetching
+              return SizedBox(
+                height: 24.h,
+                child: Lottie.asset(Assets.assetsLoadingShimmer, width: 100.w, fit: BoxFit.fill), // Show a loading indicator while fetching
+              );
             }
           }),
         ),
@@ -245,7 +258,8 @@ class CarsScreen extends StatelessWidget {
                         prefixIcon: Icon(Icons.search),
                         hintText: "Search Vehicle Brands",
                         filled: true,
-                        fillColor: Colors.white, // Background color
+                        fillColor: Colors.white,
+                        // Background color
                         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -275,9 +289,8 @@ class CarsScreen extends StatelessWidget {
   }
 
   Widget _buildCarGridView(List<BrandNamesList> cars) {
-    // Define the number of rows and the height for each row
     const int maxRows = 4;
-    double rowHeight = 16.h;
+    double rowHeight = 17.2.h;
 
     final itemCount = cars.length;
     final rowCount = (itemCount / 3).ceil();

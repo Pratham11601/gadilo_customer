@@ -13,8 +13,9 @@ import 'constant_widgets.dart';
 class FilterDialog extends StatelessWidget {
   final DashBoardController controller = Get.put(DashBoardController());
   final VoidCallback onApplyFilters;
+  final double budgetMaxPrice;
 
-  FilterDialog({required this.onApplyFilters});
+  FilterDialog({required this.onApplyFilters, required this.budgetMaxPrice});
 
   Widget buildFilterSection(String title, List<String> options, RxString selectedOption, Function(String) onSelect) {
     return Column(
@@ -178,7 +179,7 @@ class FilterDialog extends StatelessWidget {
                           minValue: controller.minValue.value,
                           maxValue: controller.maxValue.value,
                           min: 0.0,
-                          max: 10000000.0,
+                          max: budgetMaxPrice,
                           onMinChanged: (minVal) {
                             controller.updateMin(minVal);
                           },
@@ -289,7 +290,7 @@ class FilterDialogForSpares extends StatelessWidget {
                 ),
                 child: ExpansionTile(
                   title: Text(
-                    "By Vehicle Type",
+                    "Motors",
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px),
                   ),
                   children: [
@@ -308,7 +309,7 @@ class FilterDialogForSpares extends StatelessWidget {
                 ),
                 child: ExpansionTile(
                   title: Text(
-                    "By Type",
+                    "Type",
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14.px),
                   ),
                   children: [

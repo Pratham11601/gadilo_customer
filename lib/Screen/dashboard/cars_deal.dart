@@ -85,10 +85,12 @@ class CarsDeal extends StatelessWidget {
                 }),
                 InkWell(
                   onTap: () {
+                    dashboardController.maxValue = 10000000.0.obs;
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return FilterDialog(
+                          budgetMaxPrice: 10000000.0,
                           onApplyFilters: () {
                             dashboardController.getCarsByBrandList.clear();
                             dashboardController.isCarFilterApplied.value = true;

@@ -7,12 +7,14 @@ import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../generated/assets.dart';
+import '../../routes/routes.dart';
 import '../../utils/text_style.dart';
 import '../../widgets/Common_dialog.dart';
 import '../../widgets/clear_filter_button.dart';
 import '../../widgets/common_filter_container.dart';
 import '../../widgets/common_spare_item.dart';
 import '../../widgets/constant_widgets.dart';
+import 'S_And_D_old.dart';
 
 class SparePandA extends StatelessWidget {
   final DashBoardController dashBoardController = Get.find();
@@ -32,6 +34,48 @@ class SparePandA extends StatelessWidget {
               child: Center(
                   child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.SELECT_CITY_SCREEN);
+                },
+                child: Row(
+                  children: [
+                    Obx(() {
+                      return Text(
+                        dashBoardController.location!.value,
+                        style: TextHelper.size18(context),
+                      );
+                    }),
+                    Image.asset(
+                      'assets/juhf.png',
+                      width: 24,
+                      height: 24,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10.0), // Match the border radius
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Image not available',
+                              style: TextStyle(color: Colors.white, fontSize: 15), // Placeholder text color
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    width(3.w)
+                  ],
+                ),
+              ),
+            ],
+          ),
           SizedBox(
             height: 42,
             width: 91.w,
@@ -52,7 +96,7 @@ class SparePandA extends StatelessWidget {
                     decoration: InputDecoration(
                       hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
                       prefixIcon: Icon(Icons.search),
-                      hintText: "Search Cities",
+                      hintText: "Search here....",
                       filled: true,
                       fillColor: Colors.white, // Background color
                       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -161,7 +205,7 @@ class SparePandA extends StatelessWidget {
               );
             } else {
               return SizedBox(
-                height: 75.h,
+                height: 85.h,
                 width: 99.w,
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -176,7 +220,12 @@ class SparePandA extends StatelessWidget {
                   itemBuilder: (context, index) => InkWell(
                       onTap: () {
                         final spares = dashBoardController.getSparedList[index];
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SandADetails(spares: spares)));
+
+                        if (spares.type == "new") {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SandADetails(spares: spares)));
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SandADetailsOLD(spares: spares)));
+                        }
                       },
                       child: spareItem(
                         spares: dashBoardController.getSparedList[index],
@@ -185,7 +234,6 @@ class SparePandA extends StatelessWidget {
               );
             }
           }),
-          height(15)
         ],
       )))),
     );

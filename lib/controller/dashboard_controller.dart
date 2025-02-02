@@ -50,7 +50,7 @@ class DashBoardController extends GetxController {
   Rx<TextEditingController> locationText = TextEditingController().obs;
   Rx<TextEditingController> searchText = TextEditingController().obs;
   var searchList = <String>[].obs;
-  RxString location = ''.obs;
+  RxString? location = ''.obs;
 
   void clearFilters() {
     filterColor.value = "";
@@ -82,14 +82,14 @@ class DashBoardController extends GetxController {
   RxBool isBikeImageVisible = true.obs;
 
   var minValue = 0.0.obs;
-  var maxValue = 10000000.0.obs;
+  var maxValue = 5000000.0.obs;
 
   var cityList = <Cities>[].obs;
 
   RxList<SparesList> getSparedList = <SparesList>[].obs;
   Future<Sparemodel?> getSpaeresListApi() async {
     Map<String, dynamic> params = {
-      'city': location.value,
+      'city': location!.value,
       'vehicle_type': VehicleType.value,
       'number_of_owners': filterOwners.value,
       'type': spareType.value,
@@ -125,6 +125,7 @@ class DashBoardController extends GetxController {
   }
 
   Future<userDetails?> UpdateUseDetails() async {
+    id.value = await LocalStorage.fetchValue(StorageKey.userid);
     Map<String, dynamic> params = {'id': id.value, 'name': name.value.text};
     debugPrint(params.toString());
     try {
@@ -170,7 +171,7 @@ class DashBoardController extends GetxController {
 
   Future<CarsModel?> getCarsDealsListApi() async {
     Map<String, dynamic> params = {
-      'city': location.value,
+      'city': location!.value,
       'brand': filterBrand.value,
       'color': filterColor.value,
       'fuel_type': selectedFuelType.value,
@@ -219,7 +220,11 @@ class DashBoardController extends GetxController {
     getDefaultCities();
     getBanners();
     clearFilters();
-    location.value = await LocalStorage.fetchValue(StorageKey.userLocation);
+
+    String? fetchedLocation = await LocalStorage.fetchValue(StorageKey.userLocation);
+
+    location!.value = fetchedLocation ?? 'Default Location';
+
     id.value = await LocalStorage.fetchValue(StorageKey.userid) ?? "1";
     getUserDetails();
 
@@ -313,7 +318,7 @@ class DashBoardController extends GetxController {
 
   Future<CarsModel?> getCarsListApi() async {
     Map<String, dynamic> params = {
-      'city': location.value,
+      'city': location!.value,
       'brand': filterBrand.value,
       'color': filterColor.value,
       'km_driven': filterBudget.value,
@@ -362,7 +367,7 @@ class DashBoardController extends GetxController {
       }
     } catch (e) {
       debugPrint("Error in getCarsListApi ${e.toString()}");
-    } finally {}
+    }
     return null;
   }
 
@@ -396,7 +401,7 @@ class DashBoardController extends GetxController {
 
   Future<Bikemodel?> getbikesDealsListApi() async {
     Map<String, dynamic> params = {
-      'city': location.value,
+      'city': location!.value,
       'brand': filterBrand.value,
       'color': filterColor.value,
       'fuel_type': selectedFuelType.value,
@@ -444,7 +449,7 @@ class DashBoardController extends GetxController {
 
   Future<Bikemodel?> getbikesListApi() async {
     Map<String, dynamic> params = {
-      'city': location.value,
+      'city': location!.value,
       'brand': "",
       'color': "",
       'km_driven': "",
@@ -595,7 +600,7 @@ class DashBoardController extends GetxController {
     getCarsList.clear();
     getSparedList.clear();
     getBikeList.clear();
-    location.value = await LocalStorage.fetchValue(StorageKey.userLocation) ?? '';
+    location!.value = await LocalStorage.fetchValue(StorageKey.userLocation) ?? '';
     await getSpaeresListApi();
     await getbikesListApi();
     await getCarsListApi();

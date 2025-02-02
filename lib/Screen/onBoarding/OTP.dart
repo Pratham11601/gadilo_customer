@@ -7,10 +7,10 @@ import 'package:gadi_customer_repo/utils/app_colors.dart';
 import 'package:gadi_customer_repo/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../widgets/constant_widgets.dart';
+import '../../widgets/custom_pininit.dart';
 
 class OTP extends StatefulWidget {
   OTP({super.key});
@@ -33,7 +33,7 @@ class _OTPState extends State<OTP> {
   final TextEditingController text6Controller = TextEditingController();
 
   final TextEditingController otp = TextEditingController();
-  int _start = 15;
+  int _start = 30;
   bool _isClickable = false;
   Timer? _timer;
   @override
@@ -46,7 +46,7 @@ class _OTPState extends State<OTP> {
     setState(() {
       _isClickable = false;
     });
-    _start = 12;
+    _start = 30;
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_start > 0) {
@@ -56,7 +56,7 @@ class _OTPState extends State<OTP> {
       } else {
         timer.cancel();
         setState(() {
-          _isClickable = true; // Enable clicking after timer ends
+          _isClickable = true;
         });
       }
     });
@@ -66,14 +66,6 @@ class _OTPState extends State<OTP> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
-  }
-
-  void _autoFillNextField(TextEditingController currentController, TextEditingController nextController) {
-    if (currentController.text.length == 1) {
-      FocusScope.of(context).nextFocus();
-    } else if (currentController.text.isEmpty) {
-      FocusScope.of(context).previousFocus();
-    }
   }
 
   @override
@@ -102,26 +94,16 @@ class _OTPState extends State<OTP> {
             style: GoogleFonts.poppins(fontSize: 16, color: Color.fromRGBO(59, 56, 68, 1), fontWeight: FontWeight.w400),
           ),
           SizedBox(height: 40),
-          PinCodeTextField(
-            autofocus: true,
-            controller: otp,
-            highlightColor: ColorsForApp.primaryColor,
-            defaultBorderColor: Colors.grey,
-            highlightPinBoxColor: Colors.transparent,
-            maxLength: 6,
-            onTextChanged: (text) {},
-            onDone: (text) {
-              authController.verifyOTPApiCall(otp.text);
-            },
-            pinBoxWidth: 50,
-            pinBoxHeight: 64,
-            wrapAlignment: WrapAlignment.spaceAround,
-            pinTextStyle: TextStyle(fontSize: 18.0),
-            pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
-            pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
-            highlightAnimationBeginColor: Colors.black,
-            highlightAnimationEndColor: Colors.white12,
-            keyboardType: TextInputType.number,
+          SizedBox(
+            width: 85.w,
+            child: CustomPinput(
+              // controller: authController.otpController,
+              onChanged: (value) {
+                if (value.length == 6) {
+                  authController.verifyOTPApiCall(value);
+                }
+              },
+            ),
           ),
           height(17.h),
           CustomButton(
@@ -134,7 +116,7 @@ class _OTPState extends State<OTP> {
           SizedBox(height: 20),
           RichText(
             text: TextSpan(
-              text: _isClickable ? " " : 'Resend OTP in ',
+              text: _isClickable ? " " : 'Resend OTP in',
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: const Color.fromRGBO(9, 8, 24, 1),
@@ -142,12 +124,10 @@ class _OTPState extends State<OTP> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: _isClickable ? 'Resend OTP' : '  ${_start.toString().padLeft(2, '0')}:00 Sec',
+                  text: _isClickable ? 'Resend OTP' : ' ${_start.toString().padLeft(2, '0')}:00 Sec',
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: _isClickable
-                        ? ColorsForApp.primaryColor // Blue when clickable
-                        : const Color.fromRGBO(9, 8, 24, 1), // Default color
+                    color: _isClickable ? ColorsForApp.primaryColor : const Color.fromRGBO(9, 8, 24, 1), // Default color
                     fontWeight: FontWeight.w400,
                   ),
                   recognizer: TapGestureRecognizer()
