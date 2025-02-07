@@ -7,6 +7,7 @@ import 'package:gadi_customer_repo/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../routes/routes.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/back_common_button.dart';
 
@@ -26,7 +27,14 @@ class MyProfile extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        leading: CommonBackButton(),
+        leading: CommonBackButton(
+          onBack: () {
+            Get.offNamedUntil(
+              Routes.HOME_SCREEN,
+              (route) => true,
+            );
+          },
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

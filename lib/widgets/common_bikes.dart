@@ -40,7 +40,7 @@ Widget buildBikeWidget(BuildContext context, {required BikeList bike}) {
                 ),
                 Center(
                   child: Text(
-                    "₹${formatPriceRange(bike.bikePrice!)}",
+                    "${formatPriceRange(bike.bikePrice!)}",
                     style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                   ),
                 ),

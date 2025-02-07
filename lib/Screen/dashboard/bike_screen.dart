@@ -88,7 +88,7 @@ class BikeScreen extends StatelessWidget {
                     Text(
                       "View More",
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: const Color.fromRGBO(0, 90, 192, 1),
                       ),
@@ -218,10 +218,10 @@ class BikeScreen extends StatelessWidget {
           }),
         ),
         Positioned(
-          bottom: -24,
+          bottom: -20,
           left: 1.w,
           child: SizedBox(
-            height: 52,
+            height: 48,
             child: Container(
               child: Row(
                 children: [
@@ -236,9 +236,9 @@ class BikeScreen extends StatelessWidget {
                     ]),
                     width: 91.w,
                     child: TextField(
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                        hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
                         prefixIcon: Icon(Icons.search),
                         hintText: "Search Bike Brands",
                         filled: true,
@@ -308,6 +308,10 @@ class BikeScreen extends StatelessWidget {
               height: 20.h,
               width: 31.h,
               decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(offset: Offset(1, -1), spreadRadius: 1, color: Colors.grey.shade100, blurRadius: 4),
+                ],
                 border: Border.all(
                   color: const Color.fromRGBO(244, 244, 244, 1),
                   width: 1,
@@ -319,17 +323,17 @@ class BikeScreen extends StatelessWidget {
                 children: [
                   Image.network(
                     bikes.brandImg ?? "",
-                    width: 51,
-                    height: 51,
+                    width: 12.w,
+                    height: 12.w,
                     errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                      return Icon(Icons.error, size: 51); // Display an error icon
+                      return Icon(Icons.error, size: 51);
                     },
                   ),
                   const SizedBox(height: 5),
                   Text(
                     bikes.brandName ?? " ", // Get the enum name
                     style: GoogleFonts.poppins(
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: FontWeight.w400,
                       color: const Color.fromRGBO(15, 15, 20, 1),
                     ),

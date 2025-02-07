@@ -13,8 +13,8 @@ class _FilterContainerState extends State<FilterContainer> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 0.h),
-      height: 5.h,
-      width: 27.w,
+      height: 4.h,
+      width: 22.w,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
@@ -34,15 +34,14 @@ class _FilterContainerState extends State<FilterContainer> {
           width(2.5.w),
           Image.asset(
             'assets/fds.png',
-            width: 18,
-            height: 18,
+            width: 16,
+            height: 16,
           ),
-          width(2.5.w),
+          width(2.w),
           Text(
             "Filter   ",
-            style: TextStyle(fontSize: 15.px, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 12.px, fontWeight: FontWeight.bold),
           ),
-          width(1.w),
         ],
       ),
     );

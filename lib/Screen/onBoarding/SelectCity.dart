@@ -111,6 +111,7 @@ class _SelectCityState extends State<SelectCity> {
         children: [
           SizedBox(height: 12),
           Container(
+            height: 7.h,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Colors.grey.shade200,
@@ -121,9 +122,9 @@ class _SelectCityState extends State<SelectCity> {
             ]),
             width: 91.w,
             child: TextField(
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 14),
               decoration: InputDecoration(
-                hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
                 prefixIcon: Icon(Icons.search),
                 hintText: "Search Cities",
                 filled: true,

@@ -30,7 +30,10 @@ class SandADetailsOLD extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME_SCREEN);
+        Get.offNamedUntil(
+          Routes.HOME_SCREEN,
+          (route) => true,
+        );
         return false;
       },
       child: Scaffold(
@@ -47,7 +50,7 @@ class SandADetailsOLD extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "₹ ${spares.price}/-",
-                        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -57,7 +60,7 @@ class SandADetailsOLD extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "${spares.brand} ${spares.model} ",
-                        style: GoogleFonts.poppins(fontSize: 18, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 16, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -68,7 +71,7 @@ class SandADetailsOLD extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "${spares.description}",
-                        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -80,7 +83,7 @@ class SandADetailsOLD extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "Description",
-                        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -90,7 +93,7 @@ class SandADetailsOLD extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "${spares.shopAddress}",
-                        style: GoogleFonts.poppins(fontSize: 17, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 15, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -203,12 +206,17 @@ class SandADetailsOLD extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                      right: 4,
-                      bottom: 1,
-                      child: Image.asset(
-                        Assets.assetsPngWaterMarks,
-                        height: 9.h,
-                      )),
+                    left: 4,
+                    top: 3.h,
+                    child: CommonBackButton(
+                      onBack: () {
+                        Get.offNamedUntil(
+                          Routes.HOME_SCREEN,
+                          (route) => true,
+                        );
+                      },
+                    ),
+                  ),
                 ],
               );
             }).toList(),
@@ -227,7 +235,7 @@ class SandADetailsOLD extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.poppins(
-              fontSize: 17,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(15, 15, 20, 1),
             ),
@@ -240,7 +248,7 @@ class SandADetailsOLD extends StatelessWidget {
             child: Text(
               "view More->",
               style: GoogleFonts.poppins(
-                fontSize: 17,
+                fontSize: 14,
                 color: ColorsForApp.primaryColor,
               ),
             ),

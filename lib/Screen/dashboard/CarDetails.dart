@@ -28,7 +28,10 @@ class CarDetails extends StatelessWidget {
     final images = (cars.carImage as List<String>?) ?? [];
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME_SCREEN);
+        Get.offNamedUntil(
+          Routes.HOME_SCREEN,
+          (route) => true,
+        );
         return false; // Prevent the default back action
       },
       child: Scaffold(
@@ -85,7 +88,7 @@ class CarDetails extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "  ₹ ${cars.carPrice}/-",
-                        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -95,7 +98,7 @@ class CarDetails extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.left,
                         "   ${capitalizeFirstLetter(cars.brand!)} ${cars.model} ",
-                        style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -108,8 +111,8 @@ class CarDetails extends StatelessWidget {
                         size: 5.w,
                       ),
                       Text(
-                        "${cars.shop_address}",
-                        style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+                        "${cars.shop_address ?? "-"}",
+                        style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -194,7 +197,7 @@ class CarDetails extends StatelessWidget {
                       SizedBox(width: 10),
                       Text(
                         "Specifications",
-                        style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -247,7 +250,7 @@ class CarDetails extends StatelessWidget {
                       SizedBox(width: 15),
                       Text(
                         "You may like this",
-                        style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
+                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
                       ),
                     ],
                   ),
@@ -282,7 +285,7 @@ class CarDetails extends StatelessWidget {
                           height(12.h),
                           Text(
                             'There are no Cars Available',
-                            style: TextHelper.size16(context).copyWith(
+                            style: TextHelper.size14(context).copyWith(
                               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                               fontWeight: FontWeight.bold,
                             ),
@@ -324,7 +327,7 @@ class CarDetails extends StatelessWidget {
               )),
               Positioned(
                 left: 4,
-                top: 2.h,
+                top: 3.5.h,
                 child: CommonBackButton(
                   onBack: () {
                     Get.offNamedUntil(

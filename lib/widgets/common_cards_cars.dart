@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gadi_customer_repo/utils/string_utils.dart';
-import 'package:gadi_customer_repo/widgets/constant_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/dasboard/cars_model.dart';
+import '../utils/string_utils.dart';
 
 Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
   return Container(
@@ -34,17 +33,18 @@ Widget buildCommonCarsCard(BuildContext context, {required CarsList cars}) {
             },
           ),
         ),
-        height(3),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              " ${capitalizeFirstLetter(cars.brand!)}",
-              style: GoogleFonts.poppins(fontSize: 22.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
+            Center(
+              child: Text(
+                " ${capitalizeFirstLetter(cars.brand!)} ",
+                style: GoogleFonts.poppins(fontSize: 17.px, fontWeight: FontWeight.w500, color: const Color.fromRGBO(15, 15, 20, 1)),
+              ),
             ),
             Text(
-              "₹${cars.carPrice} ",
-              style: GoogleFonts.poppins(fontSize: 14.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
+              "₹${cars.carPrice}/-",
+              style: GoogleFonts.poppins(fontSize: 12.px, fontWeight: FontWeight.w400, color: const Color.fromRGBO(15, 15, 20, 1)),
             ),
           ],
         )

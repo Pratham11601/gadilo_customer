@@ -42,10 +42,10 @@ class DashboardRepository {
     }
   }
 
-  static Future<CarsModel> getRandomFiveCarsApi({bool showLoading = true}) async {
+  static Future<CarsModel> getRandomFiveCarsApi({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.getAPICall(
-        url: '/get_car_random',
+        url: '/get_car_random?city=$params',
         showLoading: showLoading,
       );
       CarsModel getCarsModel = CarsModel.fromJson(response);
@@ -70,9 +70,7 @@ class DashboardRepository {
     }
   }
 
-  static Future<CarsModel> getCarsSuggestionApi({
-    bool showLoading = true,
-  }) async {
+  static Future<CarsModel> getCarsSuggestionApi({bool showLoading = true}) async {
     try {
       var response = await apiManager.getAPICall(
         url: '/get_cars_by_filter',
@@ -144,10 +142,10 @@ class DashboardRepository {
     }
   }
 
-  static Future<Bikemodel> getRandomFiveBikesAPi({bool showLoading = true}) async {
+  static Future<Bikemodel> getRandomFiveBikesAPi({required dynamic params, bool showLoading = true}) async {
     try {
       var response = await apiManager.getAPICall(
-        url: '/get_bike_random',
+        url: 'get_bike_random?city=$params',
         showLoading: showLoading,
       );
       Bikemodel bikeModel = Bikemodel.fromJson(response);
@@ -233,7 +231,7 @@ class DashboardRepository {
   static Future<brandNamesModel> getbrandModel({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.getAPICall(
-        url: '/cars_by_brand?brand_name=${params}',
+        url: '/cars_by_brand?brand_name=$params',
         showLoading: showLoading,
       );
       brandNamesModel bikeModel = brandNamesModel.fromJson(response);
@@ -244,10 +242,10 @@ class DashboardRepository {
     }
   }
 
-  static Future<brandNamesModel> getDefaultbrandCarsModel({bool showLoading = true}) async {
+  static Future<brandNamesModel> getDefaultbrandCarsModel({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.getAPICall(
-        url: '/get_car_homepage',
+        url: 'get_car_homepage',
         showLoading: showLoading,
       );
       brandNamesModel bikeModel = brandNamesModel.fromJson(response);
@@ -258,7 +256,7 @@ class DashboardRepository {
     }
   }
 
-  static Future<brandNamesModel> getDefaultbrandBikeModel({bool showLoading = true}) async {
+  static Future<brandNamesModel> getDefaultbrandBikeModel({bool showLoading = true, required dynamic params}) async {
     try {
       var response = await apiManager.getAPICall(
         url: '/get_bike_homepage',

@@ -200,7 +200,7 @@ class DashBoardController extends GetxController {
   Future<CarsModel?> getRandomFiveCars() async {
     isLoadingRandom.value = true;
     try {
-      CarsModel getCarsApiresponse = await DashboardRepository.getRandomFiveCarsApi();
+      CarsModel getCarsApiresponse = await DashboardRepository.getRandomFiveCarsApi(params: location);
       isLoadingRandom.value = false;
       if (getCarsApiresponse.status == "true" || getCarsApiresponse.status == true) {
         getCarsRandomList.value = getCarsApiresponse.data!;
@@ -433,7 +433,7 @@ class DashBoardController extends GetxController {
     try {
       Bikemodel getBikeApiresponse = await DashboardRepository.getBikesForModelSearchAPi(params: query);
       if (getBikeApiresponse.status == true) {
-        if (getBikeApiresponse.data != null) {
+        if (getBikeApiresponse.data != null || getBikeApiresponse.status == 'error') {
           getBikeByBrandList.value = getBikeApiresponse.data!;
         }
       } else {
@@ -478,7 +478,7 @@ class DashBoardController extends GetxController {
   Future<Bikemodel?> getFiveRandomBikes() async {
     isLoadingRandom.value = true;
     try {
-      Bikemodel getBikeApiresponse = await DashboardRepository.getRandomFiveBikesAPi();
+      Bikemodel getBikeApiresponse = await DashboardRepository.getRandomFiveBikesAPi(params: location);
       isLoadingRandom.value = false;
 
       if (getBikeApiresponse.status == "true" || getBikeApiresponse.status == true) {
@@ -534,7 +534,7 @@ class DashBoardController extends GetxController {
   Future<brandNamesModel?> fetchCarBrandsBydefaultAPI() async {
     isLoading.value = true;
     try {
-      brandNamesModel getBikeApiresponse = await DashboardRepository.getDefaultbrandCarsModel();
+      brandNamesModel getBikeApiresponse = await DashboardRepository.getDefaultbrandCarsModel(params: location);
 
       if (getBikeApiresponse.status == "success") {
         if (getBikeApiresponse.data != null) {
@@ -571,8 +571,7 @@ class DashBoardController extends GetxController {
   Future<brandNamesModel?> fetchBikeBrandsBydefaultAPI() async {
     isLoading.value = true;
     try {
-      brandNamesModel getBikeApiresponse = await DashboardRepository.getDefaultbrandBikeModel();
-
+      brandNamesModel getBikeApiresponse = await DashboardRepository.getDefaultbrandBikeModel(params: location);
       if (getBikeApiresponse.status == "success") {
         if (getBikeApiresponse.data != null) {
           bikebrand.value = getBikeApiresponse.data ?? [];
@@ -720,10 +719,6 @@ class DashBoardController extends GetxController {
       path: 'maps/search/$query',
     );
 
-    // Print the generated URL for debugging
-    print(googleMapsUri.toString());
-
-    // Check if the URL can be launched
     if (await canLaunch(googleMapsUri.toString())) {
       await launch(googleMapsUri.toString());
     } else {

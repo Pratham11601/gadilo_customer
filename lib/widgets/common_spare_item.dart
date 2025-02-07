@@ -23,9 +23,9 @@ Widget spareItem({required SparesList spares}) {
                 height: 15.h,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    height: 17.h, // Match the height of the original image
+                    height: 14.h, // Match the height of the original image
                     decoration: BoxDecoration(
-                      color: Colors.grey, // Placeholder color
+                      color: Colors.grey.shade400, // Placeholder color
                       borderRadius: BorderRadius.circular(10.0), // Match the border radius
                     ),
                     child: Center(
@@ -53,8 +53,7 @@ Widget spareItem({required SparesList spares}) {
           ],
         )),
     Positioned(
-      top: 1,
-      left: 60,
+      left: 14.5.w,
       child: Container(
         width: 55,
         height: 21,
@@ -66,8 +65,8 @@ Widget spareItem({required SparesList spares}) {
           child: Column(
             children: [
               Text(
-                "${spares.type}",
-                style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: const Color.fromRGBO(0, 0, 0, 1)),
+                capitalizeFirstLetter(spares.type!),
+                style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.bold, color: const Color.fromRGBO(0, 0, 0, 1)),
               ),
             ],
           ),

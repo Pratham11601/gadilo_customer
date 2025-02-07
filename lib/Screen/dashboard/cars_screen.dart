@@ -94,7 +94,7 @@ class CarsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("  Top Trending", style: TextHelper.size18(context).copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text("   Top Trending", style: TextHelper.size16(context).copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
                       GestureDetector(
                         onTap: () {
                           Get.toNamed(Routes.CARS_DEAL_SCREEN);
@@ -105,7 +105,7 @@ class CarsScreen extends StatelessWidget {
                             Text(
                               "View More",
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 color: const Color.fromRGBO(0, 90, 192, 1),
                               ),
@@ -120,7 +120,6 @@ class CarsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  height(1.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -151,7 +150,7 @@ class CarsScreen extends StatelessWidget {
                           );
                         } else {
                           return SizedBox(
-                            height: 31.h,
+                            height: 29.h,
                             width: 95.w,
                             child: ListView.builder(
                               shrinkWrap: true,
@@ -237,7 +236,7 @@ class CarsScreen extends StatelessWidget {
           bottom: -24,
           left: 1.w,
           child: SizedBox(
-            height: 52,
+            height: 47,
             child: Container(
               child: Row(
                 children: [
@@ -252,9 +251,9 @@ class CarsScreen extends StatelessWidget {
                     ]),
                     width: 91.w,
                     child: TextField(
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+                        hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
                         prefixIcon: Icon(Icons.search),
                         hintText: "Search Vehicle Brands",
                         filled: true,

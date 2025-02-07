@@ -26,10 +26,12 @@ class SandADetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final images = (spares.photo as List<String>?) ?? [];
     final review = spares.ratings != null ? double.parse(spares.ratings!) : 0.0;
-
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME_SCREEN);
+        Get.offNamedUntil(
+          Routes.HOME_SCREEN,
+          (route) => true,
+        );
         return false;
       },
       child: Scaffold(
@@ -47,7 +49,7 @@ class SandADetails extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.left,
                           "₹ ${spares.price}/-",
-                          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
+                          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: Color.fromRGBO(15, 15, 20, 1)),
                         ),
                       ],
                     ),
@@ -57,7 +59,7 @@ class SandADetails extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.left,
                           "${spares.brand} ${spares.model} ",
-                          style: GoogleFonts.poppins(fontSize: 18, color: Color.fromRGBO(15, 15, 20, 1)),
+                          style: GoogleFonts.poppins(fontSize: 16, color: Color.fromRGBO(15, 15, 20, 1)),
                         ),
                       ],
                     ),
@@ -68,7 +70,7 @@ class SandADetails extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.left,
                           "${spares.description}",
-                          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
+                          style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                         ),
                       ],
                     ),
@@ -80,7 +82,7 @@ class SandADetails extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.left,
                           "Description",
-                          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
+                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: Color.fromRGBO(15, 15, 20, 1)),
                         ),
                       ],
                     ),
@@ -90,7 +92,7 @@ class SandADetails extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.left,
                           "${spares.shopAddress}",
-                          style: GoogleFonts.poppins(fontSize: 17, color: Color.fromRGBO(15, 15, 20, 1)),
+                          style: GoogleFonts.poppins(fontSize: 14, color: Color.fromRGBO(15, 15, 20, 1)),
                         ),
                       ],
                     ),
@@ -167,7 +169,7 @@ class SandADetails extends StatelessWidget {
             ),
             Positioned(
               left: 4,
-              top: 2.h,
+              top: 3.h,
               child: CommonBackButton(
                 onBack: () {
                   Get.offNamedUntil(
@@ -199,14 +201,6 @@ class SandADetails extends StatelessWidget {
         items: images.map((imageUrl) {
           return Stack(
             children: [
-              SizedBox(
-                width: double.infinity, // Full width
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.fill,
-                  height: 30.h, // Set the height of the carousel
-                ),
-              ),
               Positioned(
                   right: 4,
                   bottom: 1,
@@ -230,7 +224,7 @@ class SandADetails extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.poppins(
-              fontSize: 17,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(15, 15, 20, 1),
             ),
@@ -243,7 +237,7 @@ class SandADetails extends StatelessWidget {
             child: Text(
               "view More->",
               style: GoogleFonts.poppins(
-                fontSize: 17,
+                fontSize: 14,
                 color: ColorsForApp.primaryColor,
               ),
             ),

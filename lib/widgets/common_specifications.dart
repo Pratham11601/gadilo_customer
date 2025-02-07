@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../utils/string_utils.dart';
-import 'constant_widgets.dart';
 
 class CommonSpecifications extends StatelessWidget {
   final String? labelStyle;
@@ -18,7 +17,7 @@ class CommonSpecifications extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 2),
       padding: EdgeInsets.symmetric(vertical: 2, horizontal: 6),
       width: 30.w,
-      height: 28.w,
+      height: 30.w,
       decoration: BoxDecoration(
         color: CupertinoColors.white,
         border: Border.all(
@@ -32,19 +31,17 @@ class CommonSpecifications extends StatelessWidget {
           SizedBox(height: 11),
           Image.asset(
             "$imagePath",
-            width: 4.h,
-            height: 4.h,
+            width: 18.w,
+            height: 13.w,
           ),
           Text(
             "${labelStyle}",
-            style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400, color: Color.fromRGBO(74, 74, 74, 1)),
+            style: GoogleFonts.poppins(fontSize: 11, fontWeight: FontWeight.w400, color: Color.fromRGBO(74, 74, 74, 1)),
           ),
-          height(1.h),
           Text(
             "${capitalizeFirstLetter(value!)}",
-            style: GoogleFonts.poppins(fontSize: 15.px, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
+            style: GoogleFonts.poppins(fontSize: 14.px, fontWeight: FontWeight.w500, color: Color.fromRGBO(15, 15, 20, 1)),
           ),
-          height(1.h),
         ]),
       ),
     );

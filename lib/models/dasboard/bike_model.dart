@@ -1,5 +1,5 @@
 class Bikemodel {
-  bool? status;
+  dynamic status;
   dynamic errorCode;
   List<BikeList>? data;
 

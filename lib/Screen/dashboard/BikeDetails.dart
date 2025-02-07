@@ -28,7 +28,10 @@ class BikeDetails extends StatelessWidget {
     final images = (bikes.bikeImage as List<String>?) ?? [];
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME_SCREEN);
+        Get.offNamedUntil(
+          Routes.HOME_SCREEN,
+          (route) => true,
+        );
         return false;
       },
       child: Scaffold(
@@ -306,7 +309,7 @@ class BikeDetails extends StatelessWidget {
               ))),
               Positioned(
                 left: 4,
-                top: 2.h,
+                top: 4.h,
                 child: CommonBackButton(
                   onBack: () {
                     Get.offNamedUntil(
